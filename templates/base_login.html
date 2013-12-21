@@ -1,0 +1,21 @@
+{% load i18n %}
+
+<html lang="en">
+<head>
+    <title>{% block title %}{% endblock %}</title>
+	{% block head %}{% endblock %}
+</head>
+
+<body style="background:url(/mautauaja/static/assets/whitelog.jpg) repeat">
+    <div class="container">
+        {% block sidebar %}{% endblock %}
+        {% block body %}{% endblock %}
+		
+        <div id="id_footer">
+	        @ 2010-2013 All Right Reserved. Mautauaja.com is registered trademark of Mautauaja.Co
+	    </div>
+        
+    </div>
+</body>
+</html>
+

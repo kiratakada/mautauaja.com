@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>{% block title %}{% endblock %}</title>
+	
+    <!-- BlueTrip CSS Framework http://bluetrip.org/ -->
+    <link rel="stylesheet" href="/mautauaja/static/css/screen.css" type="text/css" media="screen, projection">
+    <link rel="stylesheet" href="/mautauaja/static/css/print.css" type="text/css" media="print">
+    <link rel="stylesheet" href="/mautauaja/static/css/style_x.css" type="text/css" media="screen, projection">
+    <link rel="stylesheet" href="/mautauaja/static/css/kirabase.css" />
+	
+</head>
+
+<body>
+    <div class="container">
+        <div id="header" class="span-24 last" style="position: relative">
+           <img src="{{ STATIC_URL }}admin/ff.png"/>
+           {% if user.is_authenticated %}
+                <div style="position: absolute; top: 0px; right: 0; font-size: 11px; text-align: right; line-height: 110%; color: #FFFFFF;">
+                	<a href="{% url user_logout %}">
+	                	<div style="width: 100%; margin: auto; -webkit-border-radius: 10px; padding: 10px; background-color: #820707; color: yellow; text-align:center; margin-top: 5px">
+						      LOGOUT          	
+						</div>
+					</a>
+                </div>
+            {% endif %}
+        </div>
+		<br/>
+        {% block sidebar %}{% endblock %}
+        {% block body %}{% endblock %}
+        
+        <div id="footer" class="span-19 last" style="width:900px;">
+	        <p> Andi Harefa Kirabase 2013 </p>
+	    </div>
+        
+    </div>
+</body>
+</html>
+

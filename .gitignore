@@ -1,0 +1,16 @@
+*.mo
+*.egg-info
+*.egg
+*.EGG
+*.EGG-INFO
+.bzr
+.svn
+*.pyc
+*.pyo
+*.tmp*
+.DS_Store
+local_settings.py
+.komodotools
+*.komodoproject
+*.orig
+
