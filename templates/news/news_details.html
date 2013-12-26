@@ -1,0 +1,54 @@
+{% extends "bare_bones.html" %}
+
+{% block title %}
+    News Detail
+{% endblock %}
+
+{% block breadcrumb %}
+    <div class="toolbar">
+       <div class="span-9 left breadcrumb">
+           <a href='{% url dashboard %}'> Dashboard </a>
+           <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">
+           {{ news.title|slice:":50" }}
+       </div>
+    </div>
+{% endblock %}
+        
+{% block body %}
+
+    <div class="news_content">
+        <div style="margin-top: 50px;">
+            {{ news.date_created|date:"D d/M/Y H:m a "}} <br/><br/>
+            <span class="news_title">{{ news.title }}</span><br/><br/>
+            By: {{ news.user }} - Mau tau saja..
+        </div><br/>
+        
+        <table>
+            <tr>
+                <td>
+                    <img src="/mautauaja/display_img/{{ news.picture }}" style="width: 600px; height: 300px;">
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 120px; padding: 10px;">
+                    {{ news.content }}
+                    
+                </td>
+            </tr>    
+        </table>
+        
+        <span style="font-size: 12px; font-family: sans-serif; color: red;"><b>Baca juga : </b></span>
+        {% for zulu in others %}
+            <table style="width: 100%; margin: 3px;">
+                <tr>
+                    <td style="border: 1px solid grey">
+                        <a href="{% url news_details zulu.id %}">
+                            <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">
+                            {{ zulu.title }}
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        {% endfor %}
+    </div>
+{% endblock %}

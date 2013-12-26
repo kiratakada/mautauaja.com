@@ -2,20 +2,16 @@
 
 <html lang="en">
 <head>
-    <title>{% block title %}{% endblock %}</title>
+    <title>{% block title %} Mau-tau-aja.com{% endblock %}</title>
 	{% block head %}{% endblock %}
 </head>
 
-<body style="background:url(/mautauaja/static/assets/whitelog.jpg) repeat">
+<body style="background:url(/mautauaja/static/assets/dark_bg.jpg) repeat">
     <div class="container">
         {% block sidebar %}{% endblock %}
-        {% block body %}{% endblock %}
 		
-        <div id="id_footer">
-	        @ 2010-2013 All Right Reserved. Mautauaja.com is registered trademark of Mautauaja.Co
-	    </div>
-        
-    </div>
+		{% block body %}{% endblock %}
+	</div>
 </body>
 </html>
 

@@ -1,0 +1,53 @@
+{% extends "bare_bones.html" %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+
+{% block body %}
+    <table>
+        <tr>
+            <td>
+                <div id="main">
+                    <ul id="holder">
+                        {% for item in news %}
+                            <a href="{% url news_details item.id %}" style="color: black">
+                                <li>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <img src="/mautauaja/display_img/{{ item.picture }}" style="width: 100px; height: 60px;">
+                                            </td>
+                                            <td>{{ item.title|slice:":200" }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                {{ item.content|slice:":200" }}..Read More..
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </li>
+                            </a>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </td>
+            <td>
+                <table class="content_table">
+                    <tr>
+                        <td>
+                            {% for data in msitem %}
+                                <div class="thumb">
+                                    <a href="{% url item_details data.id %}">
+                                        <img src="/mautauaja/display_img/{{ data.picture}}" width="150" height="200">
+                                    </a><br/>
+                                    <span style="font-size: 10px;">{{ data.name }}</span>
+                                </div>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+{% endblock %}

@@ -1,6 +1,5 @@
 import os
-
-from datetime import datetime
+import datetime
 
 from cStringIO import StringIO
 from django import forms
@@ -12,6 +11,13 @@ from django.forms.util import ErrorList
 
 from dataui.models import *
 
+CHOICHES = (
+    (1,'Very Bad'),
+    (2,'Bad'),
+    (3,'Normal'),
+    (4,'Very Good'),
+    (5,'Excellent'),
+)
 
 class LoginForm(forms.Form):
     username = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'Username')
@@ -41,4 +47,64 @@ class LoginForm(forms.Form):
 
         return self.cleaned_data
 
-    
+class RegisterForm(forms.Form):
+    email = forms.EmailField(max_length=75, widget=forms.TextInput(attrs={'maxlength':'75'}),label=u'Email ')
+    firstname = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'First Name')
+    lastname = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'Last Name')
+    password = forms.CharField(max_length = 8, widget=forms.PasswordInput(attrs={'maxlength':'8'}), label=u'Password*') 
+    conf_password = forms.CharField(max_length = 8,widget=forms.PasswordInput(attrs={'maxlength':'8'}), label=u'Confirm*')
+
+    occupation = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'Occupation', required=False)
+    address = forms.CharField(max_length = 150, widget=forms.TextInput(), label=u'Address', required=False)
+    phone = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'Phone Number', required=False)
+    place_of_birth = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'Place of birth', required=False)
+    date_of_birth = forms.DateField(initial=datetime.date.today, required=False)
+    photo = forms.FileField(label="Photo", required=False)
+
+    def clean(self):
+        if self.errors:
+            return
+
+        email = self.cleaned_data['email']
+        if email is not None:
+            if User.objects.filter(username__iexact= email).count() > 0:
+                self.errors['email'] = ErrorList([u'Email account already exist'])
+
+        if self.cleaned_data['password'] != self.cleaned_data['conf_password']:
+            self.errors['password'] = ErrorList([u'Password not match'])
+            self.errors['conf_password'] = ErrorList([u'Password not match'])
+
+        if len(self.cleaned_data['password']) < 6:
+            self.errors['password'] = ErrorList([u'Password at least 6 character'])
+
+        return self.cleaned_data
+
+class QuestionForm(forms.Form):
+    questions = forms.CharField(widget=forms.widgets.Textarea())
+
+class PriceForm(forms.Form):
+    price = forms.IntegerField()
+    comment = forms.CharField(widget=forms.widgets.Textarea())
+    rate = forms.ChoiceField(choices=CHOICHES, widget=forms.RadioSelect)
+
+    def clean(self):
+        if self.errors:
+            return
+
+        return self.cleaned_data
+
+
+class StoreForm(forms.Form):
+    store_name = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'Store Name')
+    store_address = forms.CharField(max_length = 50, widget=forms.TextInput(), label=u'Address')
+    store_city = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'City')
+    store_photo = forms.FileField(label="Photo", required=False)
+
+    comment = forms.CharField(widget=forms.widgets.Textarea())
+    rate = forms.ChoiceField(choices=CHOICHES, widget=forms.RadioSelect)
+
+    def clean(self):
+        if self.errors:
+            return
+
+        return self.cleaned_data

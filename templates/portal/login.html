@@ -1,14 +1,14 @@
 {% extends "base_login.html" %}
 
 
-{% block title %}Kira Developer {% endblock %}
+{% block title %}Mau tau aja.com {% endblock %}
 
 {% block head %}
 	<link href="/mautauaja/static/css/login-box.css" rel="stylesheet" type="text/css" />
 	
 	<style  type="text/css">
         #id_login-box {
-			margin-left: 12%;
+			margin-left: 10%;
 			padding-bottom: 18%;
 			font: 12px Arial, Helvetica, sans-serif;
 			color: #ebebeb;
@@ -16,7 +16,7 @@
 		}
 		
 		#id_username, #id_password{
-			width: 320px;
+			width: 330px;
 			height: 40px;
 			box-shadow: 3px 2px 2px #888888;
 		}
@@ -28,7 +28,7 @@
 	<form method="post">
 	    <div style="padding: 100px 0 0 250px;">
 			<div id="id_login-box">
-				<div style="margin-left: 10%; padding-top: 8%;">
+				<div style="margin-left: 8%; padding-top: 8%;">
 					<h1>Login</h1>
 					Please input your username and password <br/><br/><br/>
 					
@@ -47,6 +47,9 @@
 							</td>
 						</tr>
 					</table>
+					
+					<a href="{% url register %}" style="color: white; text-decoration:none">Register</a> &nbsp;|
+					<a href="#" style="color: white; text-decoration:none"> www.mautauaja.com </a>
 				</div>
 			</div>
 		</div>

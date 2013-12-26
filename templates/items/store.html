@@ -1,0 +1,77 @@
+{% extends "bare_bones.html" %}
+
+{% block title %}
+    Store
+{% endblock %}
+
+{% block breadcrumb %}
+    <div class="toolbar">
+       <div class="span-9 left breadcrumb">
+           <a href='{% url dashboard %}'> Dashboard </a>
+           <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">
+           {{ items.name|slice:":50" }}
+       </div>
+    </div>
+{% endblock %}
+
+{% block head %}
+    <style type="text/css">
+        #id_price_table{
+            width: 100px;
+        }
+        
+        #id_price_table tr td{
+            border: none;
+        }
+    </style>
+{% endblock %}
+
+
+{% block body %}
+    <div class="items_content" style="padding-top: 15%">
+        <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">
+        Store Rate <br><br>
+            
+        <form enctype="multipart/form-data" method="POST" action=".">
+            <table id="id_price_table">
+                <tr>
+                    <td>Name</td>
+                    <td>{{ form.store_name.errors }} {{ form.store_name }}  </td>
+                </tr>
+                <tr>
+                    <td>Address </td>
+                    <td>{{ form.store_address.errors }}{{ form.store_address }}</td>
+                </tr>
+                <tr>
+                    <td>City </td>
+                    <td>{{ form.store_city.errors }}{{ form.store_city }}</td>
+                </tr>
+                
+                <tr>
+                    <td>Photo </td>
+                    <td>{{ form.store_photo }}</td>
+                </tr>
+                
+                <tr>
+                    <td>Rate </td>
+                    <td>{{ form.rate.errors }}{{ form.rate }}</td>
+                </tr>
+                
+                <tr>
+                    <td>Comment </td>
+                    <td>{{ form.comment.errors }}{{ form.comment }}</td>
+                </tr>
+                
+                <tr>
+                    <td colspan="2">
+                        <div>
+                            <input type='submit' value='Ok'>
+                            <a href="{% url item_details items.id %}"><input type="button" class="button" value="Cancel"></a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+{% endblock %}

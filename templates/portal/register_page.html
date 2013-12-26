@@ -1,0 +1,65 @@
+{% extends "base_login.html" %}
+
+{% block title %}Mau tau aja.com {% endblock %}
+
+{% block head %}
+
+    <link rel="stylesheet" href="/mautauaja/static/css/kirabase.css" />
+	
+	<style type="text/css">
+        #items_register {
+			margin-left: 10%;
+            margin: auto;
+            background-color: white;
+			font-family: fantasy;
+            font-size: 10px;
+            width: 50%;
+            height: 90%;
+            padding: 10px;
+            border: 2px solid #7A67EE;
+            
+            -moz-border-radius:12px;
+            -webkit-border-radius:12px;
+            border-radius:12px;
+		}
+	</style>
+    
+{% endblock %}
+
+{% block body %}
+    <div id="items_register">
+		
+		{% if messages %}
+			<div class="messages notice small" style="margin-top: 1em">
+				{% for message in messages %}
+					<span{% if message.tags %} class="{{ message.tagsX }}"{% endif %}>{{message}}</span><br/>
+				{% endfor %}
+			</div>
+		{% endif %}
+			
+        <h1 style="text-align: center;">Register</h1>
+        <hr id="id_line">
+        
+        <form enctype="multipart/form-data" method="POST" action=".">
+            <table>
+                {% for i in form %}
+                    {{ i.error }}
+                    <tr>
+                        <td>
+							{{ i.errors }}
+                            <label>{{ i.label_tag }}</label>{{ i }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                
+                <tr>
+                    <td style="border: none">
+                        <input type='submit' value='Ok'>
+                        <a href="{% url user_login %}"><input type="button" class="button" value="Cancel"></a>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+{% endblock %}

@@ -1,7 +1,9 @@
 import os
+import random
 
 from datetime import datetime, timedelta
 from django.contrib import messages
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.shortcuts import render_to_response, redirect, get_object_or_404
@@ -17,11 +19,55 @@ from dataui.forms import *
 
 from django.conf import settings
 
+
+def create_dir_if_not_exists(dir):
+    os.umask(0002)
+    d = os.path.dirname(dir)
+
+    if not os.path.exists(d):
+        os.makedirs(d, 0775)
+        #os.chmod(dir, 0775)
+        return True
+
+    #os.chmod(dir, 0775)
+    return False
+
+def get_questions(data_item=None):
+    temp_questions = []
+    questions = ItemQuestion.objects.filter(item=data_item).order_by("-date_created")
+    for i in questions:
+        data = {'question': i.question,
+                'answers': i.get_answers(),
+                'user': i.user,
+                'id': i.id }
+        temp_questions.append(data)
+
+    return temp_questions
+
+class StreamingFile(object):
+    def __init__(self, path_file, chunk_size=64):
+        self._file = open(path_file,'rb')
+        self._chunk_size = chunk_size
+
+    def next(self):
+        data = self._file.read(self._chunk_size)
+        if data:
+            return data
+        else:
+            raise StopIteration
+
+    def __iter__(self):
+        return self
+
+    def close(self):
+        self._file.close()
+
 def user_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
             login(request, form.get_user())
+            request.session['user_item'] = form.get_user()
             return HttpResponseRedirect(reverse('dashboard'))
     else:
         form = LoginForm()
@@ -34,7 +80,228 @@ def user_logout(request):
     return HttpResponseRedirect(reverse('user_login'))
 
 def dashboard(request):
-    return render_to_response('portal/dashboard.html', {},
+    news = News.objects.all().order_by('date_created')[:3]
+    master_item = MasterItem.objects.all().order_by('date_created')
+
+    context = {'news': news, 'msitem': master_item}
+    return render_to_response('portal/dashboard.html', context,
         context_instance=RequestContext(request))
 
+def news_details(request, news_id=None):
+    news = News.objects.get(id=news_id)
+    others_news = News.objects.all().exclude(id=news_id).order_by('date_created')
 
+    context = {'news': news, 'others': others_news}
+    return render_to_response('news/news_details.html', context,
+        context_instance=RequestContext(request))
+
+def item_details(request, items_id=None):
+    data_item = MasterItem.objects.get(id=items_id)
+    price_data_list = []
+
+    try:
+        request.session['item_item'] = data_item
+        others_item = MasterItem.objects.filter(category=data_item.category).exclude(id=items_id).order_by('date_created')
+
+        request.session['others_item'] = others_item
+        questions = get_questions(data_item)
+
+        price_data = ItemPrice.objects.filter(item = data_item).order_by("-date_created")
+        for i in price_data:
+            price_data_list.append(i.get_price_rate())
+
+        context = {'items': data_item, 'others': others_item,
+                   'question': questions, 'price_list': price_data_list}
+
+        return render_to_response('items/items_details.html', context,
+            context_instance=RequestContext(request))
+
+    except Exception, e:
+        print e
+        return redirect("dashboard")
+
+
+def pop_questions(request):
+    item = request.session.get('item_item', None)
+    user = request.session.get('user_item', None)
+    others_item = request.session.get('others_item', None)
+
+    try:
+        if request.method == 'POST':
+            form = QuestionForm(request.POST)
+            if form.is_valid():
+                question = form.cleaned_data['questions']
+                ItemQuestion.objects.create(
+                    item = item, user = user, question = question)
+                return redirect("item_details", items_id=item.id)
+        else:
+            form = QuestionForm()
+
+        context = {'form': form, 'items_id': item.id, 'label': 'Question',
+                   'others': others_item, 'items': item}
+        return render_to_response('items/question.html', context,
+            context_instance=RequestContext(request))
+
+    except Exception, e:
+        print e
+        return redirect("dashboard")
+
+
+def pop_answers(request, question_id):
+    item = request.session.get('item_item', None)
+    user = request.session.get('user_item', None)
+    others_item = request.session.get('others_item', None)
+
+    try:
+
+        try:
+            question = ItemQuestion.objects.get(id=question_id)
+        except:
+            return redirect("dashboard")
+
+        if request.method == 'POST':
+            form = QuestionForm(request.POST)
+            if form.is_valid():
+                answer = form.cleaned_data['questions']
+
+                ItemAnswer.objects.create(
+                    question = question,
+                    user = user,
+                    answer = answer
+                )
+                return redirect("item_details", items_id=item.id)
+        else:
+            form = QuestionForm()
+
+        context = {'form': form, 'items_id': item.id, 'label': 'Answer',
+                   'others': others_item, 'items': item}
+        return render_to_response('items/question.html', context,
+            context_instance=RequestContext(request))
+
+    except Exception, e:
+        print e
+        return redirect("dashboard")
+
+def pop_price(request):
+    item = request.session.get('item_item', None)
+    user = request.session.get('user_item', None)
+    others_item = request.session.get('others_item', None)
+
+    if request.method == 'POST':
+        form = PriceForm(request.POST)
+        if form.is_valid():
+            price = form.cleaned_data['price']
+            comment = form.cleaned_data['comment']
+            rate = form.cleaned_data['rate']
+
+            price_item = ItemPrice.objects.create(
+                item = item, price = price)
+
+            rate = PriceRate.objects.create(
+                user = user,
+                price = price_item,
+                rate = rate,
+                comment = comment,
+            )
+            return redirect("item_details", items_id=item.id)
+    else:
+        form = PriceForm()
+
+    context = {'form': form, 'items': item, 'others': others_item}
+    return render_to_response('items/price.html', context,
+        context_instance=RequestContext(request))
+
+def pop_store(request):
+    item = request.session.get('item_item', None)
+    user = request.session.get('user_item', None)
+    others_item = request.session.get('others_item', None)
+
+    if request.method == 'POST':
+        form = StoreForm(request.POST, request.FILES)
+        if form.is_valid():
+            print 'asdadadasd'
+            
+        #    price = form.cleaned_data['price']
+        #    comment = form.cleaned_data['comment']
+        #    rate = form.cleaned_data['rate']
+        #
+        #    price_item = ItemPrice.objects.create(
+        #        item = item, price = price)
+        #
+        #    rate = PriceRate.objects.create(
+        #        user = user,
+        #        price = price_item,
+        #        rate = rate,
+        #        comment = comment,
+        #    )
+        #    return redirect("item_details", items_id=item.id)
+    else:
+        form = StoreForm()
+
+    context = {'form': form, 'items': item, 'others': others_item}
+    return render_to_response('items/store.html', context,
+        context_instance=RequestContext(request))
+
+def register_user(request):
+    def handle_uploaded_file(f):
+        path = settings.IMAGE_ROOT+'user/'
+
+        create_dir_if_not_exists(path)
+
+        fp = open(os.path.join(path, f.name), 'wb')
+        for chunk in f.chunks():
+            fp.write(chunk)
+        fp.close()
+
+    if request.method == 'POST':
+        form = RegisterForm(request.POST, request.FILES)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            firstname = form.cleaned_data['firstname']
+            lastname = form.cleaned_data['lastname']
+            password = form.cleaned_data['password']
+            conf_password = form.cleaned_data['conf_password']
+
+            occupation = form.cleaned_data['occupation']
+            address = form.cleaned_data['address']
+            phone = form.cleaned_data['phone']
+            place_of_birth = form.cleaned_data['place_of_birth']
+            date_of_birth = form.cleaned_data['date_of_birth']
+
+            try:
+                photo = request.FILES['photo']
+                handle_uploaded_file(photo)
+            except:
+                pass
+
+            try:
+                if User.objects.filter(username__iexact= firstname).count() >= 1:
+                    messages.success(request, '%s already exist' % firstname)
+                    return redirect('register')
+
+                user = User(username = firstname, first_name = firstname,
+                    last_name = lastname, email = email, is_active=True, 
+                    is_staff=True)
+
+                user.set_password(password)
+                user.save()
+
+                user_profile = UserProfile.objects.create(
+                    user=user,
+                    occupation = occupation,
+                    address = address,
+                    phone = phone,
+                    place_of_birth = place_of_birth,
+                    date_of_birth = date_of_birth,
+                    photo = settings.IMAGE_ROOT+'user/'+str(photo),
+                    is_active = True)
+
+                return redirect('user_login')
+
+            except Exception, e:
+                print e
+    else:
+        form = RegisterForm()
+
+    return render_to_response('portal/register_page.html', {'form':form}, 
+        context_instance=RequestContext(request))

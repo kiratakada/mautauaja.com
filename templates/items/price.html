@@ -1,0 +1,109 @@
+{% extends "bare_bones.html" %}
+
+{% block title %}
+    Price
+{% endblock %}
+
+{% block breadcrumb %}
+    <div class="toolbar">
+       <div class="span-9 left breadcrumb">
+           <a href='{% url dashboard %}'> Dashboard </a>
+           <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">
+           {{ items.name|slice:":50" }}
+       </div>
+    </div>
+{% endblock %}
+
+{% block head %}
+    <style type="text/css">
+        #id_price_table{
+            width: 100px;
+        }
+        
+        #id_price_table tr td{
+            border: none;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="items_content" style="padding-top: 15%">
+        <table >
+            <tr>
+                <td style="border: none; width: 30%;">
+                    <table>
+                        <tr>
+                            <td colspan="2" style="text-align: center">
+                                {{ items.name }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="/mautauaja/display_img/{{ items.picture }}" style="width: 250px; height: 250px;">
+                            </td>
+                            <td>
+                                 <label>Category </label>: &nbsp; {{ items.category }}<br/><br/>
+                                 <label>Best price </label>: &nbsp; Rp. {{ items.get_minimum_price}}<br/><br/>
+                                 <label>Best store </label>: &nbsp; Rp.0 <br/><br/>
+                                 <label>Description </label><br/><br/>
+                                 {{ items.description }}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="border: none; width: 20%;" rowspan="5">
+                    <table>
+                        <tr>
+                            <td style="border: none">
+                                <span style="font-size: 12px; font-family: sans-serif; color: red;"><b>Other Items </b></span>
+                            </td>
+                        </tr>
+                        {% for zulu in others %}
+                            <tr>
+                                <td>
+                                    <a href="{% url item_details zulu.id %}" style="text-decoration: none; color: blue">
+                                        <div>
+                                            <img src="/mautauaja/display_img/{{ zulu.picture}}" width="50px" height="50px;"> &nbsp;
+                                            {{ zulu.name }}<br/>
+                                        </div>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </td>
+            </tr>
+        </table>
+        
+        <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">
+        Price Rate <br><br>
+        
+        <form method="POST">
+            <table id="id_price_table">
+                <tr>
+                    <td>Price</td>
+                    <td>{{ form.price.errors }} {{ form.price }}  </td>
+                </tr>
+                <tr>
+                    <td>Comment </td>
+                    <td>{{ form.comment.errors }}{{ form.comment }}</td>
+                </tr>
+                <tr>
+                    <td>Rate </td>
+                    <td>{{ form.rate.errors }}{{ form.rate }}</td>
+                </tr>
+                
+                <tr>
+                    <td colspan="2">
+                        <div>
+                            <input type='submit' value='Ok'>
+                            <a href="{% url item_details items.id %}"><input type="button" class="button" value="Cancel"></a>
+                        </div>
+                    </td>
+                    
+                </tr>
+            </table>
+        </form>
+    </div>
+
+{% endblock %}

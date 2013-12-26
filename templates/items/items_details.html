@@ -1,0 +1,192 @@
+{% extends "bare_bones.html" %}
+
+{% block title %}
+    News Detail
+{% endblock %}
+
+{% block breadcrumb %}
+    <div class="toolbar">
+       <div class="span-9 left breadcrumb">
+           <a href='{% url dashboard %}'> Dashboard </a>
+           <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">
+           {{ items.name|slice:":50" }}
+       </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+    <div class="items_content" style="padding-top: 15%">
+        <table >
+            <tr>
+                <td style="border: none; width: 30%;">
+                    <table>
+                        <tr>
+                            <td colspan="2" style="text-align: center">
+                                {{ items.name }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="/mautauaja/display_img/{{ items.picture }}" style="width: 250px; height: 250px;">
+                            </td>
+                            <td>
+                                 <label>Category </label>: &nbsp; {{ items.category }}<br/><br/>
+                                 <label>Best price </label>: &nbsp; Rp. {{ items.get_minimum_price}}<br/><br/>
+                                 <label>Best store </label>: &nbsp; Rp.0 <br/><br/>
+                                 <label>Description </label><br/><br/>
+                                 {{ items.description }}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="border: none; width: 20%;" rowspan="5">
+                    <table>
+                        <tr>
+                            <td style="border: none">
+                                <span style="font-size: 12px; font-family: sans-serif; color: red;"><b>Other Items </b></span>
+                            </td>
+                        </tr>
+                        {% for zulu in others %}
+                            <tr>
+                                <td>
+                                    <a href="{% url item_details zulu.id %}" style="text-decoration: none; color: blue">
+                                        <div>
+                                            <img src="/mautauaja/display_img/{{ zulu.picture}}" width="50px" height="50px;"> &nbsp;
+                                            {{ zulu.name }}<br/>
+                                        </div>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </td>
+            </tr>
+        </table>
+        
+        <table style="width: 100%; margin: 3px;">
+            <tr>
+                  <td style="border: none; width: 30%">
+                     <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">Questions
+                     
+                     <div style="margin-left: 65%">
+                        <a href="{% url pop_questions %}"> Add questions ? </a>   
+                     </div>
+                     
+                     <table id="id_question_tab">
+                        {% if question %}
+                           {% for q in question %}
+                              <tr>
+                                    <td style="border: none;">
+                                       <div class="ballon_question">
+                                          {{ q.user }} : {{ q.question }}<br/>
+                                          <a href="{% url pop_answers q.id %}" style="margin-left: 80%; color: white"> Answers </a>
+                                           
+                                       </div>
+                                       {% if q.answers %}
+                                          {% for z in q.answers %}
+                                             <div class="ballon_answers">
+                                                {{ z.user }} : {{ z.answer }}<br/>
+                                             </div>      
+                                          {% endfor %}
+                                       {% endif %}
+                                    </td>
+                               </tr>
+                           {% endfor %}
+                        {% else %}
+                           <tr>
+                              <td style="border: none">
+                                 <div class="ballon_question">
+                                    No Questions
+                                 </div>
+                              </td>
+                           </tr>
+                        {% endif %}
+                     </table>
+                  </td>
+                  
+                  
+                  <td style="border: none; width: 30%">
+                     <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">
+                     Price Rate
+                     
+                     <div style="margin-left: 65%">
+                        <a href="{% url pop_price %}"> Add price </a>   
+                     </div>
+                     
+                     <table id="id_question_tab">
+                        {% if price_list %}
+                           {% for izu in price_list %}
+                              <tr>
+                                    <td style="border: none;">
+                                       <div class="ballon_question">
+                                          {{ izu.user }} : Rp.{{ izu.price }}
+                                          {% ifequal izu.rate 1 %}
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                          {% endifequal %}
+                                          
+                                          {% ifequal izu.rate 2 %}
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                          {% endifequal %}
+                                          
+                                          {% ifequal izu.rate 3 %}
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                          {% endifequal %}
+                                          
+                                          {% ifequal izu.rate 4 %}
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                          {% endifequal %}
+                                          
+                                          {% ifequal izu.rate 5 %}
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                          {% endifequal %}
+                                          <br>
+                                          quote : {{ izu.comment }}<br/>
+                                       </div>
+                                    </td>
+                               </tr>
+                           {% endfor %}
+                        {% else %}
+                           <tr>
+                              <td style="border: none">
+                                 <div class="ballon_question">
+                                    No Price Rate
+                                 </div>
+                              </td>
+                           </tr>
+                        {% endif %}
+                     </table>
+                  
+                  </td>
+                  
+                  <td style="border: none; width: 40%">
+                     <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">
+                     Store Rate
+                     
+                     
+                     <div style="margin-left: 65%">
+                        <a href="{% url pop_store %}"> Add Store </a>   
+                     </div>
+                  </td>
+                  
+               </tr>
+            
+            
+            
+            
+            
+            
+        </table>
+    </div>
+    
+    
+{% endblock %}
