@@ -35,32 +35,14 @@ def create_dir_if_not_exists(dir):
 def get_questions(data_item=None):
     temp_questions = []
     questions = ItemQuestion.objects.filter(item=data_item).order_by("-date_created")
-    for i in questions:
-        data = {'question': i.question,
-                'answers': i.get_answers(),
-                'user': i.user,
-                'id': i.id }
-        temp_questions.append(data)
-
+    if len(questions) > 0:
+        for i in questions:
+            data = {'question': i.question,
+                    'answers': i.get_answers(),
+                    'user': i.user,
+                    'id': i.id }
+            temp_questions.append(data)
     return temp_questions
-
-class StreamingFile(object):
-    def __init__(self, path_file, chunk_size=64):
-        self._file = open(path_file,'rb')
-        self._chunk_size = chunk_size
-
-    def next(self):
-        data = self._file.read(self._chunk_size)
-        if data:
-            return data
-        else:
-            raise StopIteration
-
-    def __iter__(self):
-        return self
-
-    def close(self):
-        self._file.close()
 
 def user_login(request):
     if request.method == 'POST':
@@ -108,7 +90,8 @@ def item_details(request, items_id=None):
 
         price_data = ItemPrice.objects.filter(item = data_item).order_by("-date_created")
         for i in price_data:
-            price_data_list.append(i.get_price_rate())
+            if i.get_price_rate():
+                price_data_list.append(i.get_price_rate())
 
         context = {'items': data_item, 'others': others_item,
                    'question': questions, 'price_list': price_data_list}
@@ -153,7 +136,6 @@ def pop_answers(request, question_id):
     others_item = request.session.get('others_item', None)
 
     try:
-
         try:
             question = ItemQuestion.objects.get(id=question_id)
         except:
@@ -193,9 +175,15 @@ def pop_price(request):
             price = form.cleaned_data['price']
             comment = form.cleaned_data['comment']
             rate = form.cleaned_data['rate']
+            store = form.cleaned_data['store']
 
-            price_item = ItemPrice.objects.create(
-                item = item, price = price)
+            if store:
+                price_item = ItemPrice.objects.create(
+                    item = item, price = price,
+                    store=store)
+            else:
+                price_item = ItemPrice.objects.create(
+                    item = item, price = price)
 
             rate = PriceRate.objects.create(
                 user = user,
@@ -216,31 +204,84 @@ def pop_store(request):
     user = request.session.get('user_item', None)
     others_item = request.session.get('others_item', None)
 
+    def handle_uploaded_file(f):
+        path = settings.IMAGE_ROOT+'store/'
+
+        create_dir_if_not_exists(path)
+
+        fp = open(os.path.join(path, f.name), 'wb')
+        for chunk in f.chunks():
+            fp.write(chunk)
+        fp.close()
+
     if request.method == 'POST':
         form = StoreForm(request.POST, request.FILES)
         if form.is_valid():
-            print 'asdadadasd'
-            
-        #    price = form.cleaned_data['price']
-        #    comment = form.cleaned_data['comment']
-        #    rate = form.cleaned_data['rate']
-        #
-        #    price_item = ItemPrice.objects.create(
-        #        item = item, price = price)
-        #
-        #    rate = PriceRate.objects.create(
-        #        user = user,
-        #        price = price_item,
-        #        rate = rate,
-        #        comment = comment,
-        #    )
-        #    return redirect("item_details", items_id=item.id)
+            store_name = form.cleaned_data['store_name']
+            store_address = form.cleaned_data['store_address']
+            store_city = form.cleaned_data['store_city']
+
+            try:
+                photo = request.FILES['store_photo']
+                handle_uploaded_file(photo)
+            except:
+                pass
+
+            store = MasterStore.objects.create(
+                created_by = user,
+                store_name = store_name,
+                store_address = store_address,
+                store_city = store_city,
+                store_logo = 'store/'+str(photo),
+                store_photo = 'store/'+str(photo),
+                )
+            messages.success(request, 'Store created : %s' % store_name)
+            return redirect('pop_price')
+
     else:
         form = StoreForm()
 
     context = {'form': form, 'items': item, 'others': others_item}
     return render_to_response('items/store.html', context,
         context_instance=RequestContext(request))
+
+
+def store_rate(request, store_id=None):
+    item = request.session.get('item_item', None)
+    user = request.session.get('user_item', None)
+    others_item = request.session.get('others_item', None)
+
+    try:
+        try:
+            store = MasterStore.objects.get(id=store_id)
+        except:
+            return redirect("dashboard")
+
+        if request.method == 'POST':
+            form = StoreRateForm(request.POST)
+            if form.is_valid():
+                comment = form.cleaned_data['comment']
+                rate = form.cleaned_data['rate']
+
+                StoreRate.objects.create(
+                    user = user, store = store,
+                    item = item, rate = rate, comment = comment
+                )
+
+            return redirect("item_details", items_id=item.id)
+
+        else:
+            form = StoreRateForm()
+
+        context = {'form': form, 'others': others_item, 'items': item,
+                   'store': store}
+        return render_to_response('items/store_rate.html', context,
+            context_instance=RequestContext(request))
+
+    except Exception, e:
+        print e
+        return redirect("dashboard")
+
 
 def register_user(request):
     def handle_uploaded_file(f):
@@ -276,7 +317,7 @@ def register_user(request):
 
             try:
                 if User.objects.filter(username__iexact= firstname).count() >= 1:
-                    messages.success(request, '%s already exist' % firstname)
+                    #messages.success(request, '%s already exist' % firstname)
                     return redirect('register')
 
                 user = User(username = firstname, first_name = firstname,
@@ -293,7 +334,7 @@ def register_user(request):
                     phone = phone,
                     place_of_birth = place_of_birth,
                     date_of_birth = date_of_birth,
-                    photo = settings.IMAGE_ROOT+'user/'+str(photo),
+                    photo = 'user/'+str(photo),
                     is_active = True)
 
                 return redirect('user_login')

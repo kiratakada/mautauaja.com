@@ -32,7 +32,6 @@
                             <td>
                                  <label>Category </label>: &nbsp; {{ items.category }}<br/><br/>
                                  <label>Best price </label>: &nbsp; Rp. {{ items.get_minimum_price}}<br/><br/>
-                                 <label>Best store </label>: &nbsp; Rp.0 <br/><br/>
                                  <label>Description </label><br/><br/>
                                  {{ items.description }}
                             </td>
@@ -171,22 +170,86 @@
                   <td style="border: none; width: 40%">
                      <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">
                      Store Rate
-                     
-                     
                      <div style="margin-left: 65%">
-                        <a href="{% url pop_store %}"> Add Store </a>   
+                        <a href="{% url pop_store %}"> Add store </a>   
                      </div>
+                     
+                     <table id="id_question_tab">
+                        {% if items.get_store_list %}
+                           {% for ol in items.get_store_list %}
+                              <tr>
+                                 <td style="border: none;">
+                                    <div class="ballon_store" style="margin-bottom: 2px;">
+                                       <table>
+                                          <tr>
+                                             <td style="border: none; color: white; width:10px;">
+                                                <img src="/mautauaja/display_img/{{ ol.store_photo}}" style="width: 40px; height: 40px;"> &nbsp;
+                                             </td>
+                                             <td style="border: none; color: white;">
+                                                <span>Name : {{ ol.store_name }}</span><br/>
+                                                <span>{{ ol.store_name|slice:":20" }}</span><br/>
+                                                <a href="{% url store_rate ol.id %}" style="margin-left: 60%; color: yellow"> Store Rate </a>
+                                             </td>
+                                          </tr>
+                                       </table>
+                                    </div>
+                                    
+                                    {% if ol.get_store_rate %}
+                                       {% for px in ol.get_store_rate %}
+                                          <div class="ballon_answers">
+                                             {{ px.user }} :
+                                             
+                                             {% ifequal px.rate 1 %}
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                          {% endifequal %}
+                                          
+                                          {% ifequal px.rate 2 %}
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                          {% endifequal %}
+                                          
+                                          {% ifequal px.rate 3 %}
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                          {% endifequal %}
+                                          
+                                          {% ifequal px.rate 4 %}
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                          {% endifequal %}
+                                          
+                                          {% ifequal px.rate 5 %}
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                          {% endifequal %}
+                                          <br>
+                                             
+                                             {{ px.comment }}
+                                          </div>
+                                       {% endfor %}
+                                    {% endif %}
+                                 </td>
+                              </tr>
+                           {% endfor %}
+                        {% else %}
+                           <tr>
+                              <td style="border: none">
+                                 <div class="ballon_question">
+                                    No Store related with Item 
+                                 </div>
+                              </td>
+                           </tr>
+                        {% endif %}
+                     </table>
+                     
                   </td>
-                  
                </tr>
-            
-            
-            
-            
-            
-            
         </table>
     </div>
-    
-    
 {% endblock %}

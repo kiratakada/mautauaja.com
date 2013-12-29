@@ -28,7 +28,7 @@
 
 {% block body %}
     <div class="items_content" style="padding-top: 15%">
-        <table >
+         <table >
             <tr>
                 <td style="border: none; width: 30%;">
                     <table>
@@ -44,7 +44,6 @@
                             <td>
                                  <label>Category </label>: &nbsp; {{ items.category }}<br/><br/>
                                  <label>Best price </label>: &nbsp; Rp. {{ items.get_minimum_price}}<br/><br/>
-                                 <label>Best store </label>: &nbsp; Rp.0 <br/><br/>
                                  <label>Description </label><br/><br/>
                                  {{ items.description }}
                             </td>
@@ -83,6 +82,13 @@
                 <tr>
                     <td>Price</td>
                     <td>{{ form.price.errors }} {{ form.price }}  </td>
+                </tr>
+                <tr>
+                  <td>Store</td>
+                  <td>{{ form.store.errors }} {{ form.store }} &nbsp;
+                     <a href="{% url pop_store %}">Add Store</a>
+                  
+                  </td>
                 </tr>
                 <tr>
                     <td>Comment </td>

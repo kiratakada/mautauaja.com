@@ -7,9 +7,9 @@
 {% block breadcrumb %}
     <div class="toolbar">
        <div class="span-9 left breadcrumb">
-           <a href='{% url dashboard %}'> Dashboard </a>
+           <a href='{% url item_details items.id  %}'> {{ items.name }} </a>
            <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">
-           {{ items.name|slice:":50" }}
+           {{ store.store_name|upper|slice:":50" }}
        </div>
     </div>
 {% endblock %}
@@ -35,18 +35,16 @@
                     <table>
                         <tr>
                             <td colspan="2" style="text-align: center">
-                                {{ items.name }}
+                                {{ store.store_name|upper }}
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <img src="/mautauaja/display_img/{{ items.picture }}" style="width: 250px; height: 250px;">
+                                <img src="/mautauaja/display_img/{{ store.store_photo }}" style="width: 200px; height: 200px;">
                             </td>
                             <td>
-                                 <label>Category </label>: &nbsp; {{ items.category }}<br/><br/>
-                                 <label>Best price </label>: &nbsp; Rp. {{ items.get_minimum_price}}<br/><br/>
-                                 <label>Description </label><br/><br/>
-                                 {{ items.description }}
+                                 <label>Address </label>: &nbsp; {{ store.store_address  }}<br/><br/>
+                                 <label>City </label>: &nbsp; {{ store.store_city  }}<br/><br/>
                             </td>
                         </tr>
                     </table>
@@ -75,40 +73,33 @@
             </tr>
         </table>
         
-        
         <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">
-        Add Store <br><br>
+        Store Rate<br><br>
         
-        <form enctype="multipart/form-data" method="POST" action=".">
+        <form method="POST">
             <table id="id_price_table">
                 <tr>
-                    <td>Name</td>
-                    <td>{{ form.store_name.errors }} {{ form.store_name }}  </td>
-                </tr>
-                <tr>
-                    <td>Address </td>
-                    <td>{{ form.store_address.errors }}{{ form.store_address }}</td>
-                </tr>
-                <tr>
-                    <td>City </td>
-                    <td>{{ form.store_city.errors }}{{ form.store_city }}</td>
+                    <td>
+                        <label>Comment : </label>
+                    </td>
+                    <td>{{ form.comment }}</td>
                 </tr>
                 
                 <tr>
-                    <td>Photo </td>
-                    <td>{{ form.store_photo }}</td>
+                    <td>
+                        <label>Rate : </label>
+                    </td>
+                    <td>{{ form.rate }}</td>
                 </tr>
                 
                 <tr>
-                    <td colspan="2">
-                        <div>
-                            <input type='submit' value='Ok'>
-                            <a href="{% url item_details items.id %}"><input type="button" class="button" value="Cancel"></a>
-                        </div>
+                    <td>
+                        <input type='submit' value='Ok'>
+                        <a href="{% url item_details items.id  %}"><input type="button" class="button" value="Cancel"></a>
                     </td>
                 </tr>
             </table>
         </form>
+            
     </div>
-
 {% endblock %}

@@ -3,6 +3,10 @@ import math
 from django.db import models
 from django.contrib.auth.models import User
 
+from itertools import groupby
+
+from django.db import connection
+
 class Roles(object):
     ADMIN = 0x01
     CLIENT = 0x02
@@ -60,6 +64,28 @@ class MasterItem(models.Model):
 
         return price_stat
 
+    def get_store_list(self):
+        store_list = []
+        cursor = connection.cursor()
+
+        sql = """
+            select
+                store_id
+            from
+                dataui_itemprice
+            where
+                item_id = %s
+                group by store_id;
+        """ % (self.id)
+        cursor.execute(sql)
+        total = cursor.fetchall()
+
+        for i in total:
+            store = MasterStore.objects.get(id=i[0])
+            store_list.append(store)
+
+        return store_list
+
 class ItemReview(models.Model):
     item = models.ForeignKey(MasterItem)
     user = models.ForeignKey(User)
@@ -102,7 +128,6 @@ class ItemAnswer(models.Model):
 
 class MasterStore(models.Model):
     created_by = models.ForeignKey(User)
-    item = models.ForeignKey(MasterItem, null=True, blank=True)
 
     store_name = models.CharField(max_length=50)
     store_address = models.CharField(max_length=50)
@@ -113,6 +138,17 @@ class MasterStore(models.Model):
 
     def __unicode__(self):
         return self.store_name
+
+    def get_store_rate(self):
+        data, temp = None, []
+
+        rate = StoreRate.objects.filter(store=self.id).order_by("date_created")
+        for i in rate:
+            temp.append(
+                {'user': i.user.username, 'rate': int(i.rate),
+                'comment': i.comment})
+        return temp
+
 
 class News(models.Model):
     user = models.ForeignKey(User)
@@ -134,7 +170,7 @@ class ItemPrice(models.Model):
         return "%s" % self.price
 
     def get_price_rate(self):
-        temp = []
+        data, temp = None, []
         rate = PriceRate.objects.filter(price=self.id)
 
         for i in rate:
@@ -151,7 +187,7 @@ class StoreRate(models.Model):
     store = models.ForeignKey(MasterStore)
     rate = models.IntegerField()
     comment = models.TextField()
-    date_created = models.DateTimeField()
+    date_created = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return '%s-%s' % (self.user, self.rate)

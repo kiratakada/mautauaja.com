@@ -24,6 +24,7 @@ urlpatterns = patterns('',
 
     url(r'^%s/itemprice/$' % (settings.PROJECT_NAME), 'dataui.views.pop_price', name = 'pop_price'),
     url(r'^%s/itemstore/$' % (settings.PROJECT_NAME), 'dataui.views.pop_store', name = 'pop_store'),
+    url(r'^%s/storerate/(?P<store_id>\w+)/$' % (settings.PROJECT_NAME), 'dataui.views.store_rate', name = 'store_rate'),
 
     (r'^%s/static/(?P<path>.*)$' % (settings.PROJECT_NAME), 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     (r'^%s/display_img/(?P<path>.*)$' % (settings.PROJECT_NAME), 'django.views.static.serve', {'document_root': settings.IMAGE_ROOT}),

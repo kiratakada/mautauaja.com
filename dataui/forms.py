@@ -59,7 +59,7 @@ class RegisterForm(forms.Form):
     phone = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'Phone Number', required=False)
     place_of_birth = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'Place of birth', required=False)
     date_of_birth = forms.DateField(initial=datetime.date.today, required=False)
-    photo = forms.FileField(label="Photo", required=False)
+    photo = forms.FileField(label="Photo")
 
     def clean(self):
         if self.errors:
@@ -85,6 +85,9 @@ class QuestionForm(forms.Form):
 class PriceForm(forms.Form):
     price = forms.IntegerField()
     comment = forms.CharField(widget=forms.widgets.Textarea())
+    store = forms.ModelChoiceField(
+        MasterStore.objects.all().order_by('date_created'),
+        required=False, empty_label='---')
     rate = forms.ChoiceField(choices=CHOICHES, widget=forms.RadioSelect)
 
     def clean(self):
@@ -100,11 +103,19 @@ class StoreForm(forms.Form):
     store_city = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'City')
     store_photo = forms.FileField(label="Photo", required=False)
 
-    comment = forms.CharField(widget=forms.widgets.Textarea())
-    rate = forms.ChoiceField(choices=CHOICHES, widget=forms.RadioSelect)
-
     def clean(self):
         if self.errors:
             return
 
         return self.cleaned_data
+
+class StoreRateForm(forms.Form):
+    rate = forms.ChoiceField(choices=CHOICHES, widget=forms.RadioSelect)
+    comment = forms.CharField(widget=forms.widgets.Textarea())
+
+    def clean(self):
+        if self.errors:
+            return
+        return self.cleaned_data
+    
+    

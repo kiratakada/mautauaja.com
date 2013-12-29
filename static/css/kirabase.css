@@ -784,3 +784,15 @@ div.thumb {
 	border-radius:12px;
 	margin-left: 30px;
 }
+
+.ballon_store{
+	background-color: green;
+	color: white;
+	font-size: 10px;
+	padding: 10px;
+	-moz-border-radius:12px;
+	-webkit-border-radius:12px;
+	border-radius:12px;
+	height: 50px;
+	border: 1px solid black;
+}
