@@ -661,7 +661,7 @@ th.headerSortDown {
 
 .content_table{
 	width: 620px;
-	height: 650px;
+	height: 780px;
 	
 	margin-left: -10px;
 	margin-right: 25px;
@@ -679,6 +679,15 @@ th.headerSortDown {
 .content_table tr th{
 	text-align: center;
 	font-size: 12px;
+}
+
+.content_table_news{
+	width: 320px;
+	height: 780px;
+	margin-left: -5px;
+	margin-right: 5px;
+	border: 1px solid #d9d9d9;
+	background:url('/mautauaja/static/assets/main_bg.jpg') repeat-x #aeadad;
 }
 
 .slick_table{
@@ -729,6 +738,8 @@ div.thumb {
 	}
 	
 .thumb a:hover img {border: 1px solid black;}
+
+
 .photocattitle {text-align: center; font-weight: bold;}
 .phototitle {
 	text-align: center;

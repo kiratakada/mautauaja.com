@@ -26,6 +26,12 @@ urlpatterns = patterns('',
     url(r'^%s/itemstore/$' % (settings.PROJECT_NAME), 'dataui.views.pop_store', name = 'pop_store'),
     url(r'^%s/storerate/(?P<store_id>\w+)/$' % (settings.PROJECT_NAME), 'dataui.views.store_rate', name = 'store_rate'),
 
+    url(r'^%s/addnews/$' % (settings.PROJECT_NAME), 'dataui.views.add_news', name = 'add_news'),
+    url(r'^%s/editnews/(?P<news_id>\w+)/' % (settings.PROJECT_NAME), 'dataui.views.edit_news', name = 'edit_news'),
+
+    url(r'^%s/additems/$' % (settings.PROJECT_NAME), 'dataui.views.add_item', name = 'add_item'),
+    url(r'^%s/edit_items/(?P<items_id>\w+)/' % (settings.PROJECT_NAME), 'dataui.views.edit_items', name = 'edit_items'),
+
     (r'^%s/static/(?P<path>.*)$' % (settings.PROJECT_NAME), 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     (r'^%s/display_img/(?P<path>.*)$' % (settings.PROJECT_NAME), 'django.views.static.serve', {'document_root': settings.IMAGE_ROOT}),
 

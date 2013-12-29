@@ -1,0 +1,65 @@
+{% extends "bare_bones.html" %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+
+{% block head %}
+	<script type="text/javascript">
+		
+		 function show_current_data(){
+			var status = $('#id_status').val()
+			var title = $('#id_edit_title').val()
+			var content = $('#id_edit_content').val()
+			
+            if (status == 'Edit News') {
+               $('#id_title').val(title)
+               $('#id_content').val(content)
+            }
+         }
+		
+		$(document).ready(function(){
+			show_current_data()
+        });
+        
+	</script>
+{% endblock %}
+
+{% block breadcrumb %}
+    <div class="toolbar">
+       <div class="span-9 left breadcrumb">
+           <a href='{% url dashboard %}'> Dashboard </a>
+           <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">
+           {{ title }}
+       </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+   
+
+   <input type = 'hidden' id="id_status" value="{{ title }}">
+   <input type = 'hidden' id="id_edit_title" value="{{ edit_data.title }}">
+   <input type = 'hidden' id="id_edit_content" value="{{ edit_data.content }}">
+   
+    <div class="items_content" style="padding-top: 15%">
+        <form enctype="multipart/form-data" method="POST" action=".">
+            <table id="id_price_table">
+                  <tr>
+                    <td>{{ form.as_p }}</td>
+                  </tr>
+                
+                <tr>
+                    <td colspan="2">
+                        <div>
+                            <input type='submit' value='Ok'>
+                            <a href="{% url dashboard %}"><input type="button" class="button" value="Cancel"></a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        
+    </div>
+{% endblock %}

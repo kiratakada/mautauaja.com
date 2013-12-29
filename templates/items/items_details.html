@@ -23,9 +23,11 @@
                   <td style="border: none; width: 30%">
                      <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">Questions
                      
-                     <div style="margin-left: 65%">
-                        <a href="{% url pop_questions %}"> Add questions ? </a>   
-                     </div>
+                     {% if user.is_authenticated %}
+                        <div style="margin-left: 65%">
+                           <a href="{% url pop_questions %}"> Add questions ? </a>   
+                        </div>
+                     {% endif %}
                      
                      <table id="id_question_tab">
                         {% if question %}
@@ -34,7 +36,9 @@
                                     <td style="border: none;">
                                        <div class="ballon_question">
                                           {{ q.user }} : {{ q.question }}<br/>
-                                          <a href="{% url pop_answers q.id %}" style="margin-left: 80%; color: white"> Answers </a>
+                                          {% if user.is_authenticated %}
+                                             <a href="{% url pop_answers q.id %}" style="margin-left: 80%; color: white"> Answers </a>
+                                          {% endif %}
                                            
                                        </div>
                                        {% if q.answers %}
@@ -64,9 +68,11 @@
                      <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">
                      Price Rate
                      
-                     <div style="margin-left: 65%">
-                        <a href="{% url pop_price %}"> Add price </a>   
-                     </div>
+                     {% if user.is_authenticated %}
+                        <div style="margin-left: 65%">
+                           <a href="{% url pop_price %}"> Add price </a>   
+                        </div>
+                     {% endif %}
                      
                      <table id="id_question_tab">
                         {% if price_list %}
@@ -126,9 +132,12 @@
                   <td style="border: none; width: 40%">
                      <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">
                      Store Rate
-                     <div style="margin-left: 65%">
-                        <a href="{% url pop_store %}"> Add store </a>   
-                     </div>
+                     
+                     {% if user.is_authenticated %}
+                        <div style="margin-left: 65%">
+                           <a href="{% url pop_store %}"> Add store </a>   
+                        </div>
+                     {% endif %}
                      
                      <table id="id_question_tab">
                         {% if items.get_store_list %}
@@ -144,7 +153,10 @@
                                              <td style="border: none; color: white;">
                                                 <span>Name : {{ ol.store_name }}</span><br/>
                                                 <span>{{ ol.store_name|slice:":20" }}</span><br/>
-                                                <a href="{% url store_rate ol.id %}" style="margin-left: 60%; color: yellow"> Store Rate </a>
+                                                
+                                                {% if user.is_authenticated %}
+                                                   <a href="{% url store_rate ol.id %}" style="margin-left: 60%; color: yellow"> Store Rate </a>
+                                                {% endif %}
                                              </td>
                                           </tr>
                                        </table>

@@ -117,5 +117,27 @@ class StoreRateForm(forms.Form):
         if self.errors:
             return
         return self.cleaned_data
-    
+
+class AddNewsForm(forms.Form):
+    title = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'Title')
+    content = forms.CharField(widget=forms.widgets.Textarea())
+    photo = forms.FileField(label="Photo")
+
+    def clean(self):
+        if self.errors:
+            return
+        return self.cleaned_data
+
+class AddItemForm(forms.Form):
+    category = forms.ModelChoiceField(
+        Category.objects.all().order_by('name'))
+
+    name = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'Item Name')
+    description = forms.CharField(widget=forms.widgets.Textarea())
+    photo = forms.FileField(label="Photo")
+
+    def clean(self):
+        if self.errors:
+            return
+        return self.cleaned_data
     

@@ -8,36 +8,68 @@
     <table>
         <tr>
             <td>
-                <div id="main">
+                <div class="content_table_news">
                     <ul id="holder">
-                        {% for item in news %}
-                            <a href="{% url news_details item.id %}" style="color: black">
-                                <li>
-                                    <table>
-                                        <tr>
-                                            <td>
-                                                <img src="/mautauaja/display_img/{{ item.picture }}" style="width: 100px; height: 60px;">
-                                            </td>
-                                            <td>{{ item.title|slice:":200" }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">
-                                                {{ item.content|slice:":200" }}..Read More..
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </li>
-                            </a>
-                        {% endfor %}
+                        {% if user.is_superuser %}
+                            <div style="margin-left: 70%; padding-top: 5px;">
+                                <a href="{% url add_news %}" class=button style="color: white">
+                                    Add News
+                                </a>
+                            </div>
+                        {% endif %}
+                        
+                        {% if news %}
+                            {% for item in news %}
+                                
+                                    <li style="width: 80%; height: 100%">
+                                        <a href="{% url news_details item.id %}" style="color: black">
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <img src="/mautauaja/display_img/{{ item.picture }}" style="width: 100px; height: 60px;">
+                                                    </td>
+                                                    <td>{{ item.title|slice:":200" }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2">
+                                                        {{ item.content|slice:":180" }}..Read More..
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </a>
+                                        {% if user.is_superuser %}
+                                            <a href="{% url edit_news item.id %}"> Edit News</a>
+                                        {% endif %}
+                                    </li>
+                            {% endfor %}
+                        {% else %}
+                            <div style="color: white; padding: 5px; text-align: center">
+                                No News
+                            </div>
+                        {% endif %}
                     </ul>
                 </div>
             </td>
+            
+            
             <td>
                 <table class="content_table">
                     <tr>
                         <td>
+                            {% if user.is_superuser %}
+                                <div style="margin-left: 90%;">
+                                    <a href="{% url add_item %}" class=button style="color: white">
+                                        Add Item
+                                    </a>
+                                </div>
+                            {% endif %}
+                            
                             {% for data in msitem %}
                                 <div class="thumb">
+                                    {% if user.is_superuser %}
+                                        <a href={% url edit_items data.id %}>Edit Item</span></a><br>
+                                    {% endif %}
+                                    
                                     <a href="{% url item_details data.id %}">
                                         <img src="/mautauaja/display_img/{{ data.picture}}" width="150" height="200">
                                     </a><br/>

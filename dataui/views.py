@@ -62,8 +62,8 @@ def user_logout(request):
     return HttpResponseRedirect(reverse('user_login'))
 
 def dashboard(request):
-    news = News.objects.all().order_by('date_created')[:3]
-    master_item = MasterItem.objects.all().order_by('date_created')
+    news = News.objects.all().order_by('-date_created')[:3]
+    master_item = MasterItem.objects.all().order_by('-date_created')[:9]
 
     context = {'news': news, 'msitem': master_item}
     return render_to_response('portal/dashboard.html', context,
@@ -346,3 +346,180 @@ def register_user(request):
 
     return render_to_response('portal/register_page.html', {'form':form}, 
         context_instance=RequestContext(request))
+
+def add_news(request):
+    user = request.session.get('user_item', None)
+
+    def handle_uploaded_file(f):
+        path = settings.IMAGE_ROOT+'news/'
+        create_dir_if_not_exists(path)
+        fp = open(os.path.join(path, f.name), 'wb')
+
+        for chunk in f.chunks():
+            fp.write(chunk)
+        fp.close()
+
+    if request.method == 'POST':
+        form = AddNewsForm(request.POST, request.FILES)
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            content = form.cleaned_data['content']
+
+            try:
+                photo = request.FILES['photo']
+                handle_uploaded_file(photo)
+            except:
+                pass
+
+            try:
+                news = News.objects.create(
+                    user = user,
+                    title = title,
+                    content = content,
+                    picture = 'news/'+str(photo)
+                )
+            except Exception, e:
+                print e
+
+            return redirect('dashboard')
+
+    else:
+        form = AddNewsForm()
+
+    return render_to_response('portal/news.html', {'form':form, 'title': "Add News"}, 
+        context_instance=RequestContext(request))
+
+def edit_news(request, news_id=None):
+    user = request.session.get('user_item', None)
+
+    def handle_uploaded_file(f):
+        path = settings.IMAGE_ROOT+'news/'
+        create_dir_if_not_exists(path)
+        fp = open(os.path.join(path, f.name), 'wb')
+
+        for chunk in f.chunks():
+            fp.write(chunk)
+        fp.close()
+
+    try:
+        edit_news = News.objects.get(id=news_id)
+
+        if request.method == 'POST':
+            form = AddNewsForm(request.POST, request.FILES)
+            if form.is_valid():
+                title = form.cleaned_data['title']
+                content = form.cleaned_data['content']
+
+                try:
+                    photo = request.FILES['photo']
+                    handle_uploaded_file(photo)
+                except:
+                    pass
+
+                edit_news.user = user
+                edit_news.title = title
+                edit_news.content = content
+                edit_news.picture = 'news/'+str(photo)
+                edit_news.save()
+                return redirect("dashboard")
+
+        else:
+            form = AddNewsForm()
+
+        context = {'form':form, 'title': 'Edit News', 'edit_data': edit_news}
+        return render_to_response('portal/news.html', context,
+            context_instance=RequestContext(request))
+
+    except Exception,e:
+        return("dashboard")
+
+def add_item(request):
+    user = request.session.get('user_item', None)
+
+    def handle_uploaded_file(f):
+        path = settings.IMAGE_ROOT+'items/'
+        create_dir_if_not_exists(path)
+        fp = open(os.path.join(path, f.name), 'wb')
+
+        for chunk in f.chunks():
+            fp.write(chunk)
+        fp.close()
+
+    if request.method == 'POST':
+        form = AddItemForm(request.POST, request.FILES)
+        if form.is_valid():
+            category = form.cleaned_data['category']
+            name = form.cleaned_data['name']
+            description = form.cleaned_data['description']
+
+            try:
+                photo = request.FILES['photo']
+                handle_uploaded_file(photo)
+            except:
+                pass
+
+            try:
+                items = MasterItem.objects.create(
+                    category = category,
+                    created_by = user,
+                    name = name,
+                    description = description,
+                    picture = 'items/'+str(photo)
+                )
+
+            except Exception, e:
+                print e
+
+            return redirect('dashboard')
+
+    else:
+        form = AddItemForm()
+
+    return render_to_response('portal/items.html', {'form':form, 'title': "Add Items"}, 
+        context_instance=RequestContext(request))
+
+def edit_items(request, items_id=None):
+    user = request.session.get('user_item', None)
+
+    def handle_uploaded_file(f):
+        path = settings.IMAGE_ROOT+'items/'
+        create_dir_if_not_exists(path)
+        fp = open(os.path.join(path, f.name), 'wb')
+
+        for chunk in f.chunks():
+            fp.write(chunk)
+        fp.close()
+
+    try:
+        edit_item = MasterItem.objects.get(id=items_id)
+
+        if request.method == 'POST':
+            form = AddItemForm(request.POST, request.FILES)
+            if form.is_valid():
+                category = form.cleaned_data['category']
+                name = form.cleaned_data['name']
+                description = form.cleaned_data['description']
+
+                try:
+                    photo = request.FILES['photo']
+                    handle_uploaded_file(photo)
+                except:
+                    pass
+
+                edit_item.user = user
+                edit_item.category = category
+                edit_item.name = name
+                edit_item.description = description
+                edit_item.picture = 'items/'+str(photo)
+                edit_item.save()
+                return redirect("dashboard")
+
+        else:
+            form = AddItemForm()
+
+        context = {'form':form, 'title': 'Edit Items', 'edit_data': edit_item}
+        return render_to_response('portal/items.html', context,
+            context_instance=RequestContext(request))
+
+    except Exception,e:
+        return("dashboard")

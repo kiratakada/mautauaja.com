@@ -12,30 +12,13 @@ body{
 	font-family:Arial, Helvetica, sans-serif;
 }
 
-#main{
-	/* The main container div */
-	position:relative;
-	margin-bottom: 50px;
-	width:270px;
-	height: 650px;
-	margin-top: -0.5%;
-	margin-left: -0.5%;
-	background:url('/mautauaja/static/assets/main_bg.jpg') repeat-x #aeadad;
-	border:1px solid #CCCCCC;
-	padding:70px 25px 60px;
-	
-	/* CSS3 rounded cornenrs */
-	-moz-border-radius:12px;
-	-webkit-border-radius:12px;
-	border-radius:12px;
-}
 
 #holder{
 	/* The unordered list that is to be split into pages */
 
-	width:300px;
-	margin-left: -5%;
-	margin-top: -18%;
+	width:280px;
+	margin: auto;
+	margin-top: 10px;
 	overflow:hidden;
 	position:relative;
 	background:url('/mautauaja/static/assets/dark_bg.jpg') repeat #4e5355;
