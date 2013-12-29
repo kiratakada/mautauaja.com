@@ -29,52 +29,7 @@
 
 {% block body %}
     <div class="items_content" style="padding-top: 15%">
-        <table >
-            <tr>
-                <td style="border: none; width: 30%;">
-                    <table>
-                        <tr>
-                            <td colspan="2" style="text-align: center">
-                                {{ items.name }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <img src="/mautauaja/display_img/{{ items.picture }}" style="width: 250px; height: 250px;">
-                            </td>
-                            <td>
-                                 <label>Category </label>: &nbsp; {{ items.category }}<br/><br/>
-                                 <label>Best price </label>: &nbsp; Rp. {{ items.get_minimum_price}}<br/><br/>
-                                 <label>Description </label><br/><br/>
-                                 {{ items.description }}
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-                <td style="border: none; width: 20%;" rowspan="5">
-                    <table>
-                        <tr>
-                            <td style="border: none">
-                                <span style="font-size: 12px; font-family: sans-serif; color: red;"><b>Other Items </b></span>
-                            </td>
-                        </tr>
-                        {% for zulu in others %}
-                            <tr>
-                                <td>
-                                    <a href="{% url item_details zulu.id %}" style="text-decoration: none; color: blue">
-                                        <div>
-                                            <img src="/mautauaja/display_img/{{ zulu.picture}}" width="50px" height="50px;"> &nbsp;
-                                            {{ zulu.name }}<br/>
-                                        </div>
-                                    </a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-                </td>
-            </tr>
-        </table>
-        
+        {% include "items/general_file.html" %}
         
         <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">
         Add Store <br><br>
