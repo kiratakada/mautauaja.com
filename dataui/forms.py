@@ -88,6 +88,16 @@ class PriceForm(forms.Form):
     store = forms.ModelChoiceField(
         MasterStore.objects.all().order_by('date_created'),
         required=False, empty_label='---')
+
+    def clean(self):
+        if self.errors:
+            return
+
+        return self.cleaned_data
+
+class RatePriceForm(forms.Form):
+    price = forms.IntegerField()
+    comment = forms.CharField(widget=forms.widgets.Textarea())
     rate = forms.ChoiceField(choices=CHOICHES, widget=forms.RadioSelect)
 
     def clean(self):

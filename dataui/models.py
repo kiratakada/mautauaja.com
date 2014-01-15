@@ -70,7 +70,8 @@ class MasterItem(models.Model):
 
         sql = """
             select
-                store_id
+                store_id as id,
+                store_id as store
             from
                 dataui_itemprice
             where
@@ -81,8 +82,9 @@ class MasterItem(models.Model):
         total = cursor.fetchall()
 
         for i in total:
-            store = MasterStore.objects.get(id=i[0])
-            store_list.append(store)
+            if i[0]:
+                store = MasterStore.objects.get(id=i[0])
+                store_list.append(store)
 
         return store_list
 
@@ -140,14 +142,38 @@ class MasterStore(models.Model):
         return self.store_name
 
     def get_store_rate(self):
-        data, temp = None, []
+        data = []
+        cursor = connection.cursor()
 
-        rate = StoreRate.objects.filter(store=self.id).order_by("date_created")
-        for i in rate:
-            temp.append(
-                {'user': i.user.username, 'rate': int(i.rate),
-                'comment': i.comment})
-        return temp
+        sql = """
+            select
+                store_id as store_id,
+                sum(rate)/count(*) as rate,
+                sum(rate) as total_rate,
+                count(*) as record
+            from
+                dataui_storerate
+            where
+                store_id = %s
+            group by store_id
+        """ % (self.id)
+        cursor.execute(sql)
+        total = cursor.fetchall()
+
+        for i in total:
+            data = {'rate': i[1],
+                    'total': i[3],
+                    }
+        return data
+
+        #data, temp = None, []
+        #
+        #rate = StoreRate.objects.filter(store=self.id).order_by("date_created")
+        #for i in rate:
+        #    temp.append(
+        #        {'user': i.user.username, 'rate': int(i.rate),
+        #        'comment': i.comment})
+        #return temp
 
 
 class News(models.Model):
@@ -161,24 +187,39 @@ class News(models.Model):
         return self.title
 
 class ItemPrice(models.Model):
+    user = models.ForeignKey(User)
     item = models.ForeignKey(MasterItem, null=True, blank=True)
     store = models.ForeignKey(MasterStore, null=True, blank=True)
     price = models.FloatField()
+    comment = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return "%s" % self.price
 
     def get_price_rate(self):
-        data, temp = None, []
-        rate = PriceRate.objects.filter(price=self.id)
+        data = []
+        cursor = connection.cursor()
 
-        for i in rate:
-            data = {'user': i.user.username,
-                    'rate': int(i.rate),
-                    'comment': i.comment,
-                    'price': int(i.price.price)}
+        sql = """
+            select
+                price_id,
+                count(*) as total,
+                sum(rate)/count(*) as rate,
+                sum(rate) as total_rate
+            from
+                dataui_pricerate
+            where
+                price_id = %s
+            group by price_id
+        """ % (self.id)
+        cursor.execute(sql)
+        total = cursor.fetchall()
 
+        for i in total:
+            data = {'rate': i[2],
+                    'total': i[1],
+                    }
         return data
 
 

@@ -1,7 +1,70 @@
 {% extends "bare_bones.html" %}
 
 {% block title %}
-    News Detail
+   Items Detail
+{% endblock %}
+
+{% block head %}
+   <style type="text/css">
+        #id_price_table tr th{
+            font-size: 12px;
+            text-align: center;
+        }
+        
+        #id_store_table tr th{
+            font-size: 12px;
+            text-align: center;
+        }
+        
+   </style>
+   
+   <script type="text/javascript">
+      function showQuestion() {
+         $('#id_question_table').show();
+         $('#id_add_question').show();
+         
+         $('#id_price_table').hide();
+         $('#id_pop_price').hide();
+         
+         $('#id_store_table').hide();
+         $('#id_pop_store').hide();
+      }
+      
+      function showPrice() {
+         $('#id_question_table').hide();
+         $('#id_add_question').hide();
+         
+         $('#id_price_table').show();
+         $('#id_pop_price').show();
+         
+         $('#id_store_table').hide();
+         $('#id_pop_store').hide();
+      }
+      
+      function showStore() {
+         $('#id_question_table').hide();
+         $('#id_add_question').hide();
+         
+         $('#id_price_table').hide();
+         $('#id_pop_price').hide();
+         
+         $('#id_store_table').show();
+         $('#id_pop_store').show();
+      }
+      
+      $(document).ready(function(){
+         $('#id_question_table').hide();
+         $('#id_add_question').hide();
+         
+         $('#id_price_table').hide();
+         $('#id_pop_price').hide();
+         
+         $('#id_store_table').hide();
+         $('#id_pop_store').hide();
+         
+      });
+      
+   </script>
 {% endblock %}
 
 {% block breadcrumb %}
@@ -17,207 +80,213 @@
 {% block body %}
     <div class="items_content" style="padding-top: 15%">
          {% include "items/general_file.html" %}
-        
-        <table style="width: 100%; margin: 3px;">
-            <tr>
-                  <td style="border: none; width: 30%">
-                     <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">Questions
+      
+      <a onclick="showQuestion();">
+         <img src="/mautauaja/static/icons/left.png" style="width: 15px; height: 10px;"> &nbsp; Questions
+      </a><br/><br/>
+      
+      <table style="width: 100%; padding:  20px;" id="id_question_table">
+         <div id="id_add_question">
+            <a href="{% url pop_questions %}"> Add questions ? </a>
+         </div>
+         
+         {% if question %}
+            {% for q in question %}
+               <tr>
+                  <td style="width: 90%; border-right: none; background-color: grey; color: white;">
+                     Questions : {{ q.user }} - {{ q.question }}
+                  </td>
+                  {% if user.is_authenticated %}
+                     <td style="width: 10%; text-align: center; border-left: none">
+                        <a href="{% url pop_answers q.id %}" style="color: blue"> Answered by</a>
+                     </td>
+                  {% else %}
+                     <td style="width: 10%; text-align: center; border-left: none">
+                        Answered by
+                     </td>
+                  {% endif %}
+               <tr>
+               {% if q.answers %}
+                  {% for z in q.answers %}
+                     <tr>
+                        <td style="text-align: right">
+                           {{ z.answer }}
+                        </td>
+                        <td>
+                           {{ z.user }}
+                        </td>
+                     </tr>
+                  {% endfor %}
+               {% endif %}
+            {% endfor %}
+         {% endif %}
+      <table>
+      
+      <a onclick="showPrice();">
+         <img src="/mautauaja/static/icons/left.png" style="width: 15px; height: 10px;"> &nbsp; Price Rate
+      </a><br/>
+      
+      <table style="width: 100%; margin: 3px;" id="id_price_table">
+         {% if user.is_authenticated %}
+            <div id="id_pop_price">
+               <a href="{% url pop_price %}"> Add price </a>   
+            </div>
+         {% endif %}
+      
+         <tr>
+            <th> Price </th>
+            <th> Reporter </th>
+            <th> Rating </th>
+            <th> Follower </th>
+            {% if user.is_authenticated %}
+               <th> Actions </th>
+            {% endif %}
+         </tr>
+         
+         {% if price_list %}
+            {% for izu in price_list %}
+               
+               <tr>
+                  <td>Rp. {{ izu.price }}</td>
+                  <td>{{ izu.user }}</td>
+                  
+                  <td>
+                     {% ifequal izu.get_price_rate.rate 1 %}
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     {% endifequal %}
                      
-                     {% if user.is_authenticated %}
-                        <div style="margin-left: 65%">
-                           <a href="{% url pop_questions %}"> Add questions ? </a>   
-                        </div>
+                     {% ifequal izu.get_price_rate.rate 2 %}
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     {% endifequal %}
+                     
+                     {% ifequal izu.get_price_rate.rate 3 %}
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     {% endifequal %}
+                     
+                     {% ifequal izu.get_price_rate.rate 4 %}
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     {% endifequal %}
+                     
+                     {% ifequal izu.get_price_rate.rate 5 %}
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     {% endifequal %}
+                  </td>
+                  <td>
+                     {% if izu.get_price_rate.total %}
+                        {{ izu.get_price_rate.total }} Follower
                      {% endif %}
-                     
-                     <table id="id_question_tab">
-                        {% if question %}
-                           {% for q in question %}
-                              <tr>
-                                    <td style="border: none;">
-                                       <div class="ballon_question">
-                                          {{ q.user }} : {{ q.question }}<br/>
-                                          {% if user.is_authenticated %}
-                                             <a href="{% url pop_answers q.id %}" style="margin-left: 80%; color: white"> Answers </a>
-                                          {% endif %}
-                                           
-                                       </div>
-                                       {% if q.answers %}
-                                          {% for z in q.answers %}
-                                             <div class="ballon_answers">
-                                                {{ z.user }} : {{ z.answer }}<br/>
-                                             </div>      
-                                          {% endfor %}
-                                       {% endif %}
-                                    </td>
-                               </tr>
-                           {% endfor %}
-                        {% else %}
-                           <tr>
-                              <td style="border: none">
-                                 <div class="ballon_question">
-                                    No Questions
-                                 </div>
-                              </td>
-                           </tr>
-                        {% endif %}
-                     </table>
                   </td>
                   
-                  
-                  <td style="border: none; width: 30%">
-                     <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">
-                     Price Rate
-                     
-                     {% if user.is_authenticated %}
-                        <div style="margin-left: 65%">
-                           <a href="{% url pop_price %}"> Add price </a>   
-                        </div>
-                     {% endif %}
-                     
-                     <table id="id_question_tab">
-                        {% if price_list %}
-                           {% for izu in price_list %}
-                              <tr>
-                                    <td style="border: none;">
-                                       <div class="ballon_question">
-                                          {{ izu.user }} : Rp.{{ izu.price }}
-                                          {% ifequal izu.rate 1 %}
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                          {% endifequal %}
-                                          
-                                          {% ifequal izu.rate 2 %}
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                          {% endifequal %}
-                                          
-                                          {% ifequal izu.rate 3 %}
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                          {% endifequal %}
-                                          
-                                          {% ifequal izu.rate 4 %}
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                          {% endifequal %}
-                                          
-                                          {% ifequal izu.rate 5 %}
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                          {% endifequal %}
-                                          <br>
-                                          quote : {{ izu.comment }}<br/>
-                                       </div>
-                                    </td>
-                               </tr>
-                           {% endfor %}
-                        {% else %}
-                           <tr>
-                              <td style="border: none">
-                                 <div class="ballon_question">
-                                    No Price Rate
-                                 </div>
-                              </td>
-                           </tr>
-                        {% endif %}
-                     </table>
-                  
-                  </td>
-                  
-                  <td style="border: none; width: 40%">
-                     <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">
-                     Store Rate
-                     
-                     {% if user.is_authenticated %}
-                        <div style="margin-left: 65%">
-                           <a href="{% url pop_store %}"> Add store </a>   
-                        </div>
-                     {% endif %}
-                     
-                     <table id="id_question_tab">
-                        {% if items.get_store_list %}
-                           {% for ol in items.get_store_list %}
-                              <tr>
-                                 <td style="border: none;">
-                                    <div class="ballon_store" style="margin-bottom: 2px;">
-                                       <table>
-                                          <tr>
-                                             <td style="border: none; color: white; width:10px;">
-                                                <img src="/mautauaja/display_img/{{ ol.store_photo}}" style="width: 40px; height: 40px;"> &nbsp;
-                                             </td>
-                                             <td style="border: none; color: white;">
-                                                <span>Name : {{ ol.store_name }}</span><br/>
-                                                <span>{{ ol.store_name|slice:":20" }}</span><br/>
-                                                
-                                                {% if user.is_authenticated %}
-                                                   <a href="{% url store_rate ol.id %}" style="margin-left: 60%; color: yellow"> Store Rate </a>
-                                                {% endif %}
-                                             </td>
-                                          </tr>
-                                       </table>
-                                    </div>
-                                    
-                                    {% if ol.get_store_rate %}
-                                       {% for px in ol.get_store_rate %}
-                                          <div class="ballon_answers">
-                                             {{ px.user }} :
-                                             
-                                             {% ifequal px.rate 1 %}
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                          {% endifequal %}
-                                          
-                                          {% ifequal px.rate 2 %}
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                          {% endifequal %}
-                                          
-                                          {% ifequal px.rate 3 %}
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                          {% endifequal %}
-                                          
-                                          {% ifequal px.rate 4 %}
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                          {% endifequal %}
-                                          
-                                          {% ifequal px.rate 5 %}
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                             <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                                          {% endifequal %}
-                                          <br>
-                                             
-                                             {{ px.comment }}
-                                          </div>
-                                       {% endfor %}
-                                    {% endif %}
-                                 </td>
-                              </tr>
-                           {% endfor %}
-                        {% else %}
-                           <tr>
-                              <td style="border: none">
-                                 <div class="ballon_question">
-                                    No Store related with Item 
-                                 </div>
-                              </td>
-                           </tr>
-                        {% endif %}
-                     </table>
-                     
-                  </td>
+                  {% if user.is_authenticated %}
+                     <td style="text-align: center">
+                        <a href="{% url rate_price izu.id %}">Rate Now.</a>
+                     </td>
+                  {% endif %}
                </tr>
-        </table>
+            {% endfor %}
+         {% endif %}
+      <table>
+      
+      
+      <a onclick="showStore();">
+         <img src="/mautauaja/static/icons/left.png" style="width: 15px; height: 10px;"> &nbsp; Store Rate
+      </a><br/>
+      <table style="width: 100%; margin: 3px;" id="id_store_table">
+         {% if user.is_authenticated %}
+            <div id="id_pop_store">
+               <a href="{% url pop_store %}"> Add store </a>   
+            </div>
+         {% endif %}
+         
+         <tr>
+            <th> Store Name </th>
+            <th> Rating </th>
+            <th> Follower </th>
+            {% if user.is_authenticated %}
+               <th> Actions </th>
+            {% endif %}
+         </tr>
+         
+         {% if items.get_store_list %}
+            {% for ol in items.get_store_list %}
+               <tr>
+                  <td>
+                     {{ ol.store_name|slice:":20" }}
+                  </td>
+                  <td>
+                     {% ifequal ol.get_store_rate.rate 1 %}
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     {% endifequal %}
+                     
+                     {% ifequal ol.get_store_rate.rate 2 %}
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     {% endifequal %}
+                     
+                     {% ifequal ol.get_store_rate.rate 3 %}
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     {% endifequal %}
+                     
+                     {% ifequal ol.get_store_rate.rate 4 %}
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     {% endifequal %}
+                     
+                     {% ifequal ol.get_store_rate.rate 5 %}
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     {% endifequal %}
+                  </td>
+                  
+                  <td>
+                     {% if ol.get_store_rate.total %}
+                        {{ ol.get_store_rate.total }} Follower
+                     {% endif %}
+                  </td>
+                  
+                  {% if user.is_authenticated %}
+                     <td style="text-align: center">
+                        <a href="{% url store_rate ol.id %}">Rate Now.</a>
+                     </td>
+                  {% endif %}
+               </tr>
+            
+            {% endfor %}
+         {% else %}
+            <tr>
+               <td style="border: none">
+                  <div class="ballon_question">
+                     No Store related with Item 
+                  </div>
+               </td>
+            </tr>
+         {% endif %}
+         
+         
+         
+         
+         
+         
+         
+      <table>
+      
+      
     </div>
 {% endblock %}

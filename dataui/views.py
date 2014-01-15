@@ -88,13 +88,10 @@ def item_details(request, items_id=None):
         request.session['others_item'] = others_item
         questions = get_questions(data_item)
 
-        price_data = ItemPrice.objects.filter(item = data_item).order_by("-date_created")
-        for i in price_data:
-            if i.get_price_rate():
-                price_data_list.append(i.get_price_rate())
+        price_data = ItemPrice.objects.filter(item = data_item).order_by("price")
 
         context = {'items': data_item, 'others': others_item,
-                   'question': questions, 'price_list': price_data_list}
+                   'question': questions, 'price_list': price_data }
 
         return render_to_response('items/items_details.html', context,
             context_instance=RequestContext(request))
@@ -172,18 +169,40 @@ def pop_price(request):
     if request.method == 'POST':
         form = PriceForm(request.POST)
         if form.is_valid():
-            price = form.cleaned_data['price']
+            price = int(form.cleaned_data['price'])
             comment = form.cleaned_data['comment']
-            rate = form.cleaned_data['rate']
             store = form.cleaned_data['store']
 
             if store:
                 price_item = ItemPrice.objects.create(
                     item = item, price = price,
-                    store=store)
+                    store=store, user = user,
+                    comment=comment)
             else:
                 price_item = ItemPrice.objects.create(
-                    item = item, price = price)
+                    user = user, item = item, price = price,
+                    comment=comment)
+            return redirect("item_details", items_id=item.id)
+    else:
+        form = PriceForm()
+
+    context = {'form': form, 'items': item, 'others': others_item}
+    return render_to_response('items/price.html', context,
+        context_instance=RequestContext(request))
+
+
+def rate_pop_price(request, pop_price=None):
+    item = request.session.get('item_item', None)
+    user = request.session.get('user_item', None)
+    others_item = request.session.get('others_item', None)
+
+    price_item = ItemPrice.objects.get(id=pop_price)
+    if request.method == 'POST':
+        form = RatePriceForm(request.POST)
+        if form.is_valid():
+            price = int(form.cleaned_data['price'])
+            comment = form.cleaned_data['comment']
+            rate = form.cleaned_data['rate']
 
             rate = PriceRate.objects.create(
                 user = user,
@@ -193,10 +212,10 @@ def pop_price(request):
             )
             return redirect("item_details", items_id=item.id)
     else:
-        form = PriceForm()
+        form = RatePriceForm()
 
     context = {'form': form, 'items': item, 'others': others_item}
-    return render_to_response('items/price.html', context,
+    return render_to_response('items/rateprice.html', context,
         context_instance=RequestContext(request))
 
 def pop_store(request):
@@ -265,7 +284,7 @@ def store_rate(request, store_id=None):
 
                 StoreRate.objects.create(
                     user = user, store = store,
-                    item = item, rate = rate, comment = comment
+                    rate = rate, comment = comment
                 )
 
             return redirect("item_details", items_id=item.id)
