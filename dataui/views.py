@@ -1,3 +1,4 @@
+import ast
 import os
 import random
 
@@ -78,20 +79,36 @@ def news_details(request, news_id=None):
         context_instance=RequestContext(request))
 
 def item_details(request, items_id=None):
-    data_item = MasterItem.objects.get(id=items_id)
     price_data_list = []
+    user = request.session.get('user_item', None)
 
     try:
+        data_item = MasterItem.objects.get(id=items_id)
+
         request.session['item_item'] = data_item
         others_item = MasterItem.objects.filter(category=data_item.category).exclude(id=items_id).order_by('date_created')
 
         request.session['others_item'] = others_item
         questions = get_questions(data_item)
-
         price_data = ItemPrice.objects.filter(item = data_item).order_by("price")
 
+        try:
+            if request.method == 'POST':
+                form_questions = QuestionForm(request.POST)
+                if form_questions.is_valid():
+                    question = form_questions.cleaned_data['questions']
+
+                    ItemQuestion.objects.create(
+                        item = data_item, user = user, question = question)
+                    return redirect("item_details", items_id=data_item.id)
+            else:
+                form_questions = QuestionForm()
+        except Exception, e:
+            return redirect("dashboard")
+
         context = {'items': data_item, 'others': others_item,
-                   'question': questions, 'price_list': price_data }
+                   'question': questions, 'price_list': price_data,
+                   'form_questions': form_questions}
 
         return render_to_response('items/items_details.html', context,
             context_instance=RequestContext(request))
@@ -101,65 +118,56 @@ def item_details(request, items_id=None):
         return redirect("dashboard")
 
 
-def pop_questions(request):
+#def pop_questions(request):
+#    item = request.session.get('item_item', None)
+#    user = request.session.get('user_item', None)
+#    others_item = request.session.get('others_item', None)
+#
+#    try:
+#        if request.method == 'POST':
+#            form = QuestionForm(request.POST)
+#            if form.is_valid():
+#                question = form.cleaned_data['questions']
+#                ItemQuestion.objects.create(
+#                    item = item, user = user, question = question)
+#                return redirect("item_details", items_id=item.id)
+#        else:
+#            form = QuestionForm()
+#
+#        context = {'form': form, 'items_id': item.id, 'label': 'Question',
+#                   'others': others_item, 'items': item}
+#        return render_to_response('items/question.html', context,
+#            context_instance=RequestContext(request))
+#
+#    except Exception, e:
+#        print e
+#        return redirect("dashboard")
+
+
+def pop_answers(request):
     item = request.session.get('item_item', None)
     user = request.session.get('user_item', None)
     others_item = request.session.get('others_item', None)
 
-    try:
-        if request.method == 'POST':
-            form = QuestionForm(request.POST)
-            if form.is_valid():
-                question = form.cleaned_data['questions']
-                ItemQuestion.objects.create(
-                    item = item, user = user, question = question)
-                return redirect("item_details", items_id=item.id)
-        else:
-            form = QuestionForm()
+    if request.method == 'POST':
+        data_post =  request.POST.values()
+        questions_id = int(data_post[1])
+        answer = str(data_post[0])
 
-        context = {'form': form, 'items_id': item.id, 'label': 'Question',
-                   'others': others_item, 'items': item}
-        return render_to_response('items/question.html', context,
-            context_instance=RequestContext(request))
+        if answer != '':
+            try:
+                question = ItemQuestion.objects.get(id=questions_id)
 
-    except Exception, e:
-        print e
-        return redirect("dashboard")
-
-
-def pop_answers(request, question_id):
-    item = request.session.get('item_item', None)
-    user = request.session.get('user_item', None)
-    others_item = request.session.get('others_item', None)
-
-    try:
-        try:
-            question = ItemQuestion.objects.get(id=question_id)
-        except:
-            return redirect("dashboard")
-
-        if request.method == 'POST':
-            form = QuestionForm(request.POST)
-            if form.is_valid():
-                answer = form.cleaned_data['questions']
-
-                ItemAnswer.objects.create(
+                x = ItemAnswer.objects.create(
                     question = question,
                     user = user,
                     answer = answer
                 )
-                return redirect("item_details", items_id=item.id)
-        else:
-            form = QuestionForm()
+                return redirect("user_login")
 
-        context = {'form': form, 'items_id': item.id, 'label': 'Answer',
-                   'others': others_item, 'items': item}
-        return render_to_response('items/question.html', context,
-            context_instance=RequestContext(request))
-
-    except Exception, e:
-        print e
-        return redirect("dashboard")
+            except Exception, e:
+                print e
+                return redirect("dashboard")
 
 def pop_price(request):
     item = request.session.get('item_item', None)
@@ -200,7 +208,6 @@ def rate_pop_price(request, pop_price=None):
     if request.method == 'POST':
         form = RatePriceForm(request.POST)
         if form.is_valid():
-            price = int(form.cleaned_data['price'])
             comment = form.cleaned_data['comment']
             rate = form.cleaned_data['rate']
 

@@ -82,6 +82,9 @@ class RegisterForm(forms.Form):
 class QuestionForm(forms.Form):
     questions = forms.CharField(widget=forms.widgets.Textarea())
 
+class AnswersForm(forms.Form):
+    answer = forms.CharField(widget=forms.widgets.Textarea())
+    
 class PriceForm(forms.Form):
     price = forms.IntegerField()
     comment = forms.CharField(widget=forms.widgets.Textarea())
@@ -96,7 +99,6 @@ class PriceForm(forms.Form):
         return self.cleaned_data
 
 class RatePriceForm(forms.Form):
-    price = forms.IntegerField()
     comment = forms.CharField(widget=forms.widgets.Textarea())
     rate = forms.ChoiceField(choices=CHOICHES, widget=forms.RadioSelect)
 
