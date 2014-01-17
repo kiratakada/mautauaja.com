@@ -17,7 +17,7 @@
 {% block head %}
     <style type="text/css">
         #id_price_table{
-            width: 100px;
+            width: 100%;
         }
         
         #id_price_table tr td{
@@ -36,7 +36,7 @@
         <form method="POST">
             <table id="id_price_table">
                 <tr>
-                    <td>Price</td>
+                    <td style="width: 5%">Price</td>
                     <td>{{ form.price.errors }} {{ form.price }}  </td>
                 </tr>
                 <tr>

@@ -112,7 +112,7 @@ class StoreForm(forms.Form):
     store_name = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'Store Name')
     store_address = forms.CharField(max_length = 50, widget=forms.TextInput(), label=u'Address')
     store_city = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'City')
-    store_photo = forms.FileField(label="Photo", required=False)
+    store_photo = forms.FileField(label="Photo")
 
     def clean(self):
         if self.errors:
