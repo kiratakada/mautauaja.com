@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block head %}
+   <script type="text/javascript" src="/mautauaja/static/js/jquery.tablesorter.js"></script>
    <style type="text/css">
          #id_price_table tr th{
              font-size: 12px;
@@ -21,17 +22,27 @@
          #id_store_table tr th{
              font-size: 12px;
              text-align: center;
-             background-color: #C0504D;
+             background-color: #45619D;
              color: white;
+             font-weight: lighter;
+             
+         }
+         
+         #id_price_table tr th{
+             font-size: 12px;
+             text-align: center;
+             background-color: #45619D;
+             color: white;
+             font-weight: lighter;
              
          }
          
          .even {
-            background-color: #F4EAEA;
+            background-color: #B4BBCD;
          }
          
          .odd {
-			background-color: #eeeeee;
+			background-color: #white;
          }
    </style>
    
@@ -39,13 +50,24 @@
       function showAnswer(questions_id) {
          var id_answer = '#id_answer_'+ questions_id
          var answer = $(id_answer).val()
-         
+         location.reload();
          $.post("/mautauaja/itemsanswer/", {		
 			questions_id : questions_id,
 			answer: answer,
          });
       }
       
+      function sort_file() {
+		$('#id_price_table').tablesorter({
+			headers: { 
+				4: {sorter: false},
+				5: {sorter: false},
+				6: {sorter: false},
+				7: {sorter: false}
+			},
+         });   
+      }
+    
       function showQuestion() {
          $('#id_question_table').show();
          $('#id_add_question').show();
@@ -62,15 +84,7 @@
       }
       
       $(document).ready(function(){
-         $('#id_question_table').show();
-         
-         $('#id_price_table').hide();
-         $('#id_pop_price').hide();
-         
-         $('#id_store_table').hide();
-         $('#id_pop_store').hide();
-         
-         $("#id_price_table").tablesorter(); 
+         sort_file()
       });
       
    </script>
@@ -97,13 +111,14 @@
       <table style="width: 100%; padding:  20px;" id="id_question_table">
          <form method="POST">
             <tr>
-               <td style="border: none">
+               <td style="background-color: #768BB7">
                   {{ form_questions.questions }}
+                  <input type='submit' value='Post Questions'>
                </td>
             </tr>
             <tr>
                <td style="border: none">
-                   <input type='submit' value='Post Questions'>
+                   
                </td>
            </tr>
          </form>
@@ -111,27 +126,35 @@
          {% if question %}
             {% for q in question %}
                <tr>
-                  <td> 
-                     {{ q.question }}<br/><br/>
-                     <form method="POST">
-                        <input id="id_answer_{{ q.id }}" value="{{ data.is_active }}" style="width: 100%; height: 30px;">
-                        
-                           <a onclick="showAnswer({{ q.id }});" class="button">Post Answer </a>
-                           
-                     </form>
+                  <td style="background-color: #768BB7; color: white; border: 1px solid #EDEFF4">
+                     {{ q.user }} : {{ q.question }}
                   </td>
-               <tr>
+               </tr>
                {% if q.answers %}
                   {% for z in q.answers %}
                      <tr>
                         <td style="border: none">
                            <div class="ballon_question" style="width: 90%; float: right">
-                              {{ z.answer }}
+                              {{ z.user.date_of_birth }}<b>{{ z.user }}</b> &nbsp; {{ z.answer }}
                            </div>
                         </td>
                      </tr>
                   {% endfor %}
                {% endif %}
+               <form method="POST">
+                  <tr>
+                     <td style="border: none">
+                        <input id="id_answer_{{ q.id }}" value="{{ data.is_active }}" style="width: 93%; height: 30px; float: right">
+                     </td>
+                  <tr>
+                  <tr>
+                     <td style="border: none">
+                        <div  style="margin-left: 7%">
+                        <a onclick="showAnswer({{ q.id }});" class="button">Post Answer </a>
+                        </div>
+                     </td>
+                  <tr>   
+               </form>
             {% endfor %}
          {% endif %}
       </table>
@@ -139,10 +162,10 @@
          <a onclick="showPrice();">
             <img src="/mautauaja/static/icons/left.png" style="width: 15px; height: 10px;"> &nbsp; Price Rate
          </a><br/>
-      
-         <table style="width: 100%; margin: 3px;" id="id_price_table">
+         
+         <table id="id_price_table" style="width: 100%; margin: 3px;" class="clear">
             {% if user.is_authenticated %}
-               <div id="id_pop_price">
+               <div id="id_pop_price" style="float: right">
                   <a href="{% url pop_price %}"> Add price </a>   
                </div>
             {% endif %}
@@ -226,7 +249,7 @@
       </a><br/>
       <table style="width: 100%; margin: 3px;" id="id_store_table">
          {% if user.is_authenticated %}
-            <div id="id_pop_store">
+            <div id="id_pop_store" style="float: right">
                <a href="{% url pop_store %}"> Add store </a>   
             </div>
          {% endif %}

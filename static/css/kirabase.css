@@ -772,15 +772,11 @@ div.thumb {
 }
 
 .ballon_question{
-	background-color: green;
-	color: white;
+	background-color: #EDEFF4;
+	color: black;
 	font-size: 10px;
 	padding: 10px;
-	-moz-border-radius:12px;
-	-webkit-border-radius:12px;
-	border-radius:12px;
 	margin-bottom: 5px;
-	border: 1px solid black;
 }
 
 .ballon_answers{
