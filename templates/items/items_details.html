@@ -50,7 +50,7 @@
       function showAnswer(questions_id) {
          var id_answer = '#id_answer_'+ questions_id
          var answer = $(id_answer).val()
-         location.reload();
+         location.reload( true );
          $.post("/mautauaja/itemsanswer/", {		
 			questions_id : questions_id,
 			answer: answer,

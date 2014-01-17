@@ -106,7 +106,7 @@ class ItemQuestion(models.Model):
     def get_answers(self):
         temp = []
 
-        answer = ItemAnswer.objects.filter(question=self.id).order_by('-date_created')
+        answer = ItemAnswer.objects.filter(question=self.id).order_by('date_created')
         if len(answer) <= 0:
             return None
         else:
