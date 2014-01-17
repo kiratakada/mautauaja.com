@@ -12,11 +12,11 @@ from django.forms.util import ErrorList
 from dataui.models import *
 
 CHOICHES = (
-    (1,'Very Bad'),
-    (2,'Bad'),
-    (3,'Normal'),
-    (4,'Very Good'),
-    (5,'Excellent'),
+    (1,''),
+    (2,''),
+    (3,''),
+    (4,''),
+    (5,''),
 )
 
 class LoginForm(forms.Form):
