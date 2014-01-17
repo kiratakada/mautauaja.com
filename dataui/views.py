@@ -1,6 +1,7 @@
 import ast
 import os
 import random
+import datetime
 
 from datetime import datetime, timedelta
 from django.contrib import messages
@@ -41,6 +42,7 @@ def get_questions(data_item=None):
             data = {'question': i.question,
                     'answers': i.get_answers(),
                     'user': i.user,
+                    'date': i.date_created,
                     'id': i.id }
             temp_questions.append(data)
     return temp_questions
@@ -104,6 +106,7 @@ def item_details(request, items_id=None):
             else:
                 form_questions = QuestionForm()
         except Exception, e:
+            print e
             return redirect("dashboard")
 
         context = {'items': data_item, 'others': others_item,

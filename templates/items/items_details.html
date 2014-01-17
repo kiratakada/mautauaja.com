@@ -111,10 +111,12 @@
       <table style="width: 100%; padding:  20px;" id="id_question_table">
          <form method="POST">
             <tr>
-               <td style="background-color: #768BB7">
-                  {{ form_questions.questions }}
-                  <input type='submit' value='Post Questions'>
-               </td>
+               {% if user.is_authenticated %}
+                  <td style="background-color: #768BB7">
+                     {{ form_questions.questions }}
+                     <input type='submit' value='Post Questions'>
+                  </td>
+               {% endif %}
             </tr>
             <tr>
                <td style="border: none">
@@ -127,8 +129,9 @@
             {% for q in question %}
                <tr>
                   <td style="background-color: #768BB7; color: white; border: 1px solid #EDEFF4">
+                     <span style="float: right">{{ q.date|date:"d M Y" }}</span><br>
                      {{ q.user }} : {{ q.question }}
-                  </td>
+                  </td> 
                </tr>
                {% if q.answers %}
                   {% for z in q.answers %}
@@ -142,18 +145,21 @@
                   {% endfor %}
                {% endif %}
                <form method="POST">
-                  <tr>
-                     <td style="border: none">
-                        <input id="id_answer_{{ q.id }}" value="{{ data.is_active }}" style="width: 93%; height: 30px; float: right">
-                     </td>
-                  <tr>
-                  <tr>
-                     <td style="border: none">
-                        <div  style="margin-left: 7%">
-                        <a onclick="showAnswer({{ q.id }});" class="button">Post Answer </a>
-                        </div>
-                     </td>
-                  <tr>   
+                     {% if user.is_authenticated %}
+                        <tr>
+                           <td style="border: none">
+                              <input id="id_answer_{{ q.id }}" value="{{ data.is_active }}" style="width: 93%; height: 30px; float: right">
+                           </td>
+                        <tr>
+                     
+                        <tr>
+                           <td style="border: none">
+                              <div  style="margin-left: 7%">
+                              <a onclick="showAnswer({{ q.id }});" class="button">Post Answer </a>
+                              </div>
+                           </td>
+                        <tr>
+                  {% endif %}
                </form>
             {% endfor %}
          {% endif %}
