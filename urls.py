@@ -18,15 +18,18 @@ urlpatterns = patterns('',
 
     url(r'^%s/news/(?P<news_id>\w+)/$' % (settings.PROJECT_NAME), 'dataui.views.news_details', name = 'news_details'),
     url(r'^%s/items/(?P<items_id>\w+)/$' % (settings.PROJECT_NAME), 'dataui.views.item_details', name = 'item_details'),
+    url(r'^%s/items-requests/$' % (settings.PROJECT_NAME), 'dataui.views.items_request', name = 'items_request'),
 
     #url(r'^%s/itemsquestion/$' % (settings.PROJECT_NAME), 'dataui.views.pop_questions', name = 'pop_questions'),
     url(r'^%s/itemsanswer/$' % (settings.PROJECT_NAME), 'dataui.views.pop_answers', name = 'pop_answers'),
 
     url(r'^%s/itemprice/$' % (settings.PROJECT_NAME), 'dataui.views.pop_price', name = 'pop_price'),
     url(r'^%s/rateprice/(?P<pop_price>\w+)/$' % (settings.PROJECT_NAME), 'dataui.views.rate_pop_price', name = 'rate_price'),
+    url(r'^%s/pricerelated/(?P<price_id>\w+)/$' % (settings.PROJECT_NAME), 'dataui.views.price_related', name = 'price_related'),
 
     url(r'^%s/itemstore/$' % (settings.PROJECT_NAME), 'dataui.views.pop_store', name = 'pop_store'),
     url(r'^%s/storerate/(?P<store_id>\w+)/$' % (settings.PROJECT_NAME), 'dataui.views.store_rate', name = 'store_rate'),
+    url(r'^%s/storerelated/(?P<store_id>\w+)/$' % (settings.PROJECT_NAME), 'dataui.views.store_related', name = 'store_related'),
 
     url(r'^%s/addnews/$' % (settings.PROJECT_NAME), 'dataui.views.add_news', name = 'add_news'),
     url(r'^%s/editnews/(?P<news_id>\w+)/' % (settings.PROJECT_NAME), 'dataui.views.edit_news', name = 'edit_news'),

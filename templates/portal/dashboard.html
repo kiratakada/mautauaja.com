@@ -56,13 +56,20 @@
                 <table class="content_table">
                     <tr>
                         <td>
-                            {% if user.is_superuser %}
-                                <div style="margin-left: 85%;">
-                                    <a href="{% url add_item %}" class=button style="color: white">
-                                        Add Item
+                            {% if user.is_authenticated %}
+                                <div style="margin-left: 70%;">
+                                    {% if user.is_superuser %}
+                                        <a href="{% url add_item %}" class=button style="color: white">
+                                            Add Item
+                                        </a>
+                                    {% endif %}
+                                    <a href="{% url items_request %}" class=button style="color: white">
+                                        Requests Item
                                     </a>
                                 </div>
                             {% endif %}
+                                
+                            
                             
                             {% for data in msitem %}
                                 <div class="thumb">

@@ -47,27 +47,10 @@
    </style>
    
    <script type="text/javascript">
-      function showAnswer(questions_id) {
-         var id_answer = '#id_answer_'+ questions_id
-         var answer = $(id_answer).val()
-         location.reload( true );
-         $.post("/mautauaja/itemsanswer/", {		
-			questions_id : questions_id,
-			answer: answer,
-         });
+      function set_changes() {
+         alert("This Functions still on Progress..")
       }
       
-      function sort_file() {
-		$('#id_price_table').tablesorter({
-			headers: { 
-				4: {sorter: false},
-				5: {sorter: false},
-				6: {sorter: false},
-				7: {sorter: false}
-			},
-         });   
-      }
-    
       function showQuestion() {
          $('#id_question_table').show();
          $('#id_add_question').show();
@@ -84,8 +67,14 @@
       }
       
       $(document).ready(function(){
-         sort_file()
+         $('#id_setcomment').change(function() {
+            $('.errorlist').hide() /* Hide validation messages */
+            set_changes()
+         })
+	  
       });
+      
+      
       
    </script>
 {% endblock %}
@@ -102,229 +91,14 @@
 
 {% block body %}
     <div class="items_content" style="padding-top: 15%">
-         {% include "items/general_file.html" %}
+      {% include "items/general_file.html" %}
       
-      <a onclick="showQuestion();">
-         <img src="/mautauaja/static/icons/left.png" style="width: 15px; height: 10px;"> &nbsp; Questions
-      </a><br/>
+      {% include "items/tab_price.html" %}<br/>   
       
-      <table style="width: 100%; padding:  20px;" id="id_question_table">
-         <form method="POST">
-            <tr>
-               {% if user.is_authenticated %}
-                  <td style="background-color: #768BB7">
-                     {{ form_questions.questions }}
-                     <input type='submit' value='Post Questions'>
-                  </td>
-               {% endif %}
-            </tr>
-            <tr>
-               <td style="border: none">
-                   
-               </td>
-           </tr>
-         </form>
-         
-         {% if question %}
-            {% for q in question %}
-               <tr>
-                  <td style="background-color: #768BB7; color: white; border: 1px solid #EDEFF4">
-                     <span style="float: right">{{ q.date|date:"d M Y" }}</span><br>
-                     {{ q.user }} : {{ q.question }}
-                  </td> 
-               </tr>
-               {% if q.answers %}
-                  {% for z in q.answers %}
-                     <tr>
-                        <td style="border: none">
-                           <div class="ballon_question" style="width: 90%; float: right">
-                              {{ z.user.date_of_birth }}<b>{{ z.user }}</b> &nbsp; {{ z.answer }}
-                           </div>
-                        </td>
-                     </tr>
-                  {% endfor %}
-               {% endif %}
-               <form method="POST">
-                     {% if user.is_authenticated %}
-                        <tr>
-                           <td style="border: none">
-                              <input id="id_answer_{{ q.id }}" value="{{ data.is_active }}" style="width: 93%; height: 30px; float: right">
-                           </td>
-                        <tr>
-                     
-                        <tr>
-                           <td style="border: none">
-                              <div  style="margin-left: 7%">
-                              <a onclick="showAnswer({{ q.id }});" class="button">Post Answer </a>
-                              </div>
-                           </td>
-                        <tr>
-                  {% endif %}
-               </form>
-            {% endfor %}
-         {% endif %}
-      </table>
+      {% include "items/tab_store.html" %}<br/>
       
-         <a onclick="showPrice();">
-            <img src="/mautauaja/static/icons/left.png" style="width: 15px; height: 10px;"> &nbsp; Price Rate
-         </a><br/>
-         
-         <table id="id_price_table" style="width: 100%; margin: 3px;" class="clear">
-            {% if user.is_authenticated %}
-               <div id="id_pop_price" style="float: right">
-                  <a href="{% url pop_price %}"> Add price </a>   
-               </div>
-            {% endif %}
-         
-            <tr>
-               <th> Price </th>
-               <th> Reporter </th>
-               <th> Rating </th>
-               <th> Date </th>
-               <th> Store </th>
-               {% if user.is_authenticated %}
-                  <th> Actions </th>
-               {% endif %}
-            </tr>
-            
-            {% if price_list %}
-               {% for izu in price_list %}
-                  
-                  <tr class="{% cycle 'odd' 'even' %}">
-                     <td>Rp. {{ izu.price }}</td>
-                     <td>{{ izu.user }}</td>
-                     
-                     <td>
-                        {% ifequal izu.get_price_rate.rate 1 %}
-                           <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                        {% endifequal %}
-                        
-                        {% ifequal izu.get_price_rate.rate 2 %}
-                           <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                           <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                        {% endifequal %}
-                        
-                        {% ifequal izu.get_price_rate.rate 3 %}
-                           <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                           <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                           <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                        {% endifequal %}
-                        
-                        {% ifequal izu.get_price_rate.rate 4 %}
-                           <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                           <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                           <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                           <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                        {% endifequal %}
-                        
-                        {% ifequal izu.get_price_rate.rate 5 %}
-                           <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                           <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                           <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                           <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                           <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                        {% endifequal %}
-                     </td>
-                     <td>
-                        {{ izu.date_created|date:"d M Y" }}
-                     </td>
-                     
-                     <td>
-                        {% if izu.store %}
-                           {{ izu.store }}
-                        {% endif %}
-                     </td>
-                     {% if user.is_authenticated %}
-                        <td style="text-align: center">
-                           <a href="{% url rate_price izu.id %}">Rate Now.</a>
-                        </td>
-                     {% endif %}
-                  </tr>
-               {% endfor %}
-            {% else %}
-               <tr>
-                  <td colspan="6" style="text-align: center">
-                     No price rating data
-                  </td>
-               </tr>
-            {% endif %}
-         </table>
+      {% include "items/tab_questions.html" %}<br/>
       
-      <a onclick="showStore();">
-         <img src="/mautauaja/static/icons/left.png" style="width: 15px; height: 10px;"> &nbsp; Store Rate
-      </a><br/>
-      <table style="width: 100%; margin: 3px;" id="id_store_table">
-         {% if user.is_authenticated %}
-            <div id="id_pop_store" style="float: right">
-               <a href="{% url pop_store %}"> Add store </a>   
-            </div>
-         {% endif %}
-         
-         <tr>
-            <th> Store Name </th>
-            <th> Rating </th>
-            <th> Address </th>
-            {% if user.is_authenticated %}
-               <th> Actions </th>
-            {% endif %}
-         </tr>
-         
-         {% if items.get_store_list %}
-            {% for ol in items.get_store_list %}
-               <tr class="{% cycle 'odd' 'even' %}">
-                  <td>
-                     {{ ol.store_name|slice:":20" }}
-                  </td>
-                  <td>
-                     {% ifequal ol.get_store_rate.rate 1 %}
-                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                     {% endifequal %}
-                     
-                     {% ifequal ol.get_store_rate.rate 2 %}
-                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                     {% endifequal %}
-                     
-                     {% ifequal ol.get_store_rate.rate 3 %}
-                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                     {% endifequal %}
-                     
-                     {% ifequal ol.get_store_rate.rate 4 %}
-                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                     {% endifequal %}
-                     
-                     {% ifequal ol.get_store_rate.rate 5 %}
-                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                        <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
-                     {% endifequal %}
-                  </td>
-                  
-                  <td>
-                     {{ ol.store_address }}
-                  </td>
-                  
-                  {% if user.is_authenticated %}
-                     <td style="text-align: center">
-                        <a href="{% url store_rate ol.id %}">Rate Now.</a>
-                     </td>
-                  {% endif %}
-               </tr>
-            {% endfor %}
-         {% else %}
-            <tr>
-               <td colspan="5" style="text-align: center">
-                  No Store related with Item 
-               </td>
-            </tr>
-         {% endif %}
-      </table>
     </div>
+    
 {% endblock %}

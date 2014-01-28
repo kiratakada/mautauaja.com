@@ -1,0 +1,88 @@
+<a onclick="showPrice();">
+    <img src="/mautauaja/static/icons/left.png" style="width: 15px; height: 10px;"> &nbsp; Price Rate
+</a><br/>
+
+<table id="id_price_table" style="width: 100%; margin: 3px;" class="clear">
+{% if user.is_authenticated %}
+   <div id="id_pop_price" style="float: right">
+      <a href="{% url pop_price %}"> Add price </a>   
+   </div>
+{% endif %}
+
+<tr>
+   <th> Price </th>
+   <th> Reporter </th>
+   <th> Rating </th>
+   <th> Date </th>
+   <th> Store </th>
+   {% if user.is_authenticated %}
+      <th> Actions </th>
+   {% endif %}
+</tr>
+
+{% if price_list %}
+   {% for izu in price_list %}
+      
+      <tr class="{% cycle 'odd' 'even' %}">
+         <td>Rp. {{ izu.price }}</td>
+         <td>{{ izu.user }}</td>
+         
+         <td>
+            {% if izu.get_price_rate.rate %}
+               <a href="{% url price_related izu.id %}">
+                  {% ifequal izu.get_price_rate.rate 1 %}
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                  {% endifequal %}
+                  
+                  {% ifequal izu.get_price_rate.rate 2 %}
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                  {% endifequal %}
+                  
+                  {% ifequal izu.get_price_rate.rate 3 %}
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                  {% endifequal %}
+                  
+                  {% ifequal izu.get_price_rate.rate 4 %}
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                  {% endifequal %}
+                  
+                  {% ifequal izu.get_price_rate.rate 5 %}
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                  {% endifequal %}
+               </a>
+            {% endif %}
+         </td>
+         <td>
+            {{ izu.date_created|date:"d M Y" }}
+         </td>
+         
+         <td>
+            {% if izu.store %}
+               {{ izu.store }}
+            {% endif %}
+         </td>
+         {% if user.is_authenticated %}
+            <td style="text-align: center">
+               <a href="{% url rate_price izu.id %}">Rate Now.</a>
+            </td>
+         {% endif %}
+      </tr>
+   {% endfor %}
+{% else %}
+   <tr>
+      <td colspan="6" style="text-align: center">
+         No price rating data
+      </td>
+   </tr>
+{% endif %}
+</table>

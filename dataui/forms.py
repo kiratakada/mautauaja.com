@@ -19,6 +19,12 @@ CHOICHES = (
     (5,''),
 )
 
+COMMENT_CHOICES = (
+    (1, 'Bad Comment'),
+    (2, 'Good Comment'),
+    (3, 'Helpfull')
+)
+
 class LoginForm(forms.Form):
     username = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'Username')
     password = forms.CharField(widget=forms.PasswordInput(render_value=False))
@@ -140,8 +146,8 @@ class AddNewsForm(forms.Form):
         return self.cleaned_data
 
 class AddItemForm(forms.Form):
-    category = forms.ModelChoiceField(
-        Category.objects.all().order_by('name'))
+    category = forms.ModelChoiceField(Category.objects.all().order_by('name'))
+    sub_category = forms.ModelChoiceField(SubCategory.objects.all().order_by('name'), label="Sub Category")
 
     name = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'Item Name')
     description = forms.CharField(widget=forms.widgets.Textarea())
@@ -151,4 +157,11 @@ class AddItemForm(forms.Form):
         if self.errors:
             return
         return self.cleaned_data
+
+class CommentSelectForm(forms.Form):
+    setcomment = forms.ChoiceField(choices=COMMENT_CHOICES)
+    
+class ItemRequestForm(forms.Form):
+    item_name = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'Item Name')
+    description = forms.CharField(widget=forms.widgets.Textarea())
     

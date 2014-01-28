@@ -1,0 +1,97 @@
+{% extends "bare_bones.html" %}
+
+{% block title %}
+   Items Detail
+{% endblock %}
+
+
+{% block head %}
+    <style>
+        #id_price_table tr th{
+             font-size: 12px;
+             text-align: center;
+             background-color: #45619D;
+             color: white;
+             font-weight: lighter;
+             
+        }
+        
+        .even {
+           background-color: #B4BBCD;
+        }
+        
+        .odd {
+           background-color: #white;
+        }
+    </style>
+{% endblock %}
+
+{% block breadcrumb %}
+    <div class="toolbar">
+       <div class="span-9 left breadcrumb">
+           <a href='{% url dashboard %}'> Dashboard </a>
+           <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">
+           {{ items.name|slice:":50" }}
+       </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+    <div class="items_content" style="padding-top: 15%">
+      {% include "items/general_file.html" %}
+      
+    <h3 class="thin">{{ title }}</h3>
+    
+    <div style="float: right">
+        <a class="button"> Graphic Analyze </a>
+        <a href="{% url item_details items.id %}" style="text-decoration: none; color: white" class="button"> << Back </a>
+    </div>
+    
+    <table id="id_price_table" style="width: 100%; margin: 3px;" class="clear">
+        <tr>
+            <th style="width: 20%">User</th>
+            <th style="width: 10%">Rate</th>
+            <th>Comment</th>
+        </tr>
+        {% for izu in rate_price %}
+            <tr class="{% cycle 'odd' 'even' %}">
+                <td>{{ izu.user }}</td>
+                <td>
+                    {% ifequal izu.rate 1 %}
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                    {% endifequal %}
+                  
+                  {% ifequal izu.rate 2 %}
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                  {% endifequal %}
+                  
+                  {% ifequal izu.rate 3 %}
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                  {% endifequal %}
+                  
+                  {% ifequal izu.rate 4 %}
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                  {% endifequal %}
+                  
+                  {% ifequal izu.rate 5 %}
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                     <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                  {% endifequal %}
+                </td>
+                <td>{{ izu.comment }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+        
+    </div>
+
+{% endblock %}

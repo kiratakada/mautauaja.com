@@ -5,9 +5,8 @@
 {% endblock %}
 
 {% block head %}
-	<script type="text/javascript">
-		
-		 function show_current_data(){
+	 <script type="text/javascript">
+		  function show_current_data(){
 			var status = $('#id_status').val()
 			var title = $('#id_edit_name').val()
 			var content = $('#id_edit_description').val()
@@ -42,6 +41,8 @@
    <input type = 'hidden' id="id_edit_name" value="{{ edit_data.name }}">
    <input type = 'hidden' id="id_edit_description" value="{{ edit_data.description }}">
    <input type = 'hidden' id="id_edit_category" value="{{ edit_data.category.id }}">
+   
+   <h3 class="thin">Add New Item</h3>
    
     <div class="items_content" style="padding-top: 15%">
         <form enctype="multipart/form-data" method="POST" action=".">

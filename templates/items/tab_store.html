@@ -1,0 +1,81 @@
+<a onclick="showStore();">
+    <img src="/mautauaja/static/icons/left.png" style="width: 15px; height: 10px;"> &nbsp; Store Rate
+</a><br/>
+
+<table style="width: 100%; margin: 3px;" id="id_store_table">
+ {% if user.is_authenticated %}
+    <div id="id_pop_store" style="float: right">
+       <a href="{% url pop_store %}"> Add store </a>   
+    </div>
+ {% endif %}
+ 
+ <tr>
+    <th> Store Name </th>
+    <th> Rating </th>
+    <th> Address </th>
+    {% if user.is_authenticated %}
+       <th> Actions </th>
+    {% endif %}
+ </tr>
+ 
+ {% if items.get_store_list %}
+    {% for ol in items.get_store_list %}
+       <tr class="{% cycle 'odd' 'even' %}">
+          <td>
+             {{ ol.store_name|slice:":20" }}
+          </td>
+          <td>
+             {% if ol.get_store_rate.rate %}
+              <a href="{% url store_related ol.id %}">
+              {% ifequal ol.get_store_rate.rate 1 %}
+                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+              {% endifequal %}
+              
+              {% ifequal ol.get_store_rate.rate 2 %}
+                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+              {% endifequal %}
+              
+              {% ifequal ol.get_store_rate.rate 3 %}
+                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+              {% endifequal %}
+              
+              {% ifequal ol.get_store_rate.rate 4 %}
+                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+              {% endifequal %}
+              
+              {% ifequal ol.get_store_rate.rate 5 %}
+                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+              {% endifequal %}
+              </a>
+             {% endif %}
+          </td>
+          
+          <td>
+             {{ ol.store_address }}
+          </td>
+          
+          {% if user.is_authenticated %}
+             <td style="text-align: center">
+                <a href="{% url store_rate ol.id %}">Rate Now.</a>
+             </td>
+          {% endif %}
+       </tr>
+    {% endfor %}
+ {% else %}
+    <tr>
+       <td colspan="5" style="text-align: center">
+          No Store related with Item 
+       </td>
+    </tr>
+ {% endif %}
+</table>

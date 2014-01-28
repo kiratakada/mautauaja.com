@@ -32,24 +32,26 @@
 					<h1>Login</h1>
 					Please input your username and password <br/><br/><br/>
 					
+					<div style="margin-left: 35%">
+						<a href="{% url register %}" style="color: white; text-decoration:none">Register</a>
+					</div>
+					
 					<table>
 						<tr>
-							<td style="padding: 5px;">{{form.username}}</td>
+							<td style="padding: 5px;" colspan="2">{{form.username}}</td>
 						</tr>
 						<tr>
-							<td style="padding: 5px;">{{form.password}}</td>
+							<td style="padding: 5px;" colspan="2">{{form.password}}</td>
 						</tr>
 						<tr>
 							<td>
-								<div style="float: right">
+								<div style="margin-left: 8%; padding: 10px;">
 									<INPUT TYPE="image" SRC="/mautauaja/static/assets/login-button.png">
+									<a href="{% url dashboard %}"><img SRC="/mautauaja/static/assets/button-mautau.png"></a>
 								</div>
 							</td>
 						</tr>
 					</table>
-					
-					<a href="{% url register %}" style="color: white; text-decoration:none">Register</a> &nbsp;|
-					<a href="{% url dashboard %}" style="color: white; text-decoration:none"> www.mautauaja.com </a>
 				</div>
 			</div>
 		</div>

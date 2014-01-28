@@ -1,0 +1,61 @@
+<a onclick="showQuestion();">
+    <img src="/mautauaja/static/icons/left.png" style="width: 15px; height: 10px;"> &nbsp; Questions
+</a><br/>
+
+<table style="width: 100%; padding:  20px;" id="id_question_table">
+<form method="POST">
+   <tr>
+      {% if user.is_authenticated %}
+         <td style="background-color: #768BB7">
+            {{ form_questions.questions }}
+            <input type='submit' class="button" value='Post Comment'>
+         </td>
+      {% endif %}
+   </tr>
+   <tr>
+      <td style="border: none">
+          
+      </td>
+  </tr>
+</form>
+
+{% if question %}
+   {% for q in question %}
+      <tr>
+         <td style="background-color: #768BB7; color: white; border: 1px solid #EDEFF4">
+            <span style="float: right">{{ q.date|date:"d M Y" }}</span><br>
+            {{ q.user }} : {{ q.question }}
+         </td> 
+      </tr>
+      {% if q.answers %}
+         {% for z in q.answers %}
+            <tr>
+               <td style="border: none">
+                  <div class="ballon_question" style="width: 90%; float: right">
+                     {{ z.user.date_of_birth }}<b>{{ z.user }}</b> &nbsp; {{ z.answer }}<br>
+                     <span style="float: right">{{ form_comment.setcomment }}</span>
+                  </div>
+               </td>
+            </tr>
+         {% endfor %}
+      {% endif %}
+      <form method="POST">
+            {% if user.is_authenticated %}
+               <tr>
+                  <td style="border: none">
+                     <input id="id_answer_{{ q.id }}" value="{{ data.is_active }}" style="width: 93%; height: 30px; float: right">
+                  </td>
+               <tr>
+            
+               <tr>
+                  <td style="border: none">
+                     <div  style="margin-left: 7%">
+                     <a onclick="showAnswer({{ q.id }});" class="button">Post Reply </a>
+                     </div>
+                  </td>
+               <tr>
+         {% endif %}
+      </form>
+   {% endfor %}
+{% endif %}
+</table>

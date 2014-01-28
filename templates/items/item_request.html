@@ -1,0 +1,80 @@
+{% extends "bare_bones.html" %}
+
+{% block title %}
+    Item Requests
+{% endblock %}
+
+{% block head %}
+    <style>
+        #id_price_table tr th{
+             font-size: 12px;
+             text-align: center;
+             background-color: #45619D;
+             color: white;
+             font-weight: lighter;
+             
+         }
+         
+         .even {
+            background-color: #B4BBCD;
+         }
+         
+         .odd {
+			background-color: #white;
+         }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="items_content" style="padding-top: 15%">
+        <h3 class="thin">Request New Items</h3>
+        
+        <form enctype="multipart/form-data" method="POST" action=".">
+            <table id="id_price_table">
+                  <tr>
+                    <td>{{ form.as_p }}</td>
+                  </tr>
+                
+                <tr>
+                    <td colspan="2">
+                        <div>
+                            <input type='submit' value='Ok'>
+                            <a href="{% url dashboard %}"><input type="button" class="button" value="Cancel"></a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    
+    
+    <table id="id_price_table">
+        <tr>
+            <th style="width: 20%"> Item Name</th>
+            <th style="width: 18%"> Date Request </th>
+            <th> Description</th>
+            
+        </tr>
+        
+        {% if data_item %}
+            {% for item in data_item %}
+                <tr class="{% cycle 'odd' 'even' %}">
+                    <td> {{ item.item_name }}</td>
+                    <td> {{ item.date_created }}</td>
+                    <td> {{ item.description|linebreaksbr }}</td>
+                    
+                </tr>
+            
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="3"> NO REQUEST </td>
+            </tr>
+        {% endif %}
+    </table>
+  
+    
+    </div>
+    
+    
+    
+{% endblock %}

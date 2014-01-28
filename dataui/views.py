@@ -88,7 +88,7 @@ def item_details(request, items_id=None):
         data_item = MasterItem.objects.get(id=items_id)
 
         request.session['item_item'] = data_item
-        others_item = MasterItem.objects.filter(category=data_item.category).exclude(id=items_id).order_by('date_created')
+        others_item = MasterItem.objects.filter(subcategory=data_item.subcategory).exclude(id=items_id).order_by('date_created')
 
         request.session['others_item'] = others_item
         questions = get_questions(data_item)
@@ -105,13 +105,14 @@ def item_details(request, items_id=None):
                     return redirect("item_details", items_id=data_item.id)
             else:
                 form_questions = QuestionForm()
+
         except Exception, e:
-            print e
             return redirect("dashboard")
 
         context = {'items': data_item, 'others': others_item,
                    'question': questions, 'price_list': price_data,
-                   'form_questions': form_questions}
+                   'form_questions': form_questions,
+                   'form_comment' : CommentSelectForm()}
 
         return render_to_response('items/items_details.html', context,
             context_instance=RequestContext(request))
@@ -478,6 +479,7 @@ def add_item(request):
         form = AddItemForm(request.POST, request.FILES)
         if form.is_valid():
             category = form.cleaned_data['category']
+            subcategory = form.cleaned_data['sub_category']
             name = form.cleaned_data['name']
             description = form.cleaned_data['description']
 
@@ -490,6 +492,7 @@ def add_item(request):
             try:
                 items = MasterItem.objects.create(
                     category = category,
+                    subcategory = subcategory,
                     created_by = user,
                     name = name,
                     description = description,
@@ -498,9 +501,7 @@ def add_item(request):
 
             except Exception, e:
                 print e
-
             return redirect('dashboard')
-
     else:
         form = AddItemForm()
 
@@ -526,6 +527,7 @@ def edit_items(request, items_id=None):
             form = AddItemForm(request.POST, request.FILES)
             if form.is_valid():
                 category = form.cleaned_data['category']
+                subcategory = form.cleaned_data['sub_category']
                 name = form.cleaned_data['name']
                 description = form.cleaned_data['description']
 
@@ -537,6 +539,7 @@ def edit_items(request, items_id=None):
 
                 edit_item.user = user
                 edit_item.category = category
+                edit_item.subcategory = subcategory
                 edit_item.name = name
                 edit_item.description = description
                 edit_item.picture = 'items/'+str(photo)
@@ -552,3 +555,61 @@ def edit_items(request, items_id=None):
 
     except Exception,e:
         return("dashboard")
+
+
+def price_related(request, price_id = None):
+    item = request.session.get('item_item', None)
+    user = request.session.get('user_item', None)
+    others_item = request.session.get('others_item', None)
+
+    try:
+        price = ItemPrice.objects.get(id=price_id)
+        rate_price = PriceRate.objects.filter(price=price).order_by('id')
+
+        context = {'others': others_item, 'items': item, 'rate_price': rate_price,
+                   'title': 'Price Rate Details'}
+        return render_to_response('items/details_rateprice.html', context,
+            context_instance=RequestContext(request))
+
+    except Exception, e:
+        print e
+
+def store_related(request, store_id = None):
+    item = request.session.get('item_item', None)
+    user = request.session.get('user_item', None)
+    others_item = request.session.get('others_item', None)
+
+    try:
+        store = MasterStore.objects.get(id=store_id)
+        rate_store = StoreRate.objects.filter(store=store).order_by('id')
+
+        context = {'others': others_item, 'items': item, 'rate_price': rate_store,
+                   'title': 'Store Rate Details'}
+        return render_to_response('items/details_rateprice.html', context,
+            context_instance=RequestContext(request))
+
+    except Exception, e:
+        print e
+
+def items_request(request):
+
+    data_item = RequestItem.objects.all()
+
+    if request.method == 'POST':
+        form = ItemRequestForm(request.POST)
+        if form.is_valid():
+            item_name = form.cleaned_data['item_name']
+            description = form.cleaned_data['description']
+
+            rate = RequestItem.objects.create(
+                item_name = item_name,
+                description = description)
+
+            return redirect("items_request")
+
+    else:
+        form = ItemRequestForm()
+
+    context = {'form': form, 'data_item': data_item}
+    return render_to_response('items/item_request.html', context,
+        context_instance=RequestContext(request))

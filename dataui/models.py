@@ -37,8 +37,18 @@ class Category(models.Model):
     def __unicode__(self):
         return self.name
 
+class SubCategory(models.Model):
+    category = models.ForeignKey(Category)
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=50)
+
+    def __unicode__(self):
+        return self.name
+
+
 class MasterItem(models.Model):
     category = models.ForeignKey(Category)
+    subcategory = models.ForeignKey(SubCategory)
     created_by = models.ForeignKey(User)
 
     name = models.CharField(max_length=20)
@@ -243,3 +253,10 @@ class PriceRate(models.Model):
     def __unicode__(self):
         return '%s-%s' % (self.user, self.rate)
 
+class RequestItem(models.Model):
+    item_name = models.CharField(max_length=50)
+    description = models.TextField()
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return '%s-%s' % (self.user, self.rate)
