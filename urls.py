@@ -10,6 +10,8 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Example:
+    url(r'^%s/$' % (settings.PROJECT_NAME), 'dataui.views.dashboard', name = 'dashboard'),
+    
     url(r'^%s/logout/$' % (settings.PROJECT_NAME), 'dataui.views.user_logout', name = 'user_logout'),
     url(r'^%s/login/$' % (settings.PROJECT_NAME), 'dataui.views.user_login', name = 'user_login'),
     url(r'^%s/register/$' % (settings.PROJECT_NAME), 'dataui.views.register_user', name = 'register'),
@@ -41,5 +43,5 @@ urlpatterns = patterns('',
     (r'^%s/display_img/(?P<path>.*)$' % (settings.PROJECT_NAME), 'django.views.static.serve', {'document_root': settings.IMAGE_ROOT}),
 
     # Uncomment the next line to enable the admin:
-    (r'^reinforce/', include(admin.site.urls)),
+    (r'^%s/admin/' % (settings.PROJECT_NAME), include(admin.site.urls)),
 )
