@@ -380,44 +380,45 @@ def register_user(request):
 def add_news(request):
     user = request.session.get('user_item', None)
 
-    def handle_uploaded_file(f):
-        path = settings.IMAGE_ROOT+'news/'
-        create_dir_if_not_exists(path)
-        fp = open(os.path.join(path, f.name), 'wb')
+    try:
+        def handle_uploaded_file(f):
+            path = settings.IMAGE_ROOT+'news/'
+            create_dir_if_not_exists(path)
+            fp = open(os.path.join(path, f.name), 'wb')
 
-        for chunk in f.chunks():
-            fp.write(chunk)
-        fp.close()
+            for chunk in f.chunks():
+                fp.write(chunk)
+            fp.close()
 
-    if request.method == 'POST':
-        form = AddNewsForm(request.POST, request.FILES)
-        if form.is_valid():
-            title = form.cleaned_data['title']
-            content = form.cleaned_data['content']
+        if request.method == 'POST':
+            form = AddNewsForm(request.POST, request.FILES)
+            if form.is_valid():
+                title = form.cleaned_data['title']
+                content = form.cleaned_data['content']
 
-            try:
-                photo = request.FILES['photo']
-                handle_uploaded_file(photo)
-            except:
-                pass
+                try:
+                    photo = request.FILES['photo']
+                    handle_uploaded_file(photo)
+                except:
+                    pass
 
-            try:
-                news = News.objects.create(
-                    user = user,
-                    title = title,
-                    content = content,
-                    picture = 'news/'+str(photo)
-                )
-            except Exception, e:
-                print e
+                try:
+                    news = News.objects.create(
+                        user = user,
+                        title = title,
+                        content = content,
+                        picture = 'news/'+str(photo)
+                    )
+                except Exception, e:
+                    print e
+                return redirect('dashboard')
+        else:
+            form = AddNewsForm()
 
-            return redirect('dashboard')
-
-    else:
-        form = AddNewsForm()
-
-    return render_to_response('portal/news.html', {'form':form, 'title': "Add News"}, 
-        context_instance=RequestContext(request))
+        return render_to_response('portal/news.html', {'form':form, 'title': "Add News"}, 
+            context_instance=RequestContext(request))
+    except Exception, e:
+        return redirect('dashboard')
 
 def edit_news(request, news_id=None):
     user = request.session.get('user_item', None)
@@ -466,47 +467,50 @@ def edit_news(request, news_id=None):
 def add_item(request):
     user = request.session.get('user_item', None)
 
-    def handle_uploaded_file(f):
-        path = settings.IMAGE_ROOT+'items/'
-        create_dir_if_not_exists(path)
-        fp = open(os.path.join(path, f.name), 'wb')
+    try:
+        def handle_uploaded_file(f):
+            path = settings.IMAGE_ROOT+'items/'
+            create_dir_if_not_exists(path)
+            fp = open(os.path.join(path, f.name), 'wb')
 
-        for chunk in f.chunks():
-            fp.write(chunk)
-        fp.close()
+            for chunk in f.chunks():
+                fp.write(chunk)
+            fp.close()
 
-    if request.method == 'POST':
-        form = AddItemForm(request.POST, request.FILES)
-        if form.is_valid():
-            category = form.cleaned_data['category']
-            subcategory = form.cleaned_data['sub_category']
-            name = form.cleaned_data['name']
-            description = form.cleaned_data['description']
+        if request.method == 'POST':
+            form = AddItemForm(request.POST, request.FILES)
+            if form.is_valid():
+                category = form.cleaned_data['category']
+                subcategory = form.cleaned_data['sub_category']
+                name = form.cleaned_data['name']
+                description = form.cleaned_data['description']
 
-            try:
-                photo = request.FILES['photo']
-                handle_uploaded_file(photo)
-            except:
-                pass
+                try:
+                    photo = request.FILES['photo']
+                    handle_uploaded_file(photo)
+                except:
+                    pass
 
-            try:
-                items = MasterItem.objects.create(
-                    category = category,
-                    subcategory = subcategory,
-                    created_by = user,
-                    name = name,
-                    description = description,
-                    picture = 'items/'+str(photo)
-                )
+                try:
+                    items = MasterItem.objects.create(
+                        category = category,
+                        subcategory = subcategory,
+                        created_by = user,
+                        name = name,
+                        description = description,
+                        picture = 'items/'+str(photo)
+                    )
 
-            except Exception, e:
-                print e
-            return redirect('dashboard')
-    else:
-        form = AddItemForm()
+                except Exception, e:
+                    print e
+                return redirect('dashboard')
+        else:
+            form = AddItemForm()
 
-    return render_to_response('portal/items.html', {'form':form, 'title': "Add Items"}, 
-        context_instance=RequestContext(request))
+        return render_to_response('portal/items.html', {'form':form, 'title': "Add Items"}, 
+            context_instance=RequestContext(request))
+    except Exception, e:
+        return redirect("dashboard")
 
 def edit_items(request, items_id=None):
     user = request.session.get('user_item', None)
@@ -573,6 +577,7 @@ def price_related(request, price_id = None):
 
     except Exception, e:
         print e
+        return redirect("dashboard")
 
 def store_related(request, store_id = None):
     item = request.session.get('item_item', None)
@@ -590,26 +595,32 @@ def store_related(request, store_id = None):
 
     except Exception, e:
         print e
+        return redirect("dashboard")
 
 def items_request(request):
 
     data_item = RequestItem.objects.all()
 
-    if request.method == 'POST':
-        form = ItemRequestForm(request.POST)
-        if form.is_valid():
-            item_name = form.cleaned_data['item_name']
-            description = form.cleaned_data['description']
+    try:
+        if request.method == 'POST':
+            form = ItemRequestForm(request.POST)
+            if form.is_valid():
+                item_name = form.cleaned_data['item_name']
+                description = form.cleaned_data['description']
 
-            rate = RequestItem.objects.create(
-                item_name = item_name,
-                description = description)
-
-            return redirect("items_request")
-
-    else:
-        form = ItemRequestForm()
-
-    context = {'form': form, 'data_item': data_item}
-    return render_to_response('items/item_request.html', context,
-        context_instance=RequestContext(request))
+                rate = RequestItem.objects.create(
+                    item_name = item_name,
+                    description = description)
+    
+                return redirect("items_request")
+    
+        else:
+            form = ItemRequestForm()
+    
+        context = {'form': form, 'data_item': data_item}
+        return render_to_response('items/item_request.html', context,
+            context_instance=RequestContext(request))
+    
+    except Exception, e:
+        print e
+        return redirect("dashboard")

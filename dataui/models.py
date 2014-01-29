@@ -259,4 +259,4 @@ class RequestItem(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return '%s-%s' % (self.user, self.rate)
+        return '%s-%s' % (self.item_name, self.description)
