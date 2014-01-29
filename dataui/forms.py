@@ -136,7 +136,7 @@ class StoreRateForm(forms.Form):
         return self.cleaned_data
 
 class AddNewsForm(forms.Form):
-    title = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'Title')
+    title = forms.CharField(max_length = 200, widget=forms.TextInput(), label=u'Title')
     content = forms.CharField(widget=forms.widgets.Textarea())
     photo = forms.FileField(label="Photo")
 
