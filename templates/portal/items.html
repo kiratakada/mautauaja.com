@@ -37,30 +37,31 @@
 {% endblock %}
 
 {% block body %}
-   <input type = 'hidden' id="id_status" value="{{ title }}">
-   <input type = 'hidden' id="id_edit_name" value="{{ edit_data.name }}">
-   <input type = 'hidden' id="id_edit_description" value="{{ edit_data.description }}">
-   <input type = 'hidden' id="id_edit_category" value="{{ edit_data.category.id }}">
-   
-   <h3 class="thin">Add New Item</h3>
-   
-    <div class="items_content" style="padding-top: 15%">
-        <form enctype="multipart/form-data" method="POST" action=".">
-            <table id="id_price_table">
-                  <tr>
-                    <td>{{ form.as_p }}</td>
-                  </tr>
-                
-                <tr>
-                    <td colspan="2">
-                        <div>
-                            <input type='submit' value='Ok'>
-                            <a href="{% url dashboard %}"><input type="button" class="button" value="Cancel"></a>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </form>
-        
-    </div>
+	 <div class="items_content">
+		  <input type = 'hidden' id="id_status" value="{{ title }}">
+		  <input type = 'hidden' id="id_edit_name" value="{{ edit_data.name }}">
+		  <input type = 'hidden' id="id_edit_description" value="{{ edit_data.description }}">
+		  <input type = 'hidden' id="id_edit_category" value="{{ edit_data.category.id }}">
+		  
+		  <br/>
+		  <h3 class="thin">Add New Item</h3>
+		  
+		  
+		  <form enctype="multipart/form-data" method="POST" action=".">
+			  <table id="id_price_table">
+					<tr>
+					  <td>{{ form.as_p }}</td>
+					</tr>
+				  
+				  <tr>
+					  <td colspan="2">
+						  <div>
+							  <input type='submit' value='Ok'>
+							  <a href="{% url dashboard %}"><input type="button" class="button" value="Cancel"></a>
+						  </div>
+					  </td>
+				  </tr>
+			  </table>
+		  </form>
+	 </div>
 {% endblock %}

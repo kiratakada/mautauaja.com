@@ -1,0 +1,45 @@
+<ul id="tabmenu">
+    <li>
+        <a href="#">Category</a>
+        {% if category %}
+            <ul>
+                {% for item in category %}
+                    <li><a href="{% url dashboard %}?main_sub={{ item.id }}">{{ item.name }}</a>
+                        <ul>
+                            {% if item.get_sub_category %}
+                                {% for izu in item.get_sub_category %}
+                                    <li><a href="{% url dashboard %}?child_subs={{ izu.id }}">{{ izu }}</a></li>
+                                {% endfor %}
+                            {% else %}
+                                <li><a href="#">No Subs Category</a></li>
+                            {% endif %}
+                        </ul>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </li>
+    
+    {% if user.is_superuser %}
+        <li>
+            <a href="#">Admin Menu</a>
+            <ul>
+                <li><a href="{% url add_news %}">Add News</a></li>
+                <li><a href="{% url add_item %}">Add Items</a></li>
+            </ul>
+        </li>
+    {% endif %}
+    <li>
+        <a href="#">Item</a>
+        <ul>
+            <li><a href="{% url items_request %}">Request Items</a></li>
+        </ul>
+    </li>
+    
+    <li>
+        <a href="?3">Contact Us</a>
+        <ul>
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">Twitter</a></li>
+        </ul>
+    </li>
+</ul>

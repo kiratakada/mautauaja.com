@@ -37,29 +37,29 @@
 {% endblock %}
 
 {% block body %}
-   
-
-   <input type = 'hidden' id="id_status" value="{{ title }}">
-   <input type = 'hidden' id="id_edit_title" value="{{ edit_data.title }}">
-   <input type = 'hidden' id="id_edit_content" value="{{ edit_data.content }}">
-   
-    <div class="items_content" style="padding-top: 15%">
-        <form enctype="multipart/form-data" method="POST" action=".">
-            <table id="id_price_table">
-                  <tr>
-                    <td>{{ form.as_p }}</td>
-                  </tr>
-                
+   <div class="items_content">
+      <input type = 'hidden' id="id_status" value="{{ title }}">
+      <input type = 'hidden' id="id_edit_title" value="{{ edit_data.title }}">
+      <input type = 'hidden' id="id_edit_content" value="{{ edit_data.content }}">
+      
+      <br/>
+      <h3 class="thin">{{ title }}</h3>
+     
+      <form enctype="multipart/form-data" method="POST" action=".">
+          <table id="id_price_table">
                 <tr>
-                    <td colspan="2">
-                        <div>
-                            <input type='submit' value='Ok'>
-                            <a href="{% url dashboard %}"><input type="button" class="button" value="Cancel"></a>
-                        </div>
-                    </td>
+                  <td>{{ form.as_p }}</td>
                 </tr>
-            </table>
-        </form>
-        
-    </div>
+              
+              <tr>
+                  <td colspan="2">
+                      <div>
+                          <input type='submit' value='Ok'>
+                          <a href="{% url dashboard %}"><input type="button" class="button" value="Cancel"></a>
+                      </div>
+                  </td>
+              </tr>
+          </table>
+      </form>
+   </div>
 {% endblock %}

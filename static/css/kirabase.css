@@ -254,8 +254,9 @@ td {
 }
 
 #header {
-	border-bottom: 2px solid #1a1a1a;
-	background-color: #6E7B8B;
+	border: 1px solid #1a1a1a;
+	
+	background-color: #2D5381;
 	padding: 10px;
 	width: 98%;
 }

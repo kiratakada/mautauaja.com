@@ -34,6 +34,12 @@ class Category(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=50)
 
+    def get_sub_category(self):
+        subs_category = []
+        subs = SubCategory.objects.filter(category=self.id)
+
+        return subs
+
     def __unicode__(self):
         return self.name
 

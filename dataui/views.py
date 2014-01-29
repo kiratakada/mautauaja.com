@@ -65,10 +65,22 @@ def user_logout(request):
     return HttpResponseRedirect(reverse('user_login'))
 
 def dashboard(request):
-    news = News.objects.all().order_by('-date_created')[:3]
-    master_item = MasterItem.objects.all().order_by('-date_created')[:9]
+    main_subs = request.GET.get('main_sub', None)
+    cat_subs = request.GET.get('child_subs', None)
 
-    context = {'news': news, 'msitem': master_item}
+    category = Category.objects.all()
+    news = News.objects.all().order_by('-date_created')[:3]
+
+    if main_subs:
+        cat = Category.objects.get(id=main_subs)
+        master_item = MasterItem.objects.filter(category=cat).order_by('-date_created')[:9]
+    elif cat_subs:
+        cat = SubCategory.objects.get(id=cat_subs)
+        master_item = MasterItem.objects.filter(subcategory=cat).order_by('-date_created')[:9]
+    else:
+        master_item = MasterItem.objects.all().order_by('-date_created')[:9]
+
+    context = {'news': news, 'msitem': master_item, 'category': category}
     return render_to_response('portal/dashboard.html', context,
         context_instance=RequestContext(request))
 
