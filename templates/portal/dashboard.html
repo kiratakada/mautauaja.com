@@ -75,7 +75,8 @@
                                     <a href="{% url item_details data.id %}">
                                         <img src="/mautauaja/display_img/{{ data.picture}}" width="150" height="200">
                                     </a><br/>
-                                    <span style="font-size: 10px;">{{ data.name }}</span>
+                                    <span style="font-size: 10px;">{{ data.name }}</span></br>
+                                    <span>( {{data.category|slice:":10"}} / {{ data.subcategory|slice:":10" }})</span>
                                 </div>
                             {% endfor %}
                         </td>
