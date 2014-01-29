@@ -80,12 +80,16 @@
    {% include "items/tab_menu.html" %}
    
     <div class="items_content">
-      
-      <div class="span-9 left breadcrumb">
-          <a href='{% url dashboard %}'> Dashboard </a>
-          <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">
-          {{ items.name|slice:":50" }}
-      </div>
+      <div>
+         <a href="{% url dashboard %}"> Dashboard </a>
+         
+         {% if items.category %}
+             >> <a href="{% url dashboard %}?main_sub={{ items.category.id }}">{{ items.category.name }} </a>
+             >> <a href="{% url dashboard %}?child_subs={{ items.subcategory.id }}">{{ items.subcategory.name }} </a>
+         {% endif %}
+         
+         >> {{ items.name|slice:":50" }}
+     </div>
       
       
       {% include "items/general_file.html" %}

@@ -648,16 +648,16 @@ def items_request(request):
                 rate = RequestItem.objects.create(
                     item_name = item_name,
                     description = description)
-    
+
                 return redirect("items_request")
-    
+
         else:
             form = ItemRequestForm()
-    
+
         context = {'form': form, 'data_item': data_item}
         return render_to_response('items/item_request.html', context,
             context_instance=RequestContext(request))
-    
+
     except Exception, e:
         print e
         return redirect("dashboard")

@@ -51,16 +51,16 @@
                 <table class="content_table">
                     <tr>
                         <td>
-                            <div>
-                                <a style="color: white"> Dashboard </a>
+                            <div style="color: white">
+                                <a style="color: white" href="{% url dashboard %}"> Dashboard </a>
                                 
                                 {% if category_name %}
-                                   <a style="color: white"> >> {{ category_name }} </a>
+                                   >> <a href="{% url dashboard %}?main_sub={{ category_name.id }}" style="color: white">{{ category_name }} </a>
                                 {% endif %}
                                 
                                 {% if category_sub %}
-                                    <a style="color: white"> >> {{ category_sub.category }}</a>
-                                    <a style="color: white"> >> {{ category_sub }} </a>
+                                    >> <a href="{% url dashboard %}?main_sub={{ category_sub.id }}" style="color: white">{{ category_sub.category }} </a>
+                                    >> <a href="{% url dashboard %}?child_subs={{ category_sub.id }}" style="color: white">{{ category_sub.name }} </a>
                                 {% endif %}
                                 
                                 {{ items.name|slice:":50" }}
