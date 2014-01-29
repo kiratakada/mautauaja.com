@@ -51,6 +51,21 @@
                 <table class="content_table">
                     <tr>
                         <td>
+                            <div>
+                                <a style="color: white"> Dashboard </a>
+                                
+                                {% if category_name %}
+                                   <a style="color: white"> >> {{ category_name }} </a>
+                                {% endif %}
+                                
+                                {% if category_sub %}
+                                    <a style="color: white"> >> {{ category_sub.category }}</a>
+                                    <a style="color: white"> >> {{ category_sub }} </a>
+                                {% endif %}
+                                
+                                {{ items.name|slice:":50" }}
+                            </div>
+                    
                             {% for data in msitem %}
                                 <div class="thumb">
                                     {% if user.is_superuser %}

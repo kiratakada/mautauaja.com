@@ -3,20 +3,19 @@
 {% block title %}
     News Detail
 {% endblock %}
-
-{% block breadcrumb %}
-    <div class="toolbar">
-       <div class="span-9 left breadcrumb">
-           <a href='{% url dashboard %}'> Dashboard </a>
-           <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">
-           {{ news.title|slice:":50" }}
-       </div>
-    </div>
-{% endblock %}
         
 {% block body %}
-
+   
+   {% include "items/tab_menu.html" %}
+   
     <div class="news_content">
+         <div class="span-9 left breadcrumb">
+            <a href='{% url dashboard %}'> Dashboard </a>
+            <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">
+            {{ news.title|slice:":50" }}
+        </div>
+      
+      
         <div style="margin-top: 50px;">
             {{ news.date_created|date:"D d/M/Y H:m a "}} <br/><br/>
             <span class="news_title">{{ news.title }}</span><br/><br/>

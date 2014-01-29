@@ -69,32 +69,54 @@ def dashboard(request):
     cat_subs = request.GET.get('child_subs', None)
 
     category = Category.objects.all()
+    category_name, category_sub = '', ''
     news = News.objects.all().order_by('-date_created')[:3]
 
     if main_subs:
         cat = Category.objects.get(id=main_subs)
+        category_name = cat
+
         master_item = MasterItem.objects.filter(category=cat).order_by('-date_created')[:9]
     elif cat_subs:
         cat = SubCategory.objects.get(id=cat_subs)
+        category_sub = cat
+
         master_item = MasterItem.objects.filter(subcategory=cat).order_by('-date_created')[:9]
     else:
         master_item = MasterItem.objects.all().order_by('-date_created')[:9]
 
-    context = {'news': news, 'msitem': master_item, 'category': category}
+    context = {'news': news, 'msitem': master_item, 'category': category,
+               'category_name': category_name, 'category_sub': category_sub}
     return render_to_response('portal/dashboard.html', context,
         context_instance=RequestContext(request))
 
 def news_details(request, news_id=None):
-    news = News.objects.get(id=news_id)
-    others_news = News.objects.all().exclude(id=news_id).order_by('date_created')
+    main_subs = request.GET.get('main_sub', None)
+    cat_subs = request.GET.get('child_subs', None)
 
-    context = {'news': news, 'others': others_news}
-    return render_to_response('news/news_details.html', context,
-        context_instance=RequestContext(request))
+    try:
+        news = News.objects.get(id=news_id)
+        others_news = News.objects.all().exclude(id=news_id).order_by('date_created')
+
+        category = Category.objects.all()
+
+        if main_subs or cat_subs:
+            return redirect("dashboard")
+
+        context = {'news': news, 'others': others_news, 'category': category}
+        return render_to_response('news/news_details.html', context,
+            context_instance=RequestContext(request))
+    except Exception, e:
+        print e
+        return redirect("dashboard")
 
 def item_details(request, items_id=None):
-    price_data_list = []
+    main_subs = request.GET.get('main_sub', None)
+    cat_subs = request.GET.get('child_subs', None)
     user = request.session.get('user_item', None)
+
+    price_data_list = []
+    category = Category.objects.all()
 
     try:
         data_item = MasterItem.objects.get(id=items_id)
@@ -105,6 +127,9 @@ def item_details(request, items_id=None):
         request.session['others_item'] = others_item
         questions = get_questions(data_item)
         price_data = ItemPrice.objects.filter(item = data_item).order_by("price")
+
+        if main_subs or cat_subs:
+            return redirect("dashboard")
 
         try:
             if request.method == 'POST':
@@ -124,7 +149,7 @@ def item_details(request, items_id=None):
         context = {'items': data_item, 'others': others_item,
                    'question': questions, 'price_list': price_data,
                    'form_questions': form_questions,
-                   'form_comment' : CommentSelectForm()}
+                   'form_comment' : CommentSelectForm(), 'category': category}
 
         return render_to_response('items/items_details.html', context,
             context_instance=RequestContext(request))

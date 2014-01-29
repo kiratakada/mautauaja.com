@@ -73,24 +73,21 @@
          })
 	  
       });
-      
-      
-      
    </script>
 {% endblock %}
 
-{% block breadcrumb %}
-    <div class="toolbar">
-       <div class="span-9 left breadcrumb">
-           <a href='{% url dashboard %}'> Dashboard </a>
-           <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">
-           {{ items.name|slice:":50" }}
-       </div>
-    </div>
-{% endblock %}
-
 {% block body %}
-    <div class="items_content" style="padding-top: 15%">
+   {% include "items/tab_menu.html" %}
+   
+    <div class="items_content">
+      
+      <div class="span-9 left breadcrumb">
+          <a href='{% url dashboard %}'> Dashboard </a>
+          <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">
+          {{ items.name|slice:":50" }}
+      </div>
+      
+      
       {% include "items/general_file.html" %}
       
       {% include "items/tab_price.html" %}<br/>   
