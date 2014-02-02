@@ -41,7 +41,9 @@ urlpatterns = patterns('',
 
     (r'^%s/static/(?P<path>.*)$' % (settings.PROJECT_NAME), 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     (r'^%s/display_img/(?P<path>.*)$' % (settings.PROJECT_NAME), 'django.views.static.serve', {'document_root': settings.IMAGE_ROOT}),
-
+    
+    url(r'^%s/about-us/$' % (settings.PROJECT_NAME), 'dataui.views.about_us', name = 'about_us'),
+    
     # Uncomment the next line to enable the admin:
     (r'^%s/admin/' % (settings.PROJECT_NAME), include(admin.site.urls)),
 )

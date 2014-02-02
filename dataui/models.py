@@ -266,3 +266,10 @@ class RequestItem(models.Model):
 
     def __unicode__(self):
         return '%s-%s' % (self.item_name, self.description)
+
+class AboutUs(models.Model):
+    desc = models.TextField()
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return self.desc

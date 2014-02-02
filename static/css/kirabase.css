@@ -804,3 +804,17 @@ div.thumb {
 	height: 50px;
 	border: 1px solid black;
 }
+
+.ballon_about{
+	background-color: #2C517E;
+	color: white;
+	font-size: 10px;
+	padding: 10px;
+	border: 1px solid red;
+	margin-bottom: 5px;
+	-moz-border-radius:12px;
+	-webkit-border-radius:12px;
+	border-radius:12px;
+	margin-left: 30px;
+	border: 1px solid black;
+}

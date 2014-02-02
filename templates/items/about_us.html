@@ -1,0 +1,20 @@
+{% extends "bare_bones.html" %}
+
+{% block title %}
+   About us
+{% endblock %}
+
+
+{% block body %}
+   {% include "items/tab_menu.html" %}
+   
+   <div class="items_content">
+        {% if description %}
+            <div class="ballon_about">
+            <h3 class="thin">About Our Company</h3><br/>
+            {{ description.0.desc|linebreaksbr }}
+            </div>
+        {% endif %}
+   </div>
+
+{% endblock %}

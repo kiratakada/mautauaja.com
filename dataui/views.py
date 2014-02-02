@@ -661,3 +661,11 @@ def items_request(request):
     except Exception, e:
         print e
         return redirect("dashboard")
+
+def about_us(request):
+    category = Category.objects.all()
+    desc = AboutUs.objects.all().order_by("date_created")
+
+    context = {'description': desc, 'category': category}
+    return render_to_response('items/about_us.html', context,
+        context_instance=RequestContext(request))
