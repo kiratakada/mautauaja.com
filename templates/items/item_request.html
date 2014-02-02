@@ -7,22 +7,30 @@
 {% block head %}
     <style>
         #id_price_table tr th{
-             font-size: 12px;
-             text-align: center;
-             background-color: #45619D;
-             color: white;
-             font-weight: lighter;
-             
-         }
+			font-size: 12px;
+			text-align: center;
+			background-color: #45619D;
+			color: white;
+			font-weight: lighter;
+        }
          
-         .even {
+        .even {
             background-color: #B4BBCD;
-         }
+        }
          
-         .odd {
+        .odd {
 			background-color: #white;
-         }
+        }
     </style>
+	
+	<script type="text/javascript">
+		$(document).ready(function(){	 
+        		$("#id_price_table").tablesorter({
+        			widgetCookie: {sortList: [[0,0]]}
+        		});
+			} 
+		); 
+	</script>
 {% endblock %}
 
 {% block breadcrumb %}
@@ -41,7 +49,7 @@
         <h3 class="thin">Request New Items</h3>
         
         <form enctype="multipart/form-data" method="POST" action=".">
-            <table id="id_price_table">
+            <table>
                   <tr>
                     <td>{{ form.as_p }}</td>
                   </tr>
@@ -58,25 +66,28 @@
         </form>
     
 		<table id="id_price_table">
-			<tr>
+			<thead> 
 				<th style="width: 20%"> Item Name</th>
 				<th style="width: 18%"> Date Request </th>
 				<th> Description</th>
-			</tr>
-			{% if data_item %}
-				{% for item in data_item %}
-					<tr class="{% cycle 'odd' 'even' %}">
-						<td> {{ item.item_name }}</td>
-						<td> {{ item.date_created }}</td>
-						<td> {{ item.description|linebreaksbr }}</td>
-						
+			</thead>
+			
+			<tbody>
+				{% if data_item %}
+					{% for item in data_item %}
+						<tr class="{% cycle 'odd' 'even' %}">
+							<td> {{ item.item_name }}</td>
+							<td> {{ item.date_created|date:"d M Y" }}</td>
+							<td> {{ item.description|linebreaksbr }}</td>
+							
+						</tr>
+					{% endfor %}
+				{% else %}
+					<tr>
+						<td colspan="3"> NO REQUEST </td>
 					</tr>
-				{% endfor %}
-			{% else %}
-				<tr>
-					<td colspan="3"> NO REQUEST </td>
-				</tr>
-			{% endif %}
+				{% endif %}
+			</tbody>
 		</table>
 	</div>
 {% endblock %}

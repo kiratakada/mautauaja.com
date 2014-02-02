@@ -5,7 +5,6 @@
 {% endblock %}
 
 {% block head %}
-   <script type="text/javascript" src="/mautauaja/static/js/jquery.tablesorter.js"></script>
    <style type="text/css">
          #id_price_table tr th{
              font-size: 12px;
@@ -51,27 +50,11 @@
          alert("This Functions still on Progress..")
       }
       
-      function showQuestion() {
-         $('#id_question_table').show();
-         $('#id_add_question').show();
-      }
-      
-      function showPrice() {
-         $('#id_price_table').show();
-         $('#id_pop_price').show();
-      }
-      
-      function showStore() {
-         $('#id_store_table').show();
-         $('#id_pop_store').show();
-      }
-      
       $(document).ready(function(){
          $('#id_setcomment').change(function() {
             $('.errorlist').hide() /* Hide validation messages */
             set_changes()
          })
-	  
       });
    </script>
 {% endblock %}
