@@ -46,6 +46,16 @@
    </style>
    
    <script type="text/javascript">
+      function showAnswer(questions_id) {
+         var id_answer = '#id_answer_'+ questions_id
+         var answer = $(id_answer).val()
+         location.reload( true );
+         $.post("/mautauaja/itemsanswer/", {        
+            questions_id : questions_id,
+            answer: answer,
+         });
+      }
+
       function set_changes() {
          alert("This Functions still on Progress..")
       }
