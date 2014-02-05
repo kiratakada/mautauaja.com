@@ -61,9 +61,11 @@
                            <td style="border: none; color: black; width: 80%;">
                               {{ z.user }} : {{ z.answer}}
                            </td>
-                           <td style="border: none; >
-                              <span style="float: right">{{ form_comment.setcomment }}</span>
-                           </td>
+                           {% if user.is_superuser %}
+                              <td style="border: none; >
+                                 <span style="float: right">{{ form_comment.setcomment }}</span>
+                              </td>
+                           {% endif %}
                         </tr>
                      </table>
                   </div>
