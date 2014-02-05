@@ -22,9 +22,24 @@
 {% if question %}
    {% for q in question %}
       <tr>
-         <td style="background-color: #768BB7; color: white; border: 1px solid #EDEFF4">
+         <td style="background-color: #768BB7; color: white; border: 1px solid #EDEFF4;">
             <span style="float: right">{{ q.date|date:"d M Y" }}</span><br>
-            {{ q.user }} : {{ q.question }}
+               <table style="width: 100%">
+                  <tr>
+                     <td style="border: none; width: 5%">
+                        {% if q.photo %}
+                           <img src="/mautauaja/display_img/{{ q.photo }}" style="width: 40px; height: 40px;">
+                        {% else %}
+                           <div style="border: 1px solid black; background-color: grey; width: 40px; height: 40px; color: white; text-align: center">
+                              NO IMAGE
+                           </div>
+                        {% endif %}
+                     </td>
+                     <td style="border: none; color: white; width: 90%;">
+                        {{ q.user }} : {{q.question}}
+                     </td>
+                  </tr>
+               </table>
          </td> 
       </tr>
       {% if q.answers %}
@@ -32,8 +47,25 @@
             <tr>
                <td style="border: none">
                   <div class="ballon_question" style="width: 90%; float: right">
-                     {{ z.user.date_of_birth }}<b>{{ z.user }}</b> &nbsp; {{ z.answer }}<br>
-                     <span style="float: right">{{ form_comment.setcomment }}</span>
+                     <table style="width: 100%">
+                        <tr>
+                           <td style="border: none; width: 5%">
+                              {% if z.photo %}
+                                 <img src="/mautauaja/display_img/{{ z.photo }}" style="width: 40px; height: 40px;">
+                              {% else %}
+                                 <div style="border: 1px solid black; background-color: grey; width: 40px; height: 40px; color: white; text-align: center">
+                                    NO IMAGE
+                                 </div>
+                              {% endif %}
+                           </td>
+                           <td style="border: none; color: black; width: 80%;">
+                              {{ z.user }} : {{ z.answer}}
+                           </td>
+                           <td style="border: none; >
+                              <span style="float: right">{{ form_comment.setcomment }}</span>
+                           </td>
+                        </tr>
+                     </table>
                   </div>
                </td>
             </tr>

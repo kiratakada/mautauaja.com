@@ -28,7 +28,7 @@ class UserProfile(models.Model):
     is_active = models.BooleanField()
 
     def __unicode__(self):
-        return self.user.first_name
+        return '%s' % (self.user)
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
@@ -127,7 +127,12 @@ class ItemQuestion(models.Model):
             return None
         else:
             for i in answer:
-                data = {'answer': i.answer, 'user': i.user}
+                try:
+                    photo = UserProfile.objects.get(user=i.user).photo
+                except:
+                    photo = None
+
+                data = {'answer': i.answer, 'user': i.user, 'photo': photo}
                 temp.append(data)
             return temp
 

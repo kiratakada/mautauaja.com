@@ -37,15 +37,23 @@ def create_dir_if_not_exists(dir):
 def get_questions(data_item=None):
     temp_questions = []
     questions = ItemQuestion.objects.filter(item=data_item).order_by("-date_created")
+
     if len(questions) > 0:
         for i in questions:
+            try:
+                photo = UserProfile.objects.get(user=i.user).photo
+            except:
+                photo = None
+
             data = {'question': i.question,
                     'answers': i.get_answers(),
                     'user': i.user,
                     'date': i.date_created,
-                    'id': i.id }
+                    'id': i.id,
+                    'photo': photo}
             temp_questions.append(data)
     return temp_questions
+
 
 def user_login(request):
     if request.method == 'POST':
