@@ -24,6 +24,19 @@
     </style>
 	
 	<script type="text/javascript">
+		function showAnswer(mo) {
+			var id_descrip = '#desc_'+ mo
+			var answer = $(id_descrip).val()
+		 
+			var person=prompt(answer,"Type your reply..");
+
+			if (person!=null)
+			  {
+			  x="Hello " + person + "! How are you today?";
+			  document.getElementById("demo").innerHTML=x;
+			  }
+		}
+	  
 		$(document).ready(function(){	 
         		$("#id_price_table").tablesorter({
         			widgetCookie: {sortList: [[0,0]]}
@@ -70,6 +83,9 @@
 				<th style="width: 20%"> Item Name</th>
 				<th style="width: 18%"> Date Request </th>
 				<th> Description</th>
+				{% if user.is_superuser %}
+					<th style="width: 10%"> Actions </th>
+				{% endif %}
 			</thead>
 			
 			<tbody>
@@ -78,8 +94,16 @@
 						<tr class="{% cycle 'odd' 'even' %}">
 							<td> {{ item.item_name }}</td>
 							<td> {{ item.date_created|date:"d M Y" }}</td>
-							<td> {{ item.description|linebreaksbr }}</td>
+							<td>
+								<input type = 'hidden' id="desc_{{ item.id}}" value="{{ item.description }}">
+								{{ item.description|linebreaksbr }}
+							</td>
 							
+							{% if user.is_superuser %}
+								<td>
+									<a onclick="showAnswer({{ item.id }});" class="button">Reply </a>
+								</td>
+							{% endif %}
 						</tr>
 					{% endfor %}
 				{% else %}
