@@ -6,8 +6,8 @@ online shop with baseurl : www.mautauaja.com
 
 1. have a user account 
    - user can register with 2 role.
-      a. consumer (who buy the items)
-      b. produsen (who sell an item)
+       - consumer (who buy the items)
+       - produsen (who sell an item)
    - password functionality
 
 2. payments
