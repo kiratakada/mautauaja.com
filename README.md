@@ -1,14 +1,12 @@
-#MAUTAUAJA
+#MAUTAUAJA (PYTHON-DJANGO)
 
-this is an simple project django.
-
-online shop with baseurl : www.mautauaja.com 
+This is an simple project django. online shop with baseurl : www.mautauaja.com 
 
 1. have a user account 
    - user can register with 2 role.
        - consumer (who buy the items)
        - produsen (who sell an item)
-   - password functionality
+   - password security system
 
 2. payments
    - right now just supported an ATM transfers
