@@ -662,13 +662,17 @@ th.headerSortDown {
 
 .content_table{
 	width: 620px;
-	height: 780px;
+	height: 840px;
 	
 	margin-left: -10px;
 	margin-right: 25px;
-	border: 1px solid #d9d9d9;
+	border: 2px solid whitesmoke;
+	background-color: #2A2C2F;
+
+	font-family: "DejaVu Sans", "Helvetica", "Verdana", sans-serif;
+	font-size: large;
 	
-	background:url('/mautauaja/static/assets/main_bg.jpg') repeat-x #aeadad;
+	/*background:url('/mautauaja/static/assets/main_bg.jpg') repeat-x #aeadad;*/
 }
 
 .content_table tr td{
@@ -684,11 +688,14 @@ th.headerSortDown {
 
 .content_table_news{
 	width: 320px;
-	height: 780px;
+	height: 840px;
 	margin-left: -5px;
 	margin-right: 5px;
-	border: 1px solid #d9d9d9;
-	background:url('/mautauaja/static/assets/main_bg.jpg') repeat-x #aeadad;
+	border: 1.5px solid whitesmoke;
+	background-color: #2A2C2F;
+
+	font-family: "DejaVu Sans", "Helvetica", "Verdana", sans-serif;
+	font-size: medium;
 }
 
 .slick_table{
@@ -750,20 +757,28 @@ div.thumb {
 	}
 
 .news_content{
-	background-color: white;
-	border: 1px solid #d9d9d9;
+	border: 1px solid whitesmoke;
 	padding: 70px;
+	background-color: #2A2C2F;
+	font-family: "DejaVu Sans", "Helvetica", "Verdana", sans-serif;
+	font-size: medium;
+	color: white;
 }
 
 .news_title{
 	color: #3D59AB;
-	font-size: 25px;
+	font-size: 20px;
 	margin-top: 10px;
+	padding-bottom: 50px;
 }
 
 .items_content{
-	background-color: white;
+	background-color: #2A2C2F;
 	padding: 70px;
+	border: 1px solid whitesmoke;
+	font-family: "DejaVu Sans", "Helvetica", "Verdana", sans-serif;
+	font-size: small;
+	color: white;
 }
 
 .items_content tr td{

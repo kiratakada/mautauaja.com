@@ -13,4 +13,5 @@ local_settings.py
 .komodotools
 *.komodoproject
 *.orig
+*.idea/
 

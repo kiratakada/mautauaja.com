@@ -1,21 +1,54 @@
-<table >
+<table>
     <tr>
         <td style="border: none; width: 30%;">
             <table>
                 <tr>
                     <td colspan="2" style="text-align: center">
-                        {{ items.name }}
+                        <span style="color: white; font-size: small">{{ items.name }}</span>
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td  style="color: white">
                         <img src="/mautauaja/display_img/{{ items.picture }}" style="width: 250px; height: 250px;">
                     </td>
-                    <td>
-                         <label>Category </label>: &nbsp; {{ items.category }}<br/><br/>
-                         <label>Sub Category </label>: &nbsp; {{ items.subcategory }}<br/><br/>
-                         <label>Best price </label>: &nbsp; Rp. {{ items.get_minimum_price}}<br/><br/>
-                         <label>Description </label><br/><br/>
+                    <td  style="color: white">
+                         <label>Kategori </label>: &nbsp; {{ items.category }}<br/><br/>
+                         <label>Harga </label>: &nbsp; Rp. {{ items.price}}<br/><br/>
+                         <label>Penjual </label>: &nbsp;{{ items.store.store_name}}<br/><br/>
+                         <label>Rating Penjual </label>:
+                            {% ifequal items.store.store_rating 1 %}
+                                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                            {% endifequal %}
+
+                            {% ifequal items.store.store_rating 2 %}
+                                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                            {% endifequal %}
+
+                            {% ifequal items.store.store_rating 3 %}
+                                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                            {% endifequal %}
+
+                            {% ifequal items.store.store_rating 4 %}
+                                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                            {% endifequal %}
+
+                            {% ifequal items.store.store_rating 5 %}
+                                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                                 <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
+                            {% endifequal %}
+
+
+                         <br/><br/>
+                         <label>Deskripsi </label><br/><br/>
                          {{ items.description|linebreaksbr }}
                     </td>
                 </tr>
@@ -25,14 +58,14 @@
             <table>
                 <tr>
                     <td style="border: none">
-                        <span style="font-size: 12px; font-family: sans-serif; color: red;"><b>Other Items </b></span>
+                        <span style="font-size: medium; font-family: Verdana; color: whitesmoke;"><b>Rekomendasi</b></span>
                     </td>
                 </tr>
                 {% if others %}
                     {% for zulu in others %}
                         <tr>
                             <td>
-                                <a href="{% url item_details zulu.id %}" style="text-decoration: none; color: blue">
+                                <a href="{% url item_details zulu.id %}" style="text-decoration: none; color: whitesmoke">
                                     <div>
                                         <img src="/mautauaja/display_img/{{ zulu.picture}}" width="50px" height="50px;"> &nbsp;
                                         {{ zulu.name }}<br/>

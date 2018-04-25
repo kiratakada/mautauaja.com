@@ -27,7 +27,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td colspan="2">
-                                                        {{ item.content|slice:":180" }}..Read More..
+                                                        {{ item.content|slice:":180" }}  ..Read More..
                                                     </td>
                                                 </tr>
                                             </table>
@@ -59,7 +59,7 @@
                                 {% endif %}
                                 
                                 {% if category_sub %}
-                                    >> <a href="{% url dashboard %}?main_sub={{ category_sub.id }}" style="color: white">{{ category_sub.category }} </a>
+                                    >> <a href="{% url dashboard %}?main_sub={{ category_sub.category.id }}" style="color: white">{{ category_sub.category.name }} </a>
                                     >> <a href="{% url dashboard %}?child_subs={{ category_sub.id }}" style="color: white">{{ category_sub.name }} </a>
                                 {% endif %}
                                 

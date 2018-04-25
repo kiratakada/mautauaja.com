@@ -1,11 +1,5 @@
-import math
-
 from django.db import models
 from django.contrib.auth.models import User
-
-from itertools import groupby
-
-from django.db import connection
 
 class Roles(object):
     ADMIN = 0x01
@@ -52,57 +46,38 @@ class SubCategory(models.Model):
         return self.name
 
 
+class MasterStore(models.Model):
+    created_by = models.ForeignKey(User)
+    store_name = models.CharField(max_length=50)
+    store_address = models.CharField(max_length=50)
+    store_city = models.CharField(max_length=10)
+    store_logo = models.CharField(max_length=50, null=True, blank=True)
+    store_photo = models.CharField(max_length=50, null=True, blank=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    store_rating = models.IntegerField()
+
+    def __unicode__(self):
+        return self.store_name
+
+
 class MasterItem(models.Model):
     category = models.ForeignKey(Category)
     subcategory = models.ForeignKey(SubCategory)
     created_by = models.ForeignKey(User)
+    store = models.ForeignKey(MasterStore)
 
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=250)
     description = models.TextField()
     picture = models.CharField(max_length=50)
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now_add=True)
 
+    price = models.IntegerField()
+
+
     def __unicode__(self):
         return self.name
 
-    def get_minimum_price(self):
-        temp = []
-        price_stat = 0
-        data_price = ItemPrice.objects.filter(item=self.id)
-
-        if data_price:
-            for item in data_price:
-                temp.append(int(item.price))
-
-            temp.sort()
-            price_stat = temp[0]
-
-        return price_stat
-
-    def get_store_list(self):
-        store_list = []
-        cursor = connection.cursor()
-
-        sql = """
-            select
-                store_id as id,
-                store_id as store
-            from
-                dataui_itemprice
-            where
-                item_id = %s
-                group by store_id;
-        """ % (self.id)
-        cursor.execute(sql)
-        total = cursor.fetchall()
-
-        for i in total:
-            if i[0]:
-                store = MasterStore.objects.get(id=i[0])
-                store_list.append(store)
-
-        return store_list
 
 class ItemReview(models.Model):
     item = models.ForeignKey(MasterItem)
@@ -149,53 +124,6 @@ class ItemAnswer(models.Model):
     def __unicode__(self):
         return self.answer
 
-class MasterStore(models.Model):
-    created_by = models.ForeignKey(User)
-
-    store_name = models.CharField(max_length=50)
-    store_address = models.CharField(max_length=50)
-    store_city = models.CharField(max_length=10)
-    store_logo = models.CharField(max_length=50, null=True, blank=True)
-    store_photo = models.CharField(max_length=50, null=True, blank=True)
-    date_created = models.DateTimeField(auto_now_add=True)
-
-    def __unicode__(self):
-        return self.store_name
-
-    def get_store_rate(self):
-        data = []
-        cursor = connection.cursor()
-
-        sql = """
-            select
-                store_id as store_id,
-                sum(rate)/count(*) as rate,
-                sum(rate) as total_rate,
-                count(*) as record
-            from
-                dataui_storerate
-            where
-                store_id = %s
-            group by store_id
-        """ % (self.id)
-        cursor.execute(sql)
-        total = cursor.fetchall()
-
-        for i in total:
-            data = {'rate': i[1],
-                    'total': i[3],
-                    }
-        return data
-
-        #data, temp = None, []
-        #
-        #rate = StoreRate.objects.filter(store=self.id).order_by("date_created")
-        #for i in rate:
-        #    temp.append(
-        #        {'user': i.user.username, 'rate': int(i.rate),
-        #        'comment': i.comment})
-        #return temp
-
 
 class News(models.Model):
     user = models.ForeignKey(User)
@@ -207,6 +135,37 @@ class News(models.Model):
     def __unicode__(self):
         return self.title
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#============================ GAK GUNA!!! ===========================
+
+
 class ItemPrice(models.Model):
     user = models.ForeignKey(User)
     item = models.ForeignKey(MasterItem, null=True, blank=True)
@@ -217,31 +176,6 @@ class ItemPrice(models.Model):
 
     def __unicode__(self):
         return "%s" % self.price
-
-    def get_price_rate(self):
-        data = []
-        cursor = connection.cursor()
-
-        sql = """
-            select
-                price_id,
-                count(*) as total,
-                sum(rate)/count(*) as rate,
-                sum(rate) as total_rate
-            from
-                dataui_pricerate
-            where
-                price_id = %s
-            group by price_id
-        """ % (self.id)
-        cursor.execute(sql)
-        total = cursor.fetchall()
-
-        for i in total:
-            data = {'rate': i[2],
-                    'total': i[1],
-                    }
-        return data
 
 
 class StoreRate(models.Model):

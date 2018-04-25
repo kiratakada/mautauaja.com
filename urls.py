@@ -1,10 +1,6 @@
-from django.conf.urls.defaults import *
-
 from django.contrib import admin
 from django.conf.urls.defaults import patterns, include, url
 from django.conf import settings
-from django.views.generic.simple import direct_to_template
-from mautauaja import settings
 
 admin.autodiscover()
 

@@ -85,6 +85,7 @@ def dashboard(request):
         category_name = cat
 
         master_item = MasterItem.objects.filter(category=cat).order_by('-date_created')[:9]
+
     elif cat_subs:
         cat = SubCategory.objects.get(id=cat_subs)
         category_sub = cat
@@ -163,7 +164,6 @@ def item_details(request, items_id=None):
             context_instance=RequestContext(request))
 
     except Exception, e:
-        print e
         return redirect("dashboard")
 
 

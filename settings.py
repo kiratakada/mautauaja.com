@@ -14,7 +14,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'mautauaja',                      # Or path to database file if using sqlite3.
         'USER': 'joe',                      # Not used with sqlite3.
-        'PASSWORD': 'joe',                  # Not used with sqlite3.
+        'PASSWORD': 'fantasio',                  # Not used with sqlite3.
         'HOST': '127.0.0.1',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
@@ -45,7 +45,7 @@ USE_L10N = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = '/Users/Kira/Sites/mautauaja/static/'
+MEDIA_ROOT = '/home/kiratakada/Sites/mautauaja/static/'
 IMAGE_ROOT = '/tmp/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
@@ -63,8 +63,8 @@ SECRET_KEY = 'k8j2jv1d&c&oavslai&h7)sy(0ngl@8-!$aavp=0d(vns-l49t'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.load_template_source',
-    'django.template.loaders.app_directories.load_template_source'
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -87,7 +87,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    #'django.contrib.messages',
+    # 'django.contrib.messages',
     'dataui'
 )
 

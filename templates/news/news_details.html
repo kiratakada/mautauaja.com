@@ -17,9 +17,9 @@
       
       
         <div style="margin-top: 50px;">
-            {{ news.date_created|date:"D d/M/Y H:m a "}} <br/><br/>
-            <span class="news_title">{{ news.title }}</span><br/><br/>
-            By: {{ news.user }} - Mau tau saja..
+            {{ news.date_created|date:"d M Y H:m a "}} <br/><br/>
+            <span class="news_title">{{ news.title }}</span><br/><br/><br/><br/>
+            Ditulis Oleh : {{ news.user }} - Nias Mart.
         </div><br/>
         
         <table>
@@ -36,13 +36,13 @@
             </tr>    
         </table>
         
-        <span style="font-size: 12px; font-family: sans-serif; color: red;"><b>Baca juga : </b></span>
+        <span style="font-size: small; font-family: sans-serif; color: whitesmoke;"><b>Baca juga : </b></span>
         {% for zulu in others %}
-            <table style="width: 100%; margin: 3px;">
+            <table style="width: 100%; margin: 3px; text-decoration:none;">
                 <tr>
-                    <td style="border: 1px solid grey">
+                    <td style="border: 1px solid grey; text-decoration:none;">
                         <a href="{% url news_details zulu.id %}">
-                            <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">
+                            <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px; text-decoration:none;">
                             {{ zulu.title }}
                         </a>
                     </td>
