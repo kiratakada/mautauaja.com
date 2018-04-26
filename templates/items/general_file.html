@@ -1,19 +1,21 @@
+{% load humanize %}
+
 <table>
     <tr>
         <td style="border: none; width: 30%;">
-            <table>
+            <table style="border: 2px solid #ECE2BF">
                 <tr>
                     <td colspan="2" style="text-align: center">
-                        <span style="color: white; font-size: small">{{ items.name }}</span>
+                        <span style="color: #FF5C3D; font-size: medium">{{ items.name }}</span>
                     </td>
                 </tr>
                 <tr>
-                    <td  style="color: white">
+                    <td>
                         <img src="/mautauaja/display_img/{{ items.picture }}" style="width: 250px; height: 250px;">
                     </td>
                     <td  style="color: white">
                          <label>Kategori </label>: &nbsp; {{ items.category }}<br/><br/>
-                         <label>Harga </label>: &nbsp; Rp. {{ items.price}}<br/><br/>
+                         <label>Harga </label>: &nbsp; Rp. {{ items.price|intcomma}}<br/><br/>
                          <label>Penjual </label>: &nbsp;{{ items.store.store_name}}<br/><br/>
                          <label>Rating Penjual </label>:
                             {% ifequal items.store.store_rating 1 %}
@@ -54,26 +56,29 @@
                 </tr>
             </table>
         </td>
-        <td style="border: none; width: 20%;" rowspan="5">
+        <td style="border: none; width: 15%;" rowspan="5">
             <table>
                 <tr>
                     <td style="border: none">
-                        <span style="font-size: medium; font-family: Verdana; color: whitesmoke;"><b>Rekomendasi</b></span>
+                        <span style="font-size: medium; font-family: Verdana; color: #FF5C3D;"><b>Rekomendasi</b></span>
                     </td>
                 </tr>
+
                 {% if others %}
                     {% for zulu in others %}
-                        <tr>
-                            <td>
-                                <a href="{% url item_details zulu.id %}" style="text-decoration: none; color: whitesmoke">
-                                    <div>
-                                        <img src="/mautauaja/display_img/{{ zulu.picture}}" width="50px" height="50px;"> &nbsp;
-                                        {{ zulu.name }}<br/>
-                                    </div>
+                      <tr style="border: 2px solid #ECE2BF">
+                            <td style="border-right: none; background-color: white; text-align: center">
+                                <a href="{% url item_details zulu.id %}" style="text-decoration: none; color: whitesmoke; align: center">
+                                    <img src="/mautauaja/display_img/{{ zulu.picture}}" width="120px" height="80px;">
                                 </a>
+                            </td>
+                            <td style="border-left: none; font-size: 12px; text-align: left; color: black; background-color: white">
+                                {{ zulu.name }}<br/><br/>
+                                <p style="color: #FF5C3D">RP. {{ zulu.price|intcomma }}</p>
                             </td>
                         </tr>
                     {% endfor %}
+
                 {% else %}
                     <tr>
                         <td>
@@ -82,6 +87,11 @@
                     </tr>
                 {% endif %}
             </table>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: right; border: none;">
+            BELI
         </td>
     </tr>
 </table>

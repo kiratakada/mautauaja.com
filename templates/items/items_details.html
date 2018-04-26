@@ -74,7 +74,7 @@
    
     <div class="items_content">
       <div>
-         <a href="{% url dashboard %}"> Dashboard </a>
+         <a href="{% url dashboard %}"> Beranda </a>
          
          {% if items.category %}
              >> <a href="{% url dashboard %}?main_sub={{ items.subcategory.category.id }}">{{ items.category.name }} </a>

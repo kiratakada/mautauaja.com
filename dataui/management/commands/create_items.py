@@ -42,14 +42,14 @@ class Command(BaseCommand):
 
 		store = MasterStore.objects.get_or_create(
 			created_by=user_data,
-			store_name = 'Nias Mart',
+			store_name = 'Ranli Mart',
 			store_address = 'Raden Saleh 2, 188A',
 			store_city = 'Jakarta',
 			store_logo = 'rl.jpg',
 			store_photo = 'rl1.jpg',
 			store_rating = 5
 		)
-		data_store = MasterStore.objects.get(store_name='Nias Mart')
+		data_store = MasterStore.objects.get(store_name='Ranli Mart')
 
 		# wanita =============================
 		sub_category = SubCategory.objects.get(name='High Heels')

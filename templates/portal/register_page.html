@@ -10,13 +10,13 @@
         #items_register {
 			margin-left: 10%;
             margin: auto;
-            background-color: white;
+            background-color: #2D5381;
 			font-family: fantasy;
             font-size: 10px;
-            width: 50%;
-            height: 110%;
+            width: 35%;
+            height: auto;
             padding: 10px;
-            border: 2px solid #7A67EE;
+            border: 2px solid whitesmoke;
             
             -moz-border-radius:12px;
             -webkit-border-radius:12px;
@@ -27,6 +27,7 @@
 {% endblock %}
 
 {% block body %}
+    <br><br>
     <div id="items_register">
 		
 		{% if messages %}
@@ -36,8 +37,11 @@
 				{% endfor %}
 			</div>
 		{% endif %}
-			
-        <h1 style="text-align: center;">Register</h1>
+
+        <div align="center">
+            <img src="/mautauaja/static/assets/niasmartlogo.jpg" style="width: 190px; height: 65px;">
+        </div>
+
         <hr id="id_line">
         
         <form enctype="multipart/form-data" method="POST" action=".">

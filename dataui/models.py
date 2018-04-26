@@ -11,12 +11,12 @@ class Roles(object):
 
 class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
-    occupation = models.CharField(max_length=50)
-    address = models.CharField(max_length=50)
-    phone = models.CharField(max_length=10)
-    place_of_birth = models.CharField(max_length=20)
-    date_of_birth = models.DateTimeField()
-    photo = models.CharField(max_length=50)
+    occupation = models.CharField(max_length=50,null=True, blank=True)
+    address = models.CharField(max_length=50,null=True, blank=True)
+    phone = models.CharField(max_length=10,null=True, blank=True)
+    place_of_birth = models.CharField(max_length=20,null=True, blank=True)
+    date_of_birth = models.DateTimeField(null=True, blank=True)
+    photo = models.CharField(max_length=250,null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField()

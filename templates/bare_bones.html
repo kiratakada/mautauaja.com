@@ -2,7 +2,8 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-    <title>{% block title %}{% endblock %}</title>
+    <link rel="shortcut icon" type="image/png" href="/mautauaja/static/assets/favicon.ico"/>
+    <title>RanliMart</title>
 	
 	<script type="text/javascript" src="/mautauaja/static/js/jquery-1.4.2.min.js" ></script>
 	<script type="text/javascript" src="/mautauaja/static/js/jquery.timers-1.2.min.js" ></script>
@@ -26,7 +27,7 @@
     <div class="container">
         <div id="header" class="span-24 last" style="position: relative">
         
-		<img src="/mautauaja/static/assets/niasmartlogo.jpg" style="width: 185px; height: 110px;">
+		<img src="/mautauaja/static/assets/niasmartlogo.jpg" style="width: 190px; height: 65px;">
 			{% if user.is_authenticated %}
 				<div style="position: absolute; top: 50%; right: 10px;">
 					<span style="color:white;">Welcome {{ user }}</span> &nbsp;
@@ -41,7 +42,7 @@
 			{% endif %}
         </div>
 		<br/>
-		{% block head %}{% endblock %}
+        {% block head %}{% endblock %}
         {% block sidebar %}{% endblock %}
 		{% block breadcrumb %}{% endblock %}
         {% block body %}{% endblock %}

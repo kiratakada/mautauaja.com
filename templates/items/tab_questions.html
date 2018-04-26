@@ -1,6 +1,6 @@
-<a onclick="showQuestion();">
-    <img src="/mautauaja/static/icons/left.png" style="width: 15px; height: 10px;"> &nbsp; Questions
-</a><br/>
+{#<a onclick="showQuestion();">#}
+{#    <img src="/mautauaja/static/icons/left.png" style="width: 15px; height: 10px;"> &nbsp; Forum#}
+{#</a><br/><br/>#}
 
 <table style="width: 100%; padding:  20px;" id="id_question_table">
 <form method="POST">
@@ -22,26 +22,28 @@
 {% if question %}
    {% for q in question %}
       <tr>
-         <td style="background-color: #768BB7; color: white; border: 1px solid #EDEFF4;">
+         <td style="background-color: #2D5381; color: white; border: 2px solid #EDEFF4;">
             <span style="float: right">{{ q.date|date:"d M Y" }}</span><br>
                <table style="width: 100%">
                   <tr>
                      <td style="border: none; width: 5%">
                         {% if q.photo %}
-                           <img src="/mautauaja/display_img/{{ q.photo }}" style="width: 40px; height: 40px;">
+                           <img src="/mautauaja/display_img/{{ q.photo }}" style="width: 50px; height: 50px;">
                         {% else %}
                            <div style="border: 1px solid black; background-color: grey; width: 40px; height: 40px; color: white; text-align: center">
                               NO IMAGE
                            </div>
                         {% endif %}
                      </td>
-                     <td style="border: none; color: white; width: 90%;">
-                        {{ q.user }} : {{q.question}}
+                     <td style="border: none; color: white; font-size: small; width: 90%;">
+                        {{ q.user }} :
+                         {{q.question}}
                      </td>
                   </tr>
                </table>
          </td> 
       </tr>
+
       {% if q.answers %}
          {% for z in q.answers %}
             <tr>
@@ -58,14 +60,14 @@
                                  </div>
                               {% endif %}
                            </td>
-                           <td style="border: none; color: black; width: 80%;">
+                           <td style="border: none; color: black; font-size: small; width: 80%;">
                               {{ z.user }} : {{ z.answer}}
                            </td>
-                           {% if user.is_superuser %}
-                              <td style="border: none; >
-                                 <span style="float: right">{{ form_comment.setcomment }}</span>
-                              </td>
-                           {% endif %}
+{#                           {% if user.is_superuser %}#}
+{#                              <td style="border: none; >#}
+{#                                 <span style="float: right">{{ form_comment.setcomment }}</span>#}
+{#                              </td>#}
+{#                           {% endif %}#}
                         </tr>
                      </table>
                   </div>

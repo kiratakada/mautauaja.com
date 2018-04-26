@@ -72,8 +72,8 @@ label {
 	text-align: left;
 	display: inline-block;
 	font-weight: normal;
-	font-family: Helvetica;
-	color: #959595;
+	font-family: "DejaVu Sans", "Helvetica", "Verdana", sans-serif;
+	color: white;
 }
 
 .errorlist {
@@ -728,7 +728,7 @@ div.thumb {
 	height: auto;
 	float: left;
 	text-align: center;
-	background-color: black;
+	background-color: #FFFFFF;
 	color: white;
 	padding: 5px;
 	margin-left: 15px;
@@ -742,10 +742,10 @@ div.thumb {
 .thumb img{
 	display: inline;
 	margin: 5px;
-	border: 1px solid #A0ACC0;
+	border: 1px solid #ECE2BF;
 	}
 	
-.thumb a:hover img {border: 1px solid black;}
+.thumb a:hover img {border: 1px solid #FF5C3D;}
 
 
 .photocattitle {text-align: center; font-weight: bold;}
@@ -788,9 +788,9 @@ div.thumb {
 }
 
 .ballon_question{
-	background-color: #EDEFF4;
+	background-color: #F4F4F4;
 	color: black;
-	font-size: 10px;
+	font-size: small;
 	padding: 10px;
 	margin-bottom: 5px;
 	height: 50px;

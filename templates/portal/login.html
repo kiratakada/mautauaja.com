@@ -1,24 +1,24 @@
 {% extends "base_login.html" %}
 
-
-{% block title %}Mau tau aja.com {% endblock %}
-
 {% block head %}
 	<link href="/mautauaja/static/css/login-box.css" rel="stylesheet" type="text/css" />
 	
 	<style  type="text/css">
         #id_login-box {
-			margin-left: 10%;
-			padding-bottom: 18%;
-			font: 12px Arial, Helvetica, sans-serif;
-			color: #ebebeb;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 60%;
+
+			font:  Arial, Helvetica, sans-serif;
+			background-color: black;
 			background: url(/mautauaja/static/assets/login_box.png) no-repeat left top;
 		}
 		
 		#id_username, #id_password{
 			width: 330px;
 			height: 40px;
-			box-shadow: 3px 2px 2px #888888;
+			box-shadow: 3px 2px 2px #2A2C2F;
 		}
 	</style>
     
@@ -29,13 +29,12 @@
 	    <div style="padding: 100px 0 0 250px;">
 			<div id="id_login-box">
 				<div style="margin-left: 8%; padding-top: 8%;">
-					<h1>Login</h1>
-					Please input your username and password <br/><br/><br/>
-					
-					<div style="margin-left: 35%">
-						<a href="{% url register %}" style="color: white; text-decoration:none">Register</a>
-					</div>
-					
+
+					<div style="color: honeydew; font-size: 19px; text-align: left; font-family: Arial">
+                        Masukkan username dan password anda
+                    </div>
+                    <br>
+
 					<table>
 						<tr>
 							<td style="padding: 5px;" colspan="2">{{form.username}}</td>
@@ -45,12 +44,19 @@
 						</tr>
 						<tr>
 							<td>
-								<div style="margin-left: 8%; padding: 10px;">
+								<div style="text-align: center; padding-top: 10px">
 									<INPUT TYPE="image" SRC="/mautauaja/static/assets/login-button.png">
-									<a href="{% url dashboard %}"><img SRC="/mautauaja/static/assets/button-mautau.png"></a>
+{#									<a href="{% url dashboard %}"><img SRC="/mautauaja/static/assets/button-mautau.png"></a>#}
 								</div>
 							</td>
 						</tr>
+                        <tr>
+                            <td style="color: white; text-align: center; padding-top: 20px; padding-bottom: 70px">
+                                Belum punya akun? Daftarkan akun anda
+                                <a href="{% url register %}" style="color: red; text-decoration:none"><b>di sini</b></a><br><br>
+                                <a href='{% url dashboard %}' style="color: yellow; text-decoration:none"> Kembali berbelanja.?</a>
+                            </td>
+                        </tr>
 					</table>
 				</div>
 			</div>

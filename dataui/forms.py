@@ -55,15 +55,15 @@ class LoginForm(forms.Form):
 
 class RegisterForm(forms.Form):
     email = forms.EmailField(max_length=75, widget=forms.TextInput(attrs={'maxlength':'75'}),label=u'Email ')
-    firstname = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'Username')
-    lastname = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'Name')
+    firstname = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'First Name')
+    lastname = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'Last Name')
     password = forms.CharField(max_length = 8, widget=forms.PasswordInput(attrs={'maxlength':'8'}), label=u'Password*') 
-    conf_password = forms.CharField(max_length = 8,widget=forms.PasswordInput(attrs={'maxlength':'8'}), label=u'Confirm*')
-    occupation = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'Occupation', required=False)
-    address = forms.CharField(max_length = 150, widget=forms.TextInput(), label=u'Address', required=False)
-    phone = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'Phone Number', required=False)
-    place_of_birth = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'Place of birth', required=False)
-    date_of_birth = forms.DateField(initial=datetime.date.today, required=False)
+    conf_password = forms.CharField(max_length = 8,widget=forms.PasswordInput(attrs={'maxlength':'8'}), label=u'Re-type Password*')
+    # occupation = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'Occupation', required=False)
+    # address = forms.CharField(max_length = 150, widget=forms.TextInput(), label=u'Address', required=False)
+    # phone = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'Phone Number', required=False)
+    # place_of_birth = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'Place of birth', required=False)
+    # date_of_birth = forms.DateField(initial=datetime.date.today, required=False)
     photo = forms.FileField(label="Photo")
 
     def clean(self):

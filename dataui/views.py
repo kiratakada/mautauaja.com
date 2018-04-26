@@ -70,7 +70,7 @@ def user_login(request):
 
 def user_logout(request):
     logout(request)
-    return HttpResponseRedirect(reverse('user_login'))
+    return HttpResponseRedirect(reverse('dashboard'))
 
 def dashboard(request):
     main_subs = request.GET.get('main_sub', None)
@@ -378,11 +378,11 @@ def register_user(request):
             password = form.cleaned_data['password']
             conf_password = form.cleaned_data['conf_password']
 
-            occupation = form.cleaned_data['occupation']
-            address = form.cleaned_data['address']
-            phone = form.cleaned_data['phone']
-            place_of_birth = form.cleaned_data['place_of_birth']
-            date_of_birth = form.cleaned_data['date_of_birth']
+            # occupation = form.cleaned_data['occupation']
+            # address = form.cleaned_data['address']
+            # phone = form.cleaned_data['phone']
+            # place_of_birth = form.cleaned_data['place_of_birth']
+            # date_of_birth = form.cleaned_data['date_of_birth']
 
             try:
                 photo = request.FILES['photo']
@@ -392,7 +392,7 @@ def register_user(request):
 
             try:
                 if User.objects.filter(username__iexact= firstname).count() >= 1:
-                    #messages.success(request, '%s already exist' % firstname)
+                    # messages.success(request, '%s already exist' % firstname)
                     return redirect('register')
 
                 user = User(username = firstname, first_name = firstname,
@@ -402,20 +402,17 @@ def register_user(request):
                 user.set_password(password)
                 user.save()
 
+                data_user = User.objects.get(username=firstname)
+
                 user_profile = UserProfile.objects.create(
-                    user=user,
-                    occupation = occupation,
-                    address = address,
-                    phone = phone,
-                    place_of_birth = place_of_birth,
-                    date_of_birth = date_of_birth,
+                    user=data_user,
                     photo = 'user/'+str(photo),
                     is_active = True)
 
                 return redirect('user_login')
 
             except Exception, e:
-                print e
+                print 'Errorr---------', e
     else:
         form = RegisterForm()
 
