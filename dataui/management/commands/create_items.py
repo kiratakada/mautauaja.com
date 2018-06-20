@@ -30,9 +30,12 @@ class Command(BaseCommand):
 			last_name = 'Zega',
 			is_staff=True,
 			is_active=True,
-			password='ranli'
+			is_superuser=True
 		)
+
 		user_data = User.objects.get(username='ranli')
+		user_data.set_password('ranli')
+		user_data.save()
 
 		user_pro = UserProfile.objects.get_or_create(
 			user = user_data,

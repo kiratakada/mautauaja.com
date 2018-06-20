@@ -123,8 +123,6 @@ def item_details(request, items_id=None):
     main_subs = request.GET.get('main_sub', None)
     cat_subs = request.GET.get('child_subs', None)
     user = request.session.get('user_item', None)
-
-    price_data_list = []
     category = Category.objects.all()
 
     try:
@@ -135,7 +133,6 @@ def item_details(request, items_id=None):
 
         request.session['others_item'] = others_item
         questions = get_questions(data_item)
-        price_data = ItemPrice.objects.filter(item = data_item).order_by("price")
 
         if main_subs or cat_subs:
             return redirect("dashboard")
@@ -156,7 +153,7 @@ def item_details(request, items_id=None):
             return redirect("dashboard")
 
         context = {'items': data_item, 'others': others_item,
-                   'question': questions, 'price_list': price_data,
+                   'question': questions,
                    'form_questions': form_questions,
                    'form_comment' : CommentSelectForm(), 'category': category}
 
@@ -218,61 +215,9 @@ def pop_answers(request):
                 print e
                 return redirect("dashboard")
 
-def pop_price(request):
-    item = request.session.get('item_item', None)
-    user = request.session.get('user_item', None)
-    others_item = request.session.get('others_item', None)
-
-    if request.method == 'POST':
-        form = PriceForm(request.POST)
-        if form.is_valid():
-            price = int(form.cleaned_data['price'])
-            comment = form.cleaned_data['comment']
-            store = form.cleaned_data['store']
-
-            if store:
-                price_item = ItemPrice.objects.create(
-                    item = item, price = price,
-                    store=store, user = user,
-                    comment=comment)
-            else:
-                price_item = ItemPrice.objects.create(
-                    user = user, item = item, price = price,
-                    comment=comment)
-            return redirect("item_details", items_id=item.id)
-    else:
-        form = PriceForm()
-
-    context = {'form': form, 'items': item, 'others': others_item}
-    return render_to_response('items/price.html', context,
-        context_instance=RequestContext(request))
 
 
-def rate_pop_price(request, pop_price=None):
-    item = request.session.get('item_item', None)
-    user = request.session.get('user_item', None)
-    others_item = request.session.get('others_item', None)
 
-    price_item = ItemPrice.objects.get(id=pop_price)
-    if request.method == 'POST':
-        form = RatePriceForm(request.POST)
-        if form.is_valid():
-            comment = form.cleaned_data['comment']
-            rate = form.cleaned_data['rate']
-
-            rate = PriceRate.objects.create(
-                user = user,
-                price = price_item,
-                rate = rate,
-                comment = comment,
-            )
-            return redirect("item_details", items_id=item.id)
-    else:
-        form = RatePriceForm()
-
-    context = {'form': form, 'items': item, 'others': others_item}
-    return render_to_response('items/rateprice.html', context,
-        context_instance=RequestContext(request))
 
 def pop_store(request):
     item = request.session.get('item_item', None)
@@ -321,43 +266,6 @@ def pop_store(request):
         context_instance=RequestContext(request))
 
 
-def store_rate(request, store_id=None):
-    item = request.session.get('item_item', None)
-    user = request.session.get('user_item', None)
-    others_item = request.session.get('others_item', None)
-
-    try:
-        try:
-            store = MasterStore.objects.get(id=store_id)
-        except:
-            return redirect("dashboard")
-
-        if request.method == 'POST':
-            form = StoreRateForm(request.POST)
-            if form.is_valid():
-                comment = form.cleaned_data['comment']
-                rate = form.cleaned_data['rate']
-
-                StoreRate.objects.create(
-                    user = user, store = store,
-                    rate = rate, comment = comment
-                )
-
-            return redirect("item_details", items_id=item.id)
-
-        else:
-            form = StoreRateForm()
-
-        context = {'form': form, 'others': others_item, 'items': item,
-                   'store': store}
-        return render_to_response('items/store_rate.html', context,
-            context_instance=RequestContext(request))
-
-    except Exception, e:
-        print e
-        return redirect("dashboard")
-
-
 def register_user(request):
     def handle_uploaded_file(f):
         path = settings.IMAGE_ROOT+'user/'
@@ -378,12 +286,6 @@ def register_user(request):
             password = form.cleaned_data['password']
             conf_password = form.cleaned_data['conf_password']
 
-            # occupation = form.cleaned_data['occupation']
-            # address = form.cleaned_data['address']
-            # phone = form.cleaned_data['phone']
-            # place_of_birth = form.cleaned_data['place_of_birth']
-            # date_of_birth = form.cleaned_data['date_of_birth']
-
             try:
                 photo = request.FILES['photo']
                 handle_uploaded_file(photo)
@@ -392,7 +294,6 @@ def register_user(request):
 
             try:
                 if User.objects.filter(username__iexact= firstname).count() >= 1:
-                    # messages.success(request, '%s already exist' % firstname)
                     return redirect('register')
 
                 user = User(username = firstname, first_name = firstname,
@@ -412,12 +313,13 @@ def register_user(request):
                 return redirect('user_login')
 
             except Exception, e:
-                print 'Errorr---------', e
+                pass
     else:
         form = RegisterForm()
 
     return render_to_response('portal/register_page.html', {'form':form}, 
         context_instance=RequestContext(request))
+
 
 def add_news(request):
     user = request.session.get('user_item', None)
@@ -611,23 +513,6 @@ def edit_items(request, items_id=None):
         return("dashboard")
 
 
-def price_related(request, price_id = None):
-    item = request.session.get('item_item', None)
-    user = request.session.get('user_item', None)
-    others_item = request.session.get('others_item', None)
-
-    try:
-        price = ItemPrice.objects.get(id=price_id)
-        rate_price = PriceRate.objects.filter(price=price).order_by('id')
-
-        context = {'others': others_item, 'items': item, 'rate_price': rate_price,
-                   'title': 'Price Rate Details'}
-        return render_to_response('items/details_rateprice.html', context,
-            context_instance=RequestContext(request))
-
-    except Exception, e:
-        print e
-        return redirect("dashboard")
 
 def store_related(request, store_id = None):
     item = request.session.get('item_item', None)

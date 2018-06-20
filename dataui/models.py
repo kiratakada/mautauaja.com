@@ -136,68 +136,6 @@ class News(models.Model):
         return self.title
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#============================ GAK GUNA!!! ===========================
-
-
-class ItemPrice(models.Model):
-    user = models.ForeignKey(User)
-    item = models.ForeignKey(MasterItem, null=True, blank=True)
-    store = models.ForeignKey(MasterStore, null=True, blank=True)
-    price = models.FloatField()
-    comment = models.TextField()
-    date_created = models.DateTimeField(auto_now_add=True)
-
-    def __unicode__(self):
-        return "%s" % self.price
-
-
-class StoreRate(models.Model):
-    user = models.ForeignKey(User)
-    store = models.ForeignKey(MasterStore)
-    rate = models.IntegerField()
-    comment = models.TextField()
-    date_created = models.DateTimeField(auto_now_add=True)
-
-    def __unicode__(self):
-        return '%s-%s' % (self.user, self.rate)
-
-class PriceRate(models.Model):
-    user = models.ForeignKey(User)
-    price = models.ForeignKey(ItemPrice)
-    rate = models.IntegerField()
-    comment = models.TextField()
-    date_created = models.DateTimeField(auto_now_add=True)
-
-    def __unicode__(self):
-        return '%s-%s' % (self.user, self.rate)
-
 class RequestItem(models.Model):
     item_name = models.CharField(max_length=50)
     description = models.TextField()
@@ -212,3 +150,7 @@ class AboutUs(models.Model):
 
     def __unicode__(self):
         return self.desc
+
+class Order(models.Model):
+	ordernumber = models.CharField(max_length=50)
+	price = models.IntegerField()
