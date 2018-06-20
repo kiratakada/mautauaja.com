@@ -499,7 +499,7 @@ def edit_news(request, news_id=None):
         else:
             form = AddNewsForm()
 
-        context = {'form':form, 'title': 'Edit News', 'edit_data': edit_news}
+        context = {'form':form, 'title': 'Edit Berita', 'edit_data': edit_news}
         return render_to_response('portal/news.html', context,
             context_instance=RequestContext(request))
 
@@ -603,7 +603,7 @@ def edit_items(request, items_id=None):
         else:
             form = AddItemForm()
 
-        context = {'form':form, 'title': 'Edit Items', 'edit_data': edit_item}
+        context = {'form':form, 'title': 'Edit Sepatu', 'edit_data': edit_item}
         return render_to_response('portal/items.html', context,
             context_instance=RequestContext(request))
 

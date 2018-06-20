@@ -18,20 +18,10 @@
             </ul>
         {% endif %}
     </li>
-    
-    {% if user.is_superuser %}
-        <li>
-            <a href="#">Admin Menu</a>
-            <ul>
-                <li><a href="{% url add_news %}">Add News</a></li>
-                <li><a href="{% url add_item %}">Add Items</a></li>
-            </ul>
-        </li>
-    {% endif %}
     <li>
         <a href="#">Barang</a>
         <ul>
-            <li><a href="{% url items_request %}">Request Barang</a></li>
+            <li><a href="{% url items_request %}">Pesan Sepatu</a></li>
         </ul>
     </li>
     <li>
@@ -43,4 +33,13 @@
             <li><a href="mailto:pandawa168@gmail.com"><img src="/mautauaja/static/icons/gmail.png" style="width: 25px; height: 25px; margin-top: 5px;"></a></li>
         </ul>
     </li>
+    {% if user.is_superuser %}
+        <li>
+            <a href="#">Menu Admin</a>
+            <ul>
+                <li><a href="{% url add_news %}">Tambah Berita Baru</a></li>
+                <li><a href="{% url add_item %}">Tambah Sepatu</a></li>
+            </ul>
+        </li>
+    {% endif %}
 </ul>

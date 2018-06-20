@@ -34,7 +34,7 @@
                                             </table>
                                         </a>
                                         {% if user.is_superuser %}
-                                            <a href="{% url edit_news item.id %}"> Edit News</a>
+                                            <a href="{% url edit_news item.id %}"> Edit Berita</a>
                                         {% endif %}
                                     </li>
                             {% endfor %}
@@ -70,7 +70,7 @@
                             {% for data in msitem %}
                                 <div class="thumb">
                                     {% if user.is_superuser %}
-                                        <a href={% url edit_items data.id %}>Edit Item</span></a><br>
+                                        <a href={% url edit_items data.id %}>Edit Sepatu</span></a><br>
                                     {% endif %}
                                     
                                     <a href="{% url item_details data.id %}">
