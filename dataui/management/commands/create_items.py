@@ -18,6 +18,7 @@ class Command(BaseCommand):
 			description=data[0],
 			picture=data[1],
 			price=data[2],
+			point=int(data[2]/100),
 			store=user_store
 		)
 		print 'success create item {}'.format(data[0])

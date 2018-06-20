@@ -146,12 +146,12 @@ class AddNewsForm(forms.Form):
         return self.cleaned_data
 
 class AddItemForm(forms.Form):
-    category = forms.ModelChoiceField(Category.objects.all().order_by('name'))
-    sub_category = forms.ModelChoiceField(SubCategory.objects.all().order_by('name'), label="Sub Category")
-
-    name = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'Item Name')
+    # category = forms.ModelChoiceField(Category.objects.all().order_by('name'))
+    sub_category = forms.ModelChoiceField(SubCategory.objects.all().order_by('name'), label="Type Sepatu")
+    name = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'Nama')
+    price = forms.IntegerField(label='Harga')
     description = forms.CharField(widget=forms.widgets.Textarea())
-    photo = forms.FileField(label="Photo")
+    photo = forms.FileField(label="Image")
 
     def clean(self):
         if self.errors:
@@ -164,4 +164,3 @@ class CommentSelectForm(forms.Form):
 class ItemRequestForm(forms.Form):
     item_name = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'Item Name')
     description = forms.CharField(widget=forms.widgets.Textarea())
-    

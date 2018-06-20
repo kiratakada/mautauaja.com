@@ -522,10 +522,11 @@ def add_item(request):
         if request.method == 'POST':
             form = AddItemForm(request.POST, request.FILES)
             if form.is_valid():
-                category = form.cleaned_data['category']
                 subcategory = form.cleaned_data['sub_category']
                 name = form.cleaned_data['name']
                 description = form.cleaned_data['description']
+                price = form.cleaned_data['price']
+                store = MasterStore.objects.get(id=1)
 
                 try:
                     photo = request.FILES['photo']
@@ -535,12 +536,15 @@ def add_item(request):
 
                 try:
                     items = MasterItem.objects.create(
-                        category = category,
+                        category = subcategory.category,
                         subcategory = subcategory,
                         created_by = user,
                         name = name,
+	                    store = store,
                         description = description,
-                        picture = 'items/'+str(photo)
+                        picture = 'items/'+str(photo),
+	                    price = int(price),
+	                    point = int(price / 100)
                     )
 
                 except Exception, e:
@@ -551,7 +555,9 @@ def add_item(request):
 
         return render_to_response('portal/items.html', {'form':form, 'title': "Add Items"}, 
             context_instance=RequestContext(request))
+
     except Exception, e:
+        print 'Errorrr', e
         return redirect("dashboard")
 
 def edit_items(request, items_id=None):
@@ -572,10 +578,10 @@ def edit_items(request, items_id=None):
         if request.method == 'POST':
             form = AddItemForm(request.POST, request.FILES)
             if form.is_valid():
-                category = form.cleaned_data['category']
                 subcategory = form.cleaned_data['sub_category']
                 name = form.cleaned_data['name']
                 description = form.cleaned_data['description']
+                price = form.cleaned_data['price']
 
                 try:
                     photo = request.FILES['photo']
@@ -584,11 +590,13 @@ def edit_items(request, items_id=None):
                     pass
 
                 edit_item.user = user
-                edit_item.category = category
+                edit_item.category = subcategory.category
                 edit_item.subcategory = subcategory
                 edit_item.name = name
                 edit_item.description = description
                 edit_item.picture = 'items/'+str(photo)
+                edit_item.price = int(price)
+                edit_item.point = int(price/100)
                 edit_item.save()
                 return redirect("dashboard")
 

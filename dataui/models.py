@@ -73,7 +73,7 @@ class MasterItem(models.Model):
     date_modified = models.DateTimeField(auto_now_add=True)
 
     price = models.IntegerField()
-
+    point = models.IntegerField()
 
     def __unicode__(self):
         return self.name

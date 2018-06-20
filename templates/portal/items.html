@@ -7,15 +7,17 @@
 {% block head %}
 	 <script type="text/javascript">
 		  function show_current_data(){
-			var status = $('#id_status').val()
-			var title = $('#id_edit_name').val()
-			var content = $('#id_edit_description').val()
-            var category = $('#id_edit_category').val()
+                var status = $('#id_status').val()
+                var title = $('#id_edit_name').val()
+                var content = $('#id_edit_description').val()
+                var sub_category = $('#id_edit_sub_category').val()
+                var price = $('#id_edit_price').val()
 			
             if (status == 'Edit Items') {
-               $('#id_name').val(title)
-               $('#id_description').val(content)
-               $('#id_category').val(category)
+                $('#id_name').val(title)
+                $('#id_description').val(content)
+                $('#id_sub_category').val(sub_category)
+                $('#id_price').val(price)
             }
          }
 		
@@ -41,12 +43,12 @@
 		  <input type = 'hidden' id="id_status" value="{{ title }}">
 		  <input type = 'hidden' id="id_edit_name" value="{{ edit_data.name }}">
 		  <input type = 'hidden' id="id_edit_description" value="{{ edit_data.description }}">
-		  <input type = 'hidden' id="id_edit_category" value="{{ edit_data.category.id }}">
-		  
+		  <input type = 'hidden' id="id_edit_sub_category" value="{{ edit_data.subcategory.id }}">
+          <input type = 'hidden' id="id_edit_price" value="{{ edit_data.price }}">
+
 		  <br/>
-		  <h3 class="thin">Add New Item</h3>
-		  
-		  
+		  <h3 class="thin">Add New Item </h3>
+
 		  <form enctype="multipart/form-data" method="POST" action=".">
 			  <table id="id_price_table">
 					<tr>
