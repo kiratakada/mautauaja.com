@@ -512,30 +512,9 @@ def edit_items(request, items_id=None):
     except Exception,e:
         return("dashboard")
 
-
-
-def store_related(request, store_id = None):
-    item = request.session.get('item_item', None)
-    user = request.session.get('user_item', None)
-    others_item = request.session.get('others_item', None)
-
-    try:
-        store = MasterStore.objects.get(id=store_id)
-        rate_store = StoreRate.objects.filter(store=store).order_by('id')
-
-        context = {'others': others_item, 'items': item, 'rate_price': rate_store,
-                   'title': 'Store Rate Details'}
-        return render_to_response('items/details_rateprice.html', context,
-            context_instance=RequestContext(request))
-
-    except Exception, e:
-        print e
-        return redirect("dashboard")
-
 def items_request(request):
 
     data_item = RequestItem.objects.all()
-
     try:
         if request.method == 'POST':
             form = ItemRequestForm(request.POST)
@@ -567,3 +546,15 @@ def about_us(request):
     context = {'description': desc, 'category': category}
     return render_to_response('items/about_us.html', context,
         context_instance=RequestContext(request))
+
+
+def checkout_temp(request, items_id=None):
+
+	try:
+		master_item = MasterItem.objects.get(id=items_id)
+		context = {'item': master_item}
+		return render_to_response('items/checkout_temp.html', context, context_instance=RequestContext(request))
+	except Exception as e:
+		print e
+		return redirect("dashboard")
+
