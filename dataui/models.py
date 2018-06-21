@@ -151,6 +151,34 @@ class AboutUs(models.Model):
     def __unicode__(self):
         return self.desc
 
-class Order(models.Model):
-	ordernumber = models.CharField(max_length=50)
+class PaymentGateway(models.Model):
+	name = models.CharField(max_length=250)
+	payment_number = models.CharField(max_length=100, null=True, blank=True)
+	payment_name = models.CharField(max_length=100, null=True, blank=True)
+	payment_type = models.CharField(max_length=50)
+	payment_currency = models.CharField(max_length=50)
+	is_active = models.BooleanField(default=True)
+
+class Shiping(models.Model):
+	name = models.CharField(max_length=250)
+	is_active = models.BooleanField(default=True)
+
+class Cities(models.Model):
+	name = models.CharField(max_length=250)
+	is_active = models.BooleanField(default=True)
+
+class ShipingCost(models.Model):
+	shiping = models.ForeignKey(Shiping)
+	cities = models.ForeignKey(Cities)
 	price = models.IntegerField()
+	point = models.IntegerField()
+
+class Order(models.Model):
+	purchase_date = models.DateTimeField(auto_now_add=True)
+	order_number = models.CharField(max_length=50)
+	price = models.IntegerField()
+	currency = models.CharField(max_length=5)
+	order_status = models.CharField(max_length=50)
+	user = models.ForeignKey(User)
+	address = models.TextField()
+	cities = models.ForeignKey(Cities)
