@@ -1,15 +1,60 @@
 {% extends "bare_bones.html" %}
+{% load humanize %}
 
 {% block title %}
-   Checkout / Beli
+   Checkout
 {% endblock %}
 
+
 {% block body %}
-    <br/><br/><br/>
-    <h1> Checkout / Beli</h1>
+    <br xmlns="http://www.w3.org/1999/html"/><br/><br/>
+    <h1> Checkout</h1>
 
     <div class="items_content">
+        <form method="post">
+            {% if error_message %}
+                <div class="ballon_answers" style="text-align: center; color: red; font-size: medium">
+                {{ error_message }}
+                </div>
+            {% endif %}
 
+            <table style="width: 100%;">
+                <tr>
+                    <td style="width: 20%">
+                        <h4>{{ item.name }}</h4>
+                        <img src="/mautauaja/display_img/{{ item.picture}}" width="240px" height="240px;" align="">
+                        <br><br>
+                        <label>Spesifikasi : </label>
+                        <h6>{{ item.description }}</h6>
+                    </td>
+                    <td style="width: 80%; padding: 10px">
+                        <div style="padding-left: 20px; padding: 20px">
+                        <label>Harga </label> Rp.{{ item.price|intcomma }} &nbsp; | &nbsp; PTS.{{ item.point|intcomma }}
+
+                        <br><br>
+                        {{ form.payment.errors }}
+                        <label>Pembayaran </label>
+                        <div style="padding-left: 100px; margin-top: -12px;">
+                            {{ form.payment }}
+                        </div><br>
+
+                        {{ form.cities.errors }}
+                        <label>POS INDONESIA </label> {{ form.cities }}
+
+                        <br><br>
+                        {{ form.address.errors }}
+                        <label>Alamat</label>
+                            <div style="padding-left: 100px; margin-top: -12px;">
+                            {{ form.address }}
+                            </div>
+                        </div>
+                        <div text-align="right" style="padding-left: 180px;">
+                            <a href="{% url dashboard %}" class="btn_beli" style="color: #4d1e4d">Cancel</a> &nbsp;
+                            <input type='submit' class="btn_beli" value='Confirm'>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
     </div>
-
 {% endblock %}

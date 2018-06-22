@@ -164,3 +164,10 @@ class CommentSelectForm(forms.Form):
 class ItemRequestForm(forms.Form):
     item_name = forms.CharField(max_length = 30, widget=forms.TextInput(), label=u'Item Name')
     description = forms.CharField(widget=forms.widgets.Textarea())
+
+class CheckoutRequestForm(forms.Form):
+    CHOICES = [(i.id, i.name) for i in PaymentGateway.objects.all().order_by('id')]
+    payment = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect())
+
+    cities = forms.ModelChoiceField(Cities.objects.all().order_by('id'), label="Kota")
+    address = forms.CharField(widget=forms.widgets.Textarea())

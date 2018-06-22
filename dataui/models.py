@@ -20,6 +20,7 @@ class UserProfile(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField()
+    point = models.IntegerField(default=0)
 
     def __unicode__(self):
         return '%s' % (self.user)
@@ -159,13 +160,22 @@ class PaymentGateway(models.Model):
 	payment_currency = models.CharField(max_length=50)
 	is_active = models.BooleanField(default=True)
 
+	def __unicode__(self):
+		return self.name
+
 class Shiping(models.Model):
 	name = models.CharField(max_length=250)
 	is_active = models.BooleanField(default=True)
 
+	def __unicode__(self):
+		return self.name
+
 class Cities(models.Model):
 	name = models.CharField(max_length=250)
 	is_active = models.BooleanField(default=True)
+
+	def __unicode__(self):
+		return self.name
 
 class ShipingCost(models.Model):
 	shiping = models.ForeignKey(Shiping)
@@ -176,7 +186,9 @@ class ShipingCost(models.Model):
 class Order(models.Model):
 	purchase_date = models.DateTimeField(auto_now_add=True)
 	order_number = models.CharField(max_length=50)
-	price = models.IntegerField()
+	price = models.IntegerField(default=0)
+	shipping_cost = models.IntegerField(default=0)
+	total_price = models.IntegerField(default=0)
 	currency = models.CharField(max_length=5)
 	order_status = models.CharField(max_length=50)
 	user = models.ForeignKey(User)

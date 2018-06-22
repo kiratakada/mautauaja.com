@@ -2,6 +2,7 @@ import ast
 import os
 import random
 import datetime
+import string
 
 from datetime import datetime, timedelta
 from django.contrib import messages
@@ -308,7 +309,8 @@ def register_user(request):
                 user_profile = UserProfile.objects.create(
                     user=data_user,
                     photo = 'user/'+str(photo),
-                    is_active = True)
+                    is_active = True,
+                    point=0)
 
                 return redirect('user_login')
 
@@ -525,9 +527,7 @@ def items_request(request):
                 rate = RequestItem.objects.create(
                     item_name = item_name,
                     description = description)
-
                 return redirect("items_request")
-
         else:
             form = ItemRequestForm()
 
@@ -547,14 +547,61 @@ def about_us(request):
     return render_to_response('items/about_us.html', context,
         context_instance=RequestContext(request))
 
+def generate_invoice(size=10, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
 
 def checkout_temp(request, items_id=None):
 
 	try:
 		master_item = MasterItem.objects.get(id=items_id)
-		context = {'item': master_item}
+		error_message, price, cost = None, 0, 0
+
+		if request.method == 'POST':
+			form = CheckoutRequestForm(request.POST)
+			if form.is_valid():
+				payment = form.cleaned_data['payment']
+				cities = form.cleaned_data['cities']
+				address = form.cleaned_data['address']
+
+				payment = PaymentGateway.objects.get(id=payment)
+				cities = Cities.objects.get(name=cities)
+				shiping = Shiping.objects.get(id=1)
+
+				shipping_cost = ShipingCost.objects.get(cities = cities, shiping=shiping)
+
+				if payment.payment_type == 'POINT':
+					user_profile = UserProfile.objects.get(user=request.user)
+					if user_profile.point >= master_item.point:
+						price = master_item.point
+						cost = shipping_cost.point
+					else:
+						error_message = "Point Kamu Tidak Cukup"
+				else:
+					price = master_item.price
+					cost = shipping_cost.price
+
+				if error_message is None:
+					order_number = generate_invoice()
+
+					new_order = Order.objects.create(
+						order_number = order_number,
+						price = price,
+						shipping_cost = cost,
+						total_price = price + cost,
+						currency = payment.payment_currency,
+						order_status = 'Order Baru',
+						user = request.user,
+						address = address,
+						cities = cities
+					)
+		else:
+			form = CheckoutRequestForm()
+
+		context = {'item': master_item, 'form': form, 'error_message': error_message}
 		return render_to_response('items/checkout_temp.html', context, context_instance=RequestContext(request))
+
 	except Exception as e:
 		print e
 		return redirect("dashboard")
+
 

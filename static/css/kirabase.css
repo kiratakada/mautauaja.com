@@ -834,3 +834,30 @@ div.thumb {
 	margin-left: 30px;
 	border: 1px solid black;
 }
+
+.btn_beli {
+    background: #43ed37;
+    background-image: -webkit-linear-gradient(top, #43ed37, #43ed37);
+    background-image: -moz-linear-gradient(top, #43ed37, #43ed37);
+    background-image: -ms-linear-gradient(top, #43ed37, #43ed37);
+    background-image: -o-linear-gradient(top, #43ed37, #43ed37);
+    background-image: linear-gradient(to bottom, #43ed37, #43ed37);
+    -webkit-border-radius: 28;
+    -moz-border-radius: 28;
+    border-radius: 28px;
+    font-family: Arial;
+    color: #4d1e4d;
+    font-size: 14px;
+    padding: 10px 20px 10px 20px;
+    text-decoration: none;
+}
+
+.btn_beli:hover {
+    background: #cf1db7;
+    background-image: -webkit-linear-gradient(top, #cf1db7, #cf1db7);
+    background-image: -moz-linear-gradient(top, #cf1db7, #cf1db7);
+    background-image: -ms-linear-gradient(top, #cf1db7, #cf1db7);
+    background-image: -o-linear-gradient(top, #cf1db7, #cf1db7);
+    background-image: linear-gradient(to bottom, #cf1db7, #cf1db7);
+    text-decoration: none;
+}
