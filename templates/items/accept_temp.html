@@ -1,0 +1,41 @@
+{% extends "bare_bones.html" %}
+{% load humanize %}
+
+{% block title %}
+   Accept
+{% endblock %}
+
+
+{% block body %}
+    <br><br>
+    <h1>Accept</h1>
+
+    <div class="items_content">
+        <table style="width: 100%;">
+            <tr>
+                <td style="width: 20%">
+                    <h4>{{ order.items.name }}</h4>
+                    <img src="/mautauaja/display_img/{{ order.items.picture}}" width="240px" height="240px;" align="">
+                    <br><br>
+                    <label>Spesifikasi : </label>
+                    <h6>{{ order.items.description }}</h6>
+                </td>
+                <td style="width: 80%; padding: 20px; padding-top: 60px;">
+                    <div style="text-align: center; font-size: medium; color: white">
+                        <span>Terima kasih telah belanja di toko kami Ranli Mart.</span> <br><br>
+                        <hr>
+                        <span style="color: greenyellow">Order ID : {{ order.order_number }}</span><br><br>
+                        <hr>
+                        <span style="font-size: small">** Transaksi anda bisa di lihat pada halaman My Profile anda.</span>
+                    </div><br><br><br><br>
+
+                    <div text-align="right" style="padding-left: 180px;">
+                        <a href="{% url dashboard %}" class="btn_beli" style="color: #4d1e4d">Lanjut Belanja</a>
+                    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+{% endblock %}

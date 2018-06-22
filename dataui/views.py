@@ -551,7 +551,6 @@ def generate_invoice(size=10, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
 def checkout_temp(request, items_id=None):
-
 	try:
 		master_item = MasterItem.objects.get(id=items_id)
 		error_message, price, cost = None, 0, 0
@@ -586,14 +585,17 @@ def checkout_temp(request, items_id=None):
 					new_order = Order.objects.create(
 						order_number = order_number,
 						price = price,
+						items = master_item,
 						shipping_cost = cost,
 						total_price = price + cost,
 						currency = payment.payment_currency,
-						order_status = 'Order Baru',
+						order_status = 'new',
 						user = request.user,
 						address = address,
-						cities = cities
+						cities = cities,
+						payment=payment
 					)
+					return redirect("confirm_temp", order_id=new_order.id)
 		else:
 			form = CheckoutRequestForm()
 
@@ -601,7 +603,35 @@ def checkout_temp(request, items_id=None):
 		return render_to_response('items/checkout_temp.html', context, context_instance=RequestContext(request))
 
 	except Exception as e:
-		print e
 		return redirect("dashboard")
 
+def confirm_temp(request, order_id=None):
+	try:
+		master_order = Order.objects.get(id=order_id)
+		context = {'order': master_order}
+		return render_to_response('items/confirm_temp.html', context, context_instance=RequestContext(request))
+	except Exception as e:
+		return redirect("dashboard")
 
+def accept_order_temp(request, order_id=None):
+	try:
+		master_order = Order.objects.get(id=order_id)
+
+		if master_order.payment.payment_type == 'POINT':
+			user_profile = UserProfile.objects.get(user=master_order.user)
+			user_profile.point = user_profile.point - master_order.total_price
+			user_profile.save()
+
+			master_order.order_status = 'completed'
+			master_order.save()
+
+		else:
+			master_order.order_status = 'waiting'
+			master_order.save()
+
+		context = {'order': master_order}
+		return render_to_response('items/accept_temp.html', context, context_instance=RequestContext(request))
+
+	except Exception as e:
+		print e
+		return redirect("dashboard")

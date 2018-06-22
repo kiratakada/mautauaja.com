@@ -191,6 +191,12 @@ class Order(models.Model):
 	total_price = models.IntegerField(default=0)
 	currency = models.CharField(max_length=5)
 	order_status = models.CharField(max_length=50)
+
+	payment = models.ForeignKey(PaymentGateway)
 	user = models.ForeignKey(User)
 	address = models.TextField()
 	cities = models.ForeignKey(Cities)
+	items = models.ForeignKey(MasterItem)
+
+	def __unicode__(self):
+		return self.order_number
