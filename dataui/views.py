@@ -633,5 +633,17 @@ def accept_order_temp(request, order_id=None):
 		return render_to_response('items/accept_temp.html', context, context_instance=RequestContext(request))
 
 	except Exception as e:
+		return redirect("dashboard")
+
+def my_profile(request):
+	try:
+		master_user = request.user
+		master_profile = UserProfile.objects.get(user=request.user)
+
+		my_order = Order.objects.filter(user = master_user, order_status__in=["waiting", "completed"]).all()
+		context = {'user': master_user, 'profile': master_profile, 'order': my_order}
+		return render_to_response('items/myprofile.html', context, context_instance=RequestContext(request))
+
+	except Exception as e:
 		print e
 		return redirect("dashboard")

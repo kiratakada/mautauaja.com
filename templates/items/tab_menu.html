@@ -1,6 +1,6 @@
 <ul id="tabmenu">
     <li>
-        <a href="#">Kategori</a>
+        <a href="{% url dashboard %}">Kategori</a>
         {% if category %}
             <ul>
                 {% for item in category %}
@@ -25,7 +25,7 @@
         </ul>
     </li>
     <li>
-        <a href="?3">Tentang Kami</a>
+        <a href="?3">Ranli Mart ?</a>
         <ul>
             <li><a href="{% url about_us %}"><img src="/mautauaja/static/icons/about.png" style="width: 25px; height: 25px;"></a></li>
             <li><a href="http://www.facebook.com"><img src="/mautauaja/static/icons/facebook.png" style="width: 25px; height: 25px;"></a></li>
@@ -44,10 +44,10 @@
     {% endif %}
     {% if user.id %}
         <li>
-            <a href="#">MyProfile</a>
-            <ul>
-                <li><a href="#">Profile Kamu</a></li>
-            </ul>
+            <a href="{% url my_profile %}">Profile</a>
+{#            <ul>#}
+{#                <li><a href="{% url my_profile %}">MyProfile</a></li>#}
+{#            </ul>#}
         </li>
     {% endif %}
 </ul>
