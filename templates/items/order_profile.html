@@ -1,0 +1,54 @@
+{% extends "bare_bones.html" %}
+{% load humanize %}
+
+{% block title %}
+   Detail Transaksi Belanja
+{% endblock %}
+
+
+{% block body %}
+    {% include "items/tab_menu.html" %}
+    <div class="items_content">
+        <a href="{% url my_profile %}"> << Profile </a> <br><br>
+        <table style="width: 100%;">
+            <tr>
+                <td style="width: 20%">
+                    <br>
+                    <img src="/mautauaja/display_img/{{ order.items.picture }}" width="280px" height="280px;" align="">
+                </td>
+                <td style="width: 80%; padding: 10px">
+                    <label>Order ID</label> {{ order.order_number }} <br><br>
+                    <label>Sepatu</label> {{ order.items.name }}<br><br>
+
+                    {% ifequal order.payment.payment_type 'ATM' %}
+                        <label>Pembayaran</label> {{ order.payment.name }} ATM Transfer <br><br>
+                    {% else %}
+                        <label>Pembayaran</label> {{ order.payment.name }}<br><br>
+                    {% endifequal %}
+
+                    <label>Alamat</label> {{ order.address }}<br><br>
+
+                    <hr>
+                    <label>Harga</label> {{ order.payment.payment_currency }}  {{ order.price|intcomma }}<br><br>
+                    <label>Ongkos Kirim</label> {{ order.payment.payment_currency }}  {{ order.shipping_cost|intcomma }}<br><br>
+                    <hr>
+                    <label>Total</label> {{ order.payment.payment_currency }}  {{ order.total_price|intcomma }}<br><br>
+                    <hr>
+
+                    {% ifnotequal order.order_status 'completed' %}
+                        {% ifequal order.payment.payment_type 'ATM' %}
+                            <span style="color: yellow; font-size: small">
+                                Pembayaran dapat dilakukan dengan cara mentransfer melalui ATM  {{ order.payment.name }} ke nomor
+                                rekening {{ order.payment.payment_number }} atas nama {{ order.payment.payment_name }}
+                            </span>
+                        {% endifequal %} <br><br>
+                    {% else %}
+                        <div text-align="right" style="padding-left: 180px;">
+                            <span style="color: yellow; font-size: small; text-align: center">PEMBAYARAN SELESAI</span>
+                        </div>
+                    {% endifnotequal %}
+                </td>
+            </tr>
+        </table>
+    </div>
+{% endblock %}

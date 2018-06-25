@@ -640,10 +640,18 @@ def my_profile(request):
 		master_user = request.user
 		master_profile = UserProfile.objects.get(user=request.user)
 
-		my_order = Order.objects.filter(user = master_user, order_status__in=["waiting", "completed"]).all()
+		my_order = Order.objects.filter(user = master_user, order_status__in=["waiting", "completed"]).order_by("-id").all()
 		context = {'user': master_user, 'profile': master_profile, 'order': my_order}
 		return render_to_response('items/myprofile.html', context, context_instance=RequestContext(request))
 
 	except Exception as e:
-		print e
 		return redirect("dashboard")
+
+def detail_order_profile(request, order_id=None):
+	try:
+		order_master = Order.objects.get(id=order_id, user=request.user)
+		context = {'order': order_master}
+		return render_to_response('items/order_profile.html', context, context_instance=RequestContext(request))
+	except Exception as e:
+		print e
+		return redirect("my_profile")

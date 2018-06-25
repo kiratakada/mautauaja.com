@@ -29,7 +29,7 @@
             </tr>
         </table>
         <br><br>
-        <span>Daftar Transaksi<span>
+        <span>Daftar Belanja<span>
         <hr>
         <br>
 
@@ -46,7 +46,7 @@
             {% if order %}
                 {% for data in order %}
                     <tr>
-                    <td>{{ data.order_number }}</td>
+                    <td><a href="{% url detail_order_profile data.id %}">{{ data.order_number }}</a></td>
                     <td>{{ data.purchase_date|date:"Y-m-d H:m"}}</td>
                     <td>{{ data.items.name }}</td>
                     <td>{{ data.payment.name }}</td>

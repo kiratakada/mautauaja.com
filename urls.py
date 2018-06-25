@@ -38,6 +38,7 @@ urlpatterns = patterns('',
     url(r'^%s/accept/(?P<order_id>\w+)/$' % (settings.PROJECT_NAME), 'dataui.views.accept_order_temp', name = 'accept_order_temp'),
 
     url(r'^%s/myprofile/$' % (settings.PROJECT_NAME), 'dataui.views.my_profile', name='my_profile'),
+    url(r'^%s/order-myprofile/(?P<order_id>\w+)/$' % (settings.PROJECT_NAME), 'dataui.views.detail_order_profile', name='detail_order_profile'),
 
     # Uncomment the next line to enable the admin:
     (r'^%s/admin/' % (settings.PROJECT_NAME), include(admin.site.urls)),
