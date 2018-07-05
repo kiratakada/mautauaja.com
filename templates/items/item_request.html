@@ -46,20 +46,14 @@
 	</script>
 {% endblock %}
 
-{% block breadcrumb %}
-    <div class="toolbar">
-       <div class="span-9 left breadcrumb">
-           <a href='{% url dashboard %}'> Beranda </a>
-           <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">
-           Request New Items
-       </div>
-    </div>
-{% endblock %}
-
 {% block body %}
+    {% include "items/tab_menu.html" %}
+
     <div class="items_content">
-		<br/>
-        <h3 class="thin">Request New Items</h3>
+		    <br/>
+          <span>Pesan Sepatu</span>
+          <hr>
+          <br>
         
         <form enctype="multipart/form-data" method="POST" action=".">
             <table>
@@ -71,7 +65,7 @@
                     <td colspan="2">
                         <div>
                             <input type='submit' value='Ok'>
-                            <a href="{% url dashboard %}"><input type="button" class="button" value="Cancel"></a>
+                            <a href="{% url dashboard %}"><input type="button" class="button" value="Batal"></a>
                         </div>
                     </td>
                 </tr>
@@ -80,9 +74,9 @@
     
 		<table id="id_price_table">
 			<thead> 
-				<th style="width: 20%"> Item Name</th>
-				<th style="width: 18%"> Date Request </th>
-				<th> Description</th>
+				<th style="width: 20%"> Nama Sepatu</th>
+				<th style="width: 18%"> Tanggal Pesan </th>
+				<th> Deskripsi </th>
 				{% if user.is_superuser %}
 					<th style="width: 10%"> Actions </th>
 				{% endif %}
@@ -101,14 +95,14 @@
 							
 							{% if user.is_superuser %}
 								<td>
-									<a onclick="showAnswer({{ item.id }});" class="button">Reply </a>
+									<a onclick="showAnswer({{ item.id }});" class="button">Balas </a>
 								</td>
 							{% endif %}
 						</tr>
 					{% endfor %}
 				{% else %}
 					<tr>
-						<td colspan="3"> NO REQUEST </td>
+						<td colspan="4"> Tidak ada Pesanan </td>
 					</tr>
 				{% endif %}
 			</tbody>
