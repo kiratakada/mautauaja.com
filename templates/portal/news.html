@@ -26,25 +26,19 @@
 	</script>
 {% endblock %}
 
-{% block breadcrumb %}
-    <div class="toolbar">
-       <div class="span-9 left breadcrumb">
-           <a href='{% url dashboard %}'> Beranda </a>
-           <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">
-           {{ title }}
-       </div>
-    </div>
-{% endblock %}
-
 {% block body %}
+    {% include "items/tab_menu.html" %}
+
    <div class="items_content">
       <input type = 'hidden' id="id_status" value="{{ title }}">
       <input type = 'hidden' id="id_edit_title" value="{{ edit_data.title }}">
       <input type = 'hidden' id="id_edit_content" value="{{ edit_data.content }}">
       
       <br/>
-      <h3 class="thin">{{ title }}</h3>
-     
+      <span>Tambah Berita </span>
+      <hr>
+      <br>
+
       <form enctype="multipart/form-data" method="POST" action=".">
           <table id="id_price_table">
                 <tr>

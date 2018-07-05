@@ -655,3 +655,12 @@ def detail_order_profile(request, order_id=None):
 	except Exception as e:
 		print e
 		return redirect("my_profile")
+
+def admin_report_transaction(request):
+	try:
+		order_master = Order.objects.filter(order_status__in=["waiting", "completed"]).order_by("-id").all()
+		context = {'order': order_master}
+		return render_to_response('items/order_admin.html', context, context_instance=RequestContext(request))
+	except Exception as e:
+		print e
+		return redirect("dashboard")

@@ -1,0 +1,50 @@
+{% extends "bare_bones.html" %}
+{% load humanize %}
+
+{% block title %}
+   Order Admin
+{% endblock %}
+
+
+{% block body %}
+    {% include "items/tab_menu.html" %}
+    <div class="items_content">
+        <p>Laporan Transaksi</p>
+        <hr>
+        <table style="width: 100%;">
+            <tr style="color: black;">
+                <th style="text-align: center">Tanggal</th>
+                <th style="text-align: center">OrderId</th>
+                <th style="text-align: center">Pembeli</th>
+                <th style="text-align: center">Payment</th>
+                <th style="text-align: center">Total</th>
+                <th style="text-align: center">Status</th>
+            </tr>
+
+            {% if order %}
+                {% for data in order %}
+                    <tr>
+                    <td>{{ data.purchase_date|date:"Y-m-d H:m" }}</td>
+                    <td><a href="{% url detail_order_profile data.id %}">{{ data.order_number }}</a></td>
+                    <td>{{ data.user.username }}</td>
+                    <td>{{ data.payment.name }}</td>
+                    <td>{{ data.payment.payment_currency}} {{ data.total_price|intcomma }}</td>
+                    <td>
+                        {% ifequal data.order_status "waiting" %}
+                            <span style="color: orangered">Menunggu Bayar</span>
+                        {% else %}
+                            <span style="color: greenyellow">Selesai</span>
+                        {% endifequal %}
+                    </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="6"> Tidak Ada Transaksi</td>
+                </tr>
+            {% endif %}
+
+        </table>
+
+    </div>
+{% endblock %}

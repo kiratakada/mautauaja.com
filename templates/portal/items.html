@@ -28,17 +28,9 @@
 	</script>
 {% endblock %}
 
-{% block breadcrumb %}
-    <div class="toolbar">
-       <div class="span-9 left breadcrumb">
-           <a href='{% url dashboard %}'> Beranda </a>
-           <img src="/mautauaja/static/icons/left.png" style="width: 10px; height: 10px;">
-           {{ title }}
-       </div>
-    </div>
-{% endblock %}
 
 {% block body %}
+     {% include "items/tab_menu.html" %}
 	 <div class="items_content">
 		  <input type = 'hidden' id="id_status" value="{{ title }}">
 		  <input type = 'hidden' id="id_edit_name" value="{{ edit_data.name }}">
@@ -46,24 +38,27 @@
 		  <input type = 'hidden' id="id_edit_sub_category" value="{{ edit_data.subcategory.id }}">
           <input type = 'hidden' id="id_edit_price" value="{{ edit_data.price }}">
 
-		  <br/>
-		  <h3 class="thin">Add New Item </h3>
+		 <br/>
+         <span>Tambah Sepatu </span>
+         <hr>
+         <br>
 
-		  <form enctype="multipart/form-data" method="POST" action=".">
-			  <table id="id_price_table">
-					<tr>
-					  <td>{{ form.as_p }}</td>
-					</tr>
-				  
-				  <tr>
-					  <td colspan="2">
-						  <div>
-							  <input type='submit' value='Ok'>
-							  <a href="{% url dashboard %}"><input type="button" class="button" value="Cancel"></a>
-						  </div>
-					  </td>
-				  </tr>
-			  </table>
-		  </form>
+          <form enctype="multipart/form-data" method="POST" action=".">
+              <table id="id_price_table">
+                    <tr>
+                      <td>{{ form.as_p }}</td>
+                    </tr>
+
+                  <tr>
+                      <td colspan="2">
+                          <div>
+                              <input type='submit' value='Ok'>
+                              <a href="{% url dashboard %}"><input type="button" class="button" value="Cancel"></a>
+                          </div>
+                      </td>
+                  </tr>
+              </table>
+          </form>
+
 	 </div>
 {% endblock %}
