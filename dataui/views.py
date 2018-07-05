@@ -357,7 +357,7 @@ def add_news(request):
         else:
             form = AddNewsForm()
 
-        return render_to_response('portal/news.html', {'form':form, 'title': "Add News"}, 
+        return render_to_response('portal/news.html', {'form':form, 'title': "Tambah Berita"},
             context_instance=RequestContext(request))
     except Exception, e:
         return redirect('dashboard')
@@ -453,7 +453,7 @@ def add_item(request):
         else:
             form = AddItemForm()
 
-        return render_to_response('portal/items.html', {'form':form, 'title': "Add Items"}, 
+        return render_to_response('portal/items.html', {'form':form, 'title': "Tambah Sepatu"},
             context_instance=RequestContext(request))
 
     except Exception, e:
