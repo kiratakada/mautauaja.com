@@ -8,6 +8,7 @@
 
 {% block body %}
     {% include "items/tab_menu.html" %}
+
     <div class="items_content">
         <p>Laporan Transaksi</p>
         <hr>
@@ -25,7 +26,7 @@
                 {% for data in order %}
                     <tr>
                     <td>{{ data.purchase_date|date:"Y-m-d H:m" }}</td>
-                    <td><a href="{% url detail_order_profile data.id %}">{{ data.order_number }}</a></td>
+                    <td><a href="{% url admin_report_transaction_detail data.id %}">{{ data.order_number }}</a></td>
                     <td>{{ data.user.username }}</td>
                     <td>{{ data.payment.name }}</td>
                     <td>{{ data.payment.payment_currency}} {{ data.total_price|intcomma }}</td>

@@ -19,6 +19,11 @@ CHOICHES = (
     (5,''),
 )
 
+ORDER_CHOICHES = (
+	('completed', 'Selesai'),
+	('waiting', 'Menunggu Bayar')
+)
+
 COMMENT_CHOICES = (
     (1, 'Bad Comment'),
     (2, 'Good Comment'),
@@ -171,3 +176,6 @@ class CheckoutRequestForm(forms.Form):
 
     cities = forms.ModelChoiceField(Cities.objects.all().order_by('id'), label="Kota")
     address = forms.CharField(widget=forms.widgets.Textarea())
+
+class UpdateOrderForm(forms.Form):
+    status = forms.ChoiceField(choices=ORDER_CHOICHES)

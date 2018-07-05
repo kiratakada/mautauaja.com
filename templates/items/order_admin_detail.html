@@ -1,0 +1,53 @@
+{% extends "bare_bones.html" %}
+{% load humanize %}
+
+{% block title %}
+   Order Admin Detail
+{% endblock %}
+
+
+{% block body %}
+    {% include "items/tab_menu.html" %}
+    <div class="items_content">
+        <table style="width: 100%;">
+            <tr>
+                <td style="width: 20%">
+                    <h4>{{ order.items.name }}</h4>
+                    <img src="/mautauaja/display_img/{{ order.items.picture}}" width="240px" height="240px;" align="">
+                    <br><br>
+                    <label>Spesifikasi : </label>
+                    <h6>{{ order.items.description }}</h6>
+                </td>
+                <td style="width: 80%; padding: 20px">
+                    <label>Order Number</label> {{ order.order_number }} <br><br>
+                    <label>Sepatu</label> {{ order.items.name }}<br><br>
+
+                    {% ifequal order.payment.payment_type 'ATM' %}
+                        <label>Pembayaran</label> {{ order.payment.name }} ATM Transfer <br><br>
+                    {% else %}
+                        <label>Pembayaran</label> {{ order.payment.name }}<br><br>
+                    {% endifequal %}
+
+                    <label>Alamat</label> {{ order.address }}<br><br>
+
+                    <hr>
+                    <label>Harga</label> {{ order.payment.payment_currency }}  {{ order.price|intcomma }}<br><br>
+                    <label>Ongkos Kirim</label> {{ order.payment.payment_currency }}  {{ order.shipping_cost|intcomma }}<br><br>
+                    <hr>
+                    <label>Total</label> {{ order.payment.payment_currency }}  {{ order.total_price|intcomma }}<br><br>
+                    <hr>
+
+                    <form method="post">
+                        <label>Ubah Status</label>{{ form.status }}
+                        <br><br>
+                        <div text-align="right" style="padding-left: 180px;">
+                            <a href="{% url admin_report_transaction %}" class="btn_beli" style="color: #4d1e4d">Cancel</a>
+                            <input type='submit' class="btn_beli" value='Ubah'>&nbsp;
+                        </div>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+{% endblock %}

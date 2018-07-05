@@ -662,5 +662,25 @@ def admin_report_transaction(request):
 		context = {'order': order_master}
 		return render_to_response('items/order_admin.html', context, context_instance=RequestContext(request))
 	except Exception as e:
+		return redirect("dashboard")
+
+
+def admin_report_transaction_detail(request, order_id=None):
+	try:
+		order_master = Order.objects.get(id=order_id)
+		if request.method == 'POST':
+			form = UpdateOrderForm(request.POST)
+			if form.is_valid():
+				status = form.cleaned_data['status']
+				order_master.order_status = status
+				order_master.save()
+				return redirect("admin_report_transaction")
+		else:
+			form = UpdateOrderForm()
+
+		context = {'order': order_master, 'form': form}
+		return render_to_response('items/order_admin_detail.html', context, context_instance=RequestContext(request))
+
+	except Exception as e:
 		print e
 		return redirect("dashboard")
