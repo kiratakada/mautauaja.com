@@ -10,8 +10,13 @@
     {% include "items/tab_menu.html" %}
 
     <div class="items_content">
+
+        <div style="float: right; padding-bottom: 14px">
+            <a href="{% url export_to_order_csv %}" class="btn_beli" style="color: #4d1e4d">Download Data Transaksi</a>
+        </div>
         <p>Laporan Transaksi</p>
         <hr>
+
         <table style="width: 100%;">
             <tr style="color: black;">
                 <th style="text-align: center">Tanggal</th>
@@ -25,7 +30,7 @@
             {% if order %}
                 {% for data in order %}
                     <tr>
-                    <td>{{ data.purchase_date|date:"Y-m-d H:m" }}</td>
+                    <td>{{ data.purchase_date|date:"Y-m-d H:i" }}</td>
                     <td><a href="{% url admin_report_transaction_detail data.id %}">{{ data.order_number }}</a></td>
                     <td>{{ data.user.username }}</td>
                     <td>{{ data.payment.name }}</td>

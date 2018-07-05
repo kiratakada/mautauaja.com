@@ -1,8 +1,4 @@
-import ast
-import os
-import random
-import datetime
-import string
+import ast, os, random, string
 
 from datetime import datetime, timedelta
 from django.contrib import messages
@@ -682,5 +678,30 @@ def admin_report_transaction_detail(request, order_id=None):
 		return render_to_response('items/order_admin_detail.html', context, context_instance=RequestContext(request))
 
 	except Exception as e:
-		print e
 		return redirect("dashboard")
+
+def export_to_order_csv(request):
+	try:
+		import csv
+		order_master = Order.objects.filter(order_status__in=["waiting", "completed"]).order_by("-id").all()
+
+		response = HttpResponse(content_type='text/csv')
+		response['Content-Disposition'] = 'attachment; filename="laporan-transaksi.csv"'
+
+		writer = csv.writer(response)
+
+		writer.writerow(['Tanggal','OrderId', 'Nama Barang', 'Pembeli', 'Payment', 'Total', 'Currency','Status', 'Alamat Pengiriman'])
+		for idata in order_master:
+			if idata.order_status == 'waiting':
+				status = 'Menunggu Bayar'
+			else:
+				status = 'Selesai'
+
+			writer.writerow([idata.purchase_date.strftime('%Y-%m-%d %H:%M'), idata.order_number, idata.items.name, idata.user.username,
+			    idata.payment.name, idata.total_price, idata.payment.payment_currency, status, idata.address])
+
+		return response
+
+	except Exception as e:
+		print e
+		return redirect("admin_report_transaction")

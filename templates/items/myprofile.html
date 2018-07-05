@@ -22,8 +22,8 @@
                     <label>Email</label> {{ user.email }}<br><br>
                     <label>Point</label> {{ profile.point }} Point<br><br>
                     <hr>
-                    <label>Bergabung</label> {{ user.date_joined|date:"Y-m-d H:m"}}<br><br>
-                    <label>Login Terakhir</label> {{ user.last_login|date:"Y-m-d H:m"}}<br><br>
+                    <label>Bergabung</label> {{ user.date_joined|date:"Y-m-d H:i"}}<br><br>
+                    <label>Login Terakhir</label> {{ user.last_login|date:"Y-m-d H:i"}}<br><br>
                     <hr>
                 </td>
             </tr>
@@ -47,7 +47,7 @@
                 {% for data in order %}
                     <tr>
                     <td><a href="{% url detail_order_profile data.id %}">{{ data.order_number }}</a></td>
-                    <td>{{ data.purchase_date|date:"Y-m-d H:m"}}</td>
+                    <td>{{ data.purchase_date|date:"Y-m-d H:i"}}</td>
                     <td>{{ data.items.name }}</td>
                     <td>{{ data.payment.name }}</td>
                     <td>{{ data.payment.payment_currency}} {{ data.total_price|intcomma }}</td>

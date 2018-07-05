@@ -42,6 +42,7 @@ urlpatterns = patterns('',
 
     url(r'^%s/transaction/$' % (settings.PROJECT_NAME), 'dataui.views.admin_report_transaction', name = 'admin_report_transaction'),
     url(r'^%s/transaction/(?P<order_id>\w+)/$$' % (settings.PROJECT_NAME), 'dataui.views.admin_report_transaction_detail', name = 'admin_report_transaction_detail'),
+    url(r'^%s/export-csv/$' % (settings.PROJECT_NAME), 'dataui.views.export_to_order_csv', name='export_to_order_csv'),
 
     # Uncomment the next line to enable the admin:
     (r'^%s/admin/' % (settings.PROJECT_NAME), include(admin.site.urls)),
