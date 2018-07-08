@@ -688,7 +688,7 @@ def export_to_order_csv(request):
 		response = HttpResponse(content_type='text/csv')
 		response['Content-Disposition'] = 'attachment; filename="laporan-transaksi.csv"'
 
-		writer = csv.writer(response)
+		writer = csv.writer(response, delimiter=';')
 
 		writer.writerow(['Tanggal','OrderId', 'Nama Barang', 'Pembeli', 'Payment', 'Total', 'Currency','Status', 'Alamat Pengiriman'])
 		for idata in order_master:
