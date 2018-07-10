@@ -40,7 +40,7 @@ ul#tabmenu li a
     display:inline-block; 
     outline:0;
     
-    border:1px solid #000000;
+    border:1px solid #C8C8C8;
     border-bottom:none;
     background:#21436A url(bg-blue.gif) no-repeat 0 bottom;
     position:relative;
@@ -74,7 +74,7 @@ ul#tabmenu li.active ul, ul#tabmenu>li:first-child>ul
     text-align:right;
     margin:0;
     padding:0;
-    border:1px solid #000000;    
+    border:1px solid #000000;
     float:left;
     width:100%;
     z-index:3;

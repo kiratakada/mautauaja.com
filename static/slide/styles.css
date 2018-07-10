@@ -21,7 +21,6 @@ body{
 	margin-top: 10px;
 	overflow:hidden;
 	position:relative;
-	background:url('/mautauaja/static/assets/dark_bg.jpg') repeat #4e5355;
 	padding-bottom:5px;
 	text-overflow: ellipsis;
 

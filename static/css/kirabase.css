@@ -71,9 +71,10 @@ label {
 	width: 100px;
 	text-align: left;
 	display: inline-block;
-	font-weight: normal;
-	font-family: "DejaVu Sans", "Helvetica", "Verdana", sans-serif;
-	color: white;
+	font-weight: bold;
+	font-family: Helvetica, Arial, sans-serif;
+	color: #295367;
+    font-size: 12px;
 }
 
 .errorlist {
@@ -666,8 +667,8 @@ th.headerSortDown {
 	
 	margin-left: -10px;
 	margin-right: 25px;
-	border: 2px solid whitesmoke;
-	background-color: #2A2C2F;
+	border: 2px solid #C8C8C8;
+	background-color: white;
 
 	font-family: "DejaVu Sans", "Helvetica", "Verdana", sans-serif;
 	font-size: large;
@@ -691,8 +692,8 @@ th.headerSortDown {
 	height: 840px;
 	margin-left: -5px;
 	margin-right: 5px;
-	border: 1.5px solid whitesmoke;
-	background-color: #2A2C2F;
+	border: 2px solid #C8C8C8;
+	background-color: white;
 
 	font-family: "DejaVu Sans", "Helvetica", "Verdana", sans-serif;
 	font-size: medium;
@@ -724,12 +725,12 @@ th.headerSortDown {
 
 div.thumb {
 	margin: 3px;
-	border: 1px solid #A0ACC0;
+	border: 2px solid #68B3AF;
 	height: auto;
 	float: left;
 	text-align: center;
-	background-color: #FFFFFF;
-	color: white;
+	background-color: #F9F2E7;
+	color: #C8C8C8;
 	padding: 5px;
 	margin-left: 15px;
 	
@@ -742,10 +743,10 @@ div.thumb {
 .thumb img{
 	display: inline;
 	margin: 5px;
-	border: 1px solid #ECE2BF;
+	border: 1px solid #C8C8C8;
 	}
 	
-.thumb a:hover img {border: 1px solid #FF5C3D;}
+.thumb a:hover img {border: 1px solid #CC2A41;}
 
 
 .photocattitle {text-align: center; font-weight: bold;}
@@ -773,16 +774,16 @@ div.thumb {
 }
 
 .items_content{
-	background-color: #2A2C2F;
+	background-color: #ffffff;
 	padding: 70px;
-	border: 1px solid whitesmoke;
+	border: 2px solid #C8C8C8;
 	font-family: "DejaVu Sans", "Helvetica", "Verdana", sans-serif;
 	font-size: small;
-	color: white;
+	color: #381f25;
 }
 
 .items_content tr td{
-	border: 1px solid grey;
+	border: 2px solid #68B3AF;
 	color: grey;
 	width: 250px;
 }
@@ -836,12 +837,12 @@ div.thumb {
 }
 
 .btn_beli {
-    background: #43ed37;
-    background-image: -webkit-linear-gradient(top, #43ed37, #43ed37);
-    background-image: -moz-linear-gradient(top, #43ed37, #43ed37);
-    background-image: -ms-linear-gradient(top, #43ed37, #43ed37);
-    background-image: -o-linear-gradient(top, #43ed37, #43ed37);
-    background-image: linear-gradient(to bottom, #43ed37, #43ed37);
+    background: #FBB03B;
+    background-image: -webkit-linear-gradient(top, #FBB03B, #FBB03B);
+    background-image: -moz-linear-gradient(top, #FBB03B, #FBB03B);
+    background-image: -ms-linear-gradient(top, #FBB03B, #FBB03B);
+    background-image: -o-linear-gradient(top, #FBB03B, #FBB03B);
+    background-image: linear-gradient(to bottom, #FBB03B, #FBB03B);
     -webkit-border-radius: 28;
     -moz-border-radius: 28;
     border-radius: 28px;
@@ -853,11 +854,11 @@ div.thumb {
 }
 
 .btn_beli:hover {
-    background: #cf1db7;
-    background-image: -webkit-linear-gradient(top, #cf1db7, #cf1db7);
-    background-image: -moz-linear-gradient(top, #cf1db7, #cf1db7);
-    background-image: -ms-linear-gradient(top, #cf1db7, #cf1db7);
-    background-image: -o-linear-gradient(top, #cf1db7, #cf1db7);
-    background-image: linear-gradient(to bottom, #cf1db7, #cf1db7);
+    background: #828BC4;
+    background-image: -webkit-linear-gradient(top, #828BC4, #828BC4);
+    background-image: -moz-linear-gradient(top, #828BC4, #828BC4);
+    background-image: -ms-linear-gradient(top, #828BC4, #828BC4);
+    background-image: -o-linear-gradient(top, #828BC4, #828BC4);
+    background-image: linear-gradient(to bottom, #828BC4, #828BC4);
     text-decoration: none;
 }

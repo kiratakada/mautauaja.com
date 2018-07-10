@@ -1,52 +1,24 @@
 {% load humanize %}
 
-<style>
-    .btn_beli {
-      background: #43ed37;
-      background-image: -webkit-linear-gradient(top, #43ed37, #43ed37);
-      background-image: -moz-linear-gradient(top, #43ed37, #43ed37);
-      background-image: -ms-linear-gradient(top, #43ed37, #43ed37);
-      background-image: -o-linear-gradient(top, #43ed37, #43ed37);
-      background-image: linear-gradient(to bottom, #43ed37, #43ed37);
-      -webkit-border-radius: 28;
-      -moz-border-radius: 28;
-      border-radius: 28px;
-      font-family: Arial;
-      color: #4d1e4d;
-      font-size: 14px;
-      padding: 10px 20px 10px 20px;
-      text-decoration: none;
-    }
-
-    .btn_beli:hover {
-      background: #cf1db7;
-      background-image: -webkit-linear-gradient(top, #cf1db7, #cf1db7);
-      background-image: -moz-linear-gradient(top, #cf1db7, #cf1db7);
-      background-image: -ms-linear-gradient(top, #cf1db7, #cf1db7);
-      background-image: -o-linear-gradient(top, #cf1db7, #cf1db7);
-      background-image: linear-gradient(to bottom, #cf1db7, #cf1db7);
-      text-decoration: none;
-    }
-</style>
-
 <table>
     <tr>
         <td style="border: none; width: 30%;">
-            <table style="border: 2px solid #ECE2BF">
+            <table style="border: 2px solid #68B3AF">
                 <tr>
                     <td colspan="2" style="text-align: center">
-                        <span style="color: #FF5C3D; font-size: medium">{{ items.name }}</span>
+                        <span style="color: #fa8b60; font-size: medium">{{ items.name }}</span>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <img src="/mautauaja/display_img/{{ items.picture }}" style="width: 250px; height: 250px;">
                     </td>
-                    <td  style="color: white">
-                         <label>Kategori </label>: &nbsp; {{ items.category }}<br/><br/>
-                         <label>Harga </label>: &nbsp; Rp. {{ items.price|intcomma}}<br/><br/>
-                         <label>Penjual </label>: &nbsp;{{ items.store.store_name}}<br/><br/>
-                         <label>Rating Penjual </label>:
+                    <td style="color: #381f25; font-size: 12px;">
+                         <br>
+                         <label>Harga : </label>IDR {{ items.price|intcomma}}<br>
+                         <label></label>PTS {{ items.point|intcomma}}<br/><br/>
+                         <label>Penjual : </label>{{ items.store.store_name}}<br/><br/>
+                         <label>Rating Penjual : </label>
                             {% ifequal items.store.store_rating 1 %}
                                  <img src="/mautauaja/static/assets/star.png" style="width: 10px; height: 10px;">
                             {% endifequal %}
@@ -78,7 +50,7 @@
                             {% endifequal %}
 
 
-                         <br/><br/>
+                         <br/><br/><br/><br/>
                          <label>Deskripsi </label><br/><br/>
                          {{ items.description|linebreaksbr }}
                     </td>
@@ -89,7 +61,7 @@
             <table>
                 <tr>
                     <td style="border: none">
-                        <span style="font-size: medium; font-family: Verdana; color: #FF5C3D;"><b>Rekomendasi</b></span>
+                        <span style="font-size: medium; font-family: Verdana; color: #fa8b60;"><b>Rekomendasi</b></span>
                     </td>
                 </tr>
 
@@ -103,7 +75,7 @@
                             </td>
                             <td style="border-left: none; font-size: 12px; text-align: left; color: black; background-color: white">
                                 {{ zulu.name }}<br/><br/>
-                                <p style="color: #FF5C3D">RP. {{ zulu.price|intcomma }}</p>
+                                <p style="color: #fa8b60">IDR {{ zulu.price|intcomma }}</p>
                             </td>
                         </tr>
                     {% endfor %}
@@ -121,9 +93,9 @@
     <tr>
         <td style="text-align: right; border: none;">
             {% if user.id %}
-                <a href="{% url checkout_temp items.id %}" class="btn_beli" style="color: #4d1e4d"> &nbsp;&nbsp; Beli &nbsp;&nbsp;  </a>
+                <a href="{% url checkout_temp items.id %}" class="btn_beli" style="color: white; font-size: 18px;"> &nbsp;&nbsp; Beli &nbsp;&nbsp;  </a>
             {% else %}
-                <a href="{% url user_login %}" class="btn_beli" style="color: #4d1e4d"> &nbsp;&nbsp; Beli &nbsp;&nbsp;  </a>
+                <a href="{% url user_login %}" class="btn_beli" style="color: white; font-size: 18px;"> &nbsp;&nbsp; Beli &nbsp;&nbsp;  </a>
             {% endif %}
         </td>
     </tr>
