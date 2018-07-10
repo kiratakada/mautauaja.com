@@ -13,14 +13,14 @@
     <div class="items_content">
         <table style="width: 100%;">
             <tr>
-                <td style="width: 20%">
+                <td style="width: 20%; color: #262626;">
                     <h4>{{ order.items.name }}</h4>
                     <img src="/mautauaja/display_img/{{ order.items.picture}}" width="240px" height="240px;" align="">
                     <br><br>
                     <label>Spesifikasi : </label>
                     <h6>{{ order.items.description }}</h6>
                 </td>
-                <td style="width: 80%; padding: 20px">
+                <td style="width: 80%; padding: 20px; color: #262626;">
                     <label>Order Number</label> {{ order.order_number }} <br><br>
                     <label>Sepatu</label> {{ order.items.name }}<br><br>
 
@@ -40,15 +40,15 @@
                     <hr>
 
                     {% ifequal order.payment.payment_type 'ATM' %}
-                        <span style="color: yellow; font-size: small">
+                        <span style="color: #049292; font-size: small">
                             Pembayaran dapat dilakukan dengan cara mentransfer melalui ATM  {{ order.payment.name }} ke nomor
                             rekening {{ order.payment.payment_number }} atas nama {{ order.payment.payment_name }}
                         </span>
                     {% endifequal %} <br><br>
 
                     <div text-align="right" style="padding-left: 180px;">
-                        <a href="{% url checkout_temp order.items.id %}" class="btn_beli" style="color: #4d1e4d">Cancel</a>
-                        <a href="{% url accept_order_temp order.id %}" class="btn_beli" style="color: #4d1e4d">Accept</a>&nbsp;
+                        <a href="{% url checkout_temp order.items.id %}" class="btn_beli" style="color: white">Cancel</a>
+                        <a href="{% url accept_order_temp order.id %}" class="btn_beli" style="color: white">Accept</a>&nbsp;
                     </div>
                 </td>
             </tr>

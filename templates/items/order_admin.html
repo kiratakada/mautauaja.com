@@ -30,18 +30,20 @@
             {% if order %}
                 {% for data in order %}
                     <tr>
-                    <td>{{ data.purchase_date|date:"Y-m-d H:i" }}</td>
+                    <td style="color: black">{{ data.purchase_date|date:"Y-m-d H:i" }}</td>
                     <td><a href="{% url admin_report_transaction_detail data.id %}">{{ data.order_number }}</a></td>
-                    <td>{{ data.user.username }}</td>
-                    <td>{{ data.payment.name }}</td>
-                    <td>{{ data.payment.payment_currency}} {{ data.total_price|intcomma }}</td>
-                    <td>
-                        {% ifequal data.order_status "waiting" %}
-                            <span style="color: orangered">Menunggu Bayar</span>
-                        {% else %}
-                            <span style="color: greenyellow">Selesai</span>
-                        {% endifequal %}
-                    </td>
+                    <td style="color: black">{{ data.user.username }}</td>
+                    <td style="color: black">{{ data.payment.name }}</td>
+                    <td style="color: black">{{ data.payment.payment_currency}} {{ data.total_price|intcomma }}</td>
+                    {% ifequal data.order_status "waiting" %}
+                        <td style="background-color: #CC2A41">
+                            <span style="color: white; font-size: 12px;"><b>Menunggu Bayar</b></span>
+                        </td>
+                    {% else %}
+                        <td style="background-color: #90BD02">
+                            <span style="color: white; font-size: 12px;"><b>Selesai</b></span>
+                        </td>
+                    {% endifequal %}
                     </tr>
                 {% endfor %}
             {% else %}

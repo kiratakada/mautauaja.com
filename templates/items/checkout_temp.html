@@ -20,14 +20,14 @@
 
             <table style="width: 100%;">
                 <tr>
-                    <td style="width: 20%">
+                    <td style="width: 20%; color: #262626;">
                         <h4>{{ item.name }}</h4>
                         <img src="/mautauaja/display_img/{{ item.picture}}" width="240px" height="240px;" align="">
                         <br><br>
                         <label>Spesifikasi : </label>
                         <h6>{{ item.description }}</h6>
                     </td>
-                    <td style="width: 80%; padding: 10px">
+                    <td style="width: 80%; padding: 10px; color: #262626;">
                         <div style="padding-left: 20px; padding: 20px">
                         <label>Harga </label> Rp.{{ item.price|intcomma }} &nbsp; | &nbsp; PTS.{{ item.point|intcomma }}
 
@@ -49,8 +49,8 @@
                             </div>
                         </div>
                         <div text-align="right" style="padding-left: 180px;">
-                            <a href="{% url dashboard %}" class="btn_beli" style="color: #4d1e4d">Cancel</a> &nbsp;
-                            <input type='submit' class="btn_beli" value='Confirm'>
+                            <a href="{% url dashboard %}" class="btn_beli" style="color: white">Cancel</a> &nbsp;
+                            <input type='submit' class="btn_beli" style="color: white" value='Confirm'>
                         </div>
                     </td>
                 </tr>

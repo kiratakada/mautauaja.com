@@ -22,6 +22,16 @@
             -webkit-border-radius:12px;
             border-radius:12px;
 		}
+
+        label {
+            width: 100px;
+            text-align: left;
+            display: inline-block;
+            font-weight: bold;
+            font-family: Helvetica, Arial, sans-serif;
+            color: yellow;
+            font-size: 12px;
+        }
 	</style>
     
 {% endblock %}
@@ -45,13 +55,13 @@
         <hr id="id_line">
         
         <form enctype="multipart/form-data" method="POST" action=".">
-            <table>
+            <table style="color: yellow">
                 {% for i in form %}
                     {{ i.error }}
                     <tr>
                         <td>
 							{{ i.errors }}
-                            <label>{{ i.label_tag }}</label>{{ i }}
+                            <label style="color: yellow">{{ i.label_tag }}</label>{{ i }}
                         </td>
                     </tr>
                 {% endfor %}

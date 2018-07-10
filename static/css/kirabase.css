@@ -823,17 +823,20 @@ div.thumb {
 }
 
 .ballon_about{
-	background-color: #2C517E;
-	color: white;
-	font-size: 10px;
+	background-color: #F9F2E7;
+	color: black;
+	font-size: 15px;
 	padding: 10px;
-	border: 1px solid red;
 	margin-bottom: 5px;
 	-moz-border-radius:12px;
 	-webkit-border-radius:12px;
 	border-radius:12px;
 	margin-left: 30px;
-	border: 1px solid black;
+    padding: 20px;
+	border: 2px solid #68B3AF;
+    line-height: 25px;
+    text-align: justify;
+    text-justify: newspaper;
 }
 
 .btn_beli {
@@ -861,4 +864,9 @@ div.thumb {
     background-image: -o-linear-gradient(top, #828BC4, #828BC4);
     background-image: linear-gradient(to bottom, #828BC4, #828BC4);
     text-decoration: none;
+}
+
+
+.hr {
+  color: #123455;
 }

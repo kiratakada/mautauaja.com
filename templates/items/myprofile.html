@@ -2,20 +2,19 @@
 {% load humanize %}
 
 {% block title %}
-   Checkout
+   My Profile
 {% endblock %}
 
 
 {% block body %}
     {% include "items/tab_menu.html" %}
     <div class="items_content">
-        <a href="{% url dashboard %}"> << Beranda </a> <br><br>
         <table style="width: 100%;">
             <tr>
                 <td style="width: 20%">
                     <img src="/mautauaja/display_img/{{ profile.photo}}" width="280px" height="280px;" align="">
                 </td>
-                <td style="width: 80%; padding: 10px">
+                <td style="width: 80%; padding: 10px; color: black">
                     <label>Nama</label> {{ user.first_name }} {{ user.last_name }}<br><br>
                     <label>Username</label> {{ user.username }}<br><br>
                     <label>Password</label> ******* <br><br>
@@ -33,7 +32,7 @@
         <hr>
         <br>
 
-        <table style="width: 100%;">
+        <table style="width: 100%; color: black">
             <tr style="color: black;">
                 <th style="text-align: center">OrderId</th>
                 <th style="text-align: center">Tanggal</th>
@@ -46,18 +45,21 @@
             {% if order %}
                 {% for data in order %}
                     <tr>
-                    <td><a href="{% url detail_order_profile data.id %}">{{ data.order_number }}</a></td>
-                    <td>{{ data.purchase_date|date:"Y-m-d H:i"}}</td>
-                    <td>{{ data.items.name }}</td>
-                    <td>{{ data.payment.name }}</td>
-                    <td>{{ data.payment.payment_currency}} {{ data.total_price|intcomma }}</td>
-                    <td>
+                        <td><a href="{% url detail_order_profile data.id %}">{{ data.order_number }}</a></td>
+                        <td style="color: black">{{ data.purchase_date|date:"Y-m-d H:i"}}</td>
+                        <td style="color: black">{{ data.items.name }}</td>
+                        <td style="color: black">{{ data.payment.name }}</td>
+                        <td style="color: black">{{ data.payment.payment_currency}} {{ data.total_price|intcomma }}</td>
+
                         {% ifequal data.order_status "waiting" %}
-                            <span style="color: orangered">Menunggu Bayar</span>
+                            <td style="background-color: #CC2A41">
+                                <span style="color: white; font-size: 12px;"><b>Menunggu Bayar</b></span>
+                            </td>
                         {% else %}
-                            <span style="color: greenyellow">Selesai</span>
+                            <td style="background-color: #90BD02">
+                                <span style="color: white; font-size: 12px;"><b>Selesai</b></span>
+                            </td>
                         {% endifequal %}
-                    </td>
                     </tr>
                 {% endfor %}
             {% else %}
