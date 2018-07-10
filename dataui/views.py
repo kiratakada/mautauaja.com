@@ -655,7 +655,23 @@ def detail_order_profile(request, order_id=None):
 def admin_report_transaction(request):
 	try:
 		order_master = Order.objects.filter(order_status__in=["waiting", "completed"]).order_by("-id").all()
-		context = {'order': order_master}
+		pts_waiting=[]
+		pts_complete=[]
+		idr_waiting=[]
+		idr_complete = []
+
+		for iorder in order_master:
+
+			if iorder.currency == 'POINT' and iorder.order_status == 'waiting': pts_waiting.append(iorder.total_price)
+			elif iorder.currency == 'POINT' and iorder.order_status == 'completed':pts_complete.append(iorder.total_price)
+			elif iorder.currency == 'IDR' and iorder.order_status == 'waiting': idr_waiting.append(iorder.total_price)
+			elif iorder.currency == 'IDR' and iorder.order_status == 'completed': idr_complete.append(iorder.total_price)
+
+		context = {'order': order_master, 'pts_waiting': sum(pts_waiting), 'pts_complete': sum(pts_complete),
+		           'idr_waiting': sum(idr_waiting), 'idr_complete': sum(idr_complete),
+		           'idr_total': sum(idr_complete) + sum(idr_waiting),
+		           'pts_total': sum(pts_complete) + sum(pts_waiting)}
+
 		return render_to_response('items/order_admin.html', context, context_instance=RequestContext(request))
 	except Exception as e:
 		return redirect("dashboard")

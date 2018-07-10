@@ -10,11 +10,34 @@
     {% include "items/tab_menu.html" %}
 
     <div class="items_content">
-
         <div style="float: right; padding-bottom: 14px">
             <a href="{% url export_to_order_csv %}" class="btn_beli" style="color: #4d1e4d">Download Data Transaksi</a>
         </div>
+
         <p>Laporan Transaksi</p>
+        <hr>
+        <table style="width: 60%; color: black;">
+            <tr style="color: black;">
+                <th style="text-align: center"></th>
+                <th style="text-align: center">Selesai</th>
+                <th style="text-align: center">Menunggu Bayar</th>
+                <th style="text-align: center">Total</th>
+            <tr>
+            <tr>
+                <td style="color: black;">IDR</td>
+                <td style="color: black;">{{ idr_complete|intcomma }}</td>
+                <td style="color: black;">{{ idr_waiting|intcomma }}</td>
+                <td style="color: black;">{{ idr_total|intcomma }}</td>
+            </tr>
+            <tr>
+                <td style="color: black;">POINT</td>
+                <td style="color: black;">{{ pts_complete|intcomma }}</td>
+                <td style="color: black;">{{ pts_waiting|intcomma }}</td>
+                <td style="color: black;">{{ pts_total|intcomma }}</td>
+            </tr>
+        </table><br>
+
+        <p>Detail Laporan Transaksi</p>
         <hr>
 
         <table style="width: 100%;">
