@@ -661,7 +661,6 @@ def admin_report_transaction(request):
 		idr_complete = []
 
 		for iorder in order_master:
-
 			if iorder.currency == 'POINT' and iorder.order_status == 'waiting': pts_waiting.append(iorder.total_price)
 			elif iorder.currency == 'POINT' and iorder.order_status == 'completed':pts_complete.append(iorder.total_price)
 			elif iorder.currency == 'IDR' and iorder.order_status == 'waiting': idr_waiting.append(iorder.total_price)
@@ -701,10 +700,35 @@ def export_to_order_csv(request):
 		import csv
 		order_master = Order.objects.filter(order_status__in=["waiting", "completed"]).order_by("-id").all()
 
+		pts_waiting = []
+		pts_complete = []
+		idr_waiting = []
+		idr_complete = []
+
+		for iorder in order_master:
+			if iorder.currency == 'POINT' and iorder.order_status == 'waiting': pts_waiting.append(iorder.total_price)
+			elif iorder.currency == 'POINT' and iorder.order_status == 'completed':pts_complete.append(iorder.total_price)
+			elif iorder.currency == 'IDR' and iorder.order_status == 'waiting': idr_waiting.append(iorder.total_price)
+			elif iorder.currency == 'IDR' and iorder.order_status == 'completed': idr_complete.append(iorder.total_price)
+
+		tidr_complete = sum(idr_complete) + sum(idr_waiting)
+		tpts_complete = sum(pts_complete) + sum(pts_waiting)
+
 		response = HttpResponse(content_type='text/csv')
 		response['Content-Disposition'] = 'attachment; filename="laporan-transaksi.csv"'
 
 		writer = csv.writer(response, delimiter=';')
+		writer.writerow([])
+		writer.writerow(['Laporan Transaksi RanliMart'])
+		writer.writerow([])
+		writer.writerow([])
+
+		writer.writerow(['','Selesai', 'Menunggu Bayar', 'Total'])
+		writer.writerow(['IDR', sum(idr_complete), sum(idr_waiting), tidr_complete])
+		writer.writerow(['POINT', sum(pts_complete), sum(pts_waiting), tpts_complete])
+		writer.writerow([])
+		writer.writerow([])
+		writer.writerow([])
 
 		writer.writerow(['Tanggal','OrderId', 'Nama Barang', 'Pembeli', 'Payment', 'Total', 'Currency','Status', 'Alamat Pengiriman'])
 		for idata in order_master:
