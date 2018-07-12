@@ -27,19 +27,25 @@
     <div class="container">
         <div id="header" class="span-24 last" style="position: relative">
         
-		<img src="/mautauaja/static/assets/niasmartlogo.jpg" style="width: 190px; height: 65px;">
-			{% if user.is_authenticated %}
-				<div style="position: absolute; top: 50%; right: 10px;">
-					<span style="color:white;">Welcome {{ user }}</span> &nbsp;
-                	<a href="{% url user_logout %}">
-						<img src="/mautauaja/static/assets/logouthover.png">
-					</a>
-                </div>
-			{% else %}
-				<div style="position: absolute; top: 20%; right: 10px;">
-					<a href="{% url user_login %}"><img SRC="/mautauaja/static/assets/login-button.png"></a>	
-				</div>
-			{% endif %}
+    {#		<img src="/mautauaja/static/assets/niasmartlogo.jpg" style="width: 190px; height: 65px;">#}
+            <div style="padding: 4px;">
+                <span style="color: yellow; font-size: 40px; font-family: Verdana"><b>Toko Sepatu</b></span>
+            </div>
+
+            <div style="padding: 3px;">
+                {% if user.is_authenticated %}
+                    <div style="position: absolute; top: 50%; right: 10px;">
+                        <span style="color:white; font-size: 15px; padding: 4px;">Welcome {{ user }}</span> &nbsp;
+                        <a href="{% url user_logout %}">
+                            <img src="/mautauaja/static/assets/logouthover.png">
+                        </a>
+                    </div>
+                {% else %}
+                    <div style="position: absolute; top: 20%; right: 10px;">
+                        <a href="{% url user_login %}"><img SRC="/mautauaja/static/assets/login-button.png"></a>
+                    </div>
+                {% endif %}
+            </div>
         </div>
 		<br/>
         {% block head %}{% endblock %}
